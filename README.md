@@ -7,3 +7,6 @@ Folgende Module beinhaltet das UniFi Toolbox Repository:
 
 - __UniFi Internet Controller__ ([Dokumentation](UniFi%20Internet%20Controller))  
 	Kurze Beschreibung des Moduls.
+	
+- __UniFi Device Blocker__ ([Dokumentation](UniFi%20Device%20Blocker))  
+	Kurze Beschreibung des Moduls.
