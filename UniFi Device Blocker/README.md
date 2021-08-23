@@ -1,4 +1,4 @@
-# UniFi Device Blcoker
+# UniFi Device Blocker
 Dieses Modul ermöglicht es Geräte im Netz zu blockieren, um z.B. den Zugang der Kinder zu Internet nach 20 Uhr zu blockieren.
 
 ### Inhaltsverzeichnis
@@ -34,19 +34,20 @@ Dieses Modul ermöglicht es Geräte im Netz zu blockieren, um z.B. den Zugang de
 
 __Konfigurationsseite__:
 
-### Art des Controllers
+**Art des Controllers**
 Da sich die APIs von CloudKey 1 und CloudKey2/Dreammaschine unterscheiden kann hier der Controller gewählt werden
-### Benutzername & Kennwort
+**Benutzername & Kennwort**
 Account mit dem sich das Modul mit dem Controller verbindet
-### Site
+**Site**
 Site die im Controller hinterlegt ist 
-### IP Adresse und Port
+**IP Adresse und Port**
 Bei der Dream Maschine ist der Port 443, bei einem Controller im Standard 8443. IP Addresse des CloudKeys oder der Dream Maschine.
-### Aktualisierungsfrequenz
+**Aktualisierungsfrequenz**
 Da der Controller aktiv abfragt werden muss, kann man hier eine Frequenz hinterlegen wie oft dies geschehen soll. 
-### Geräte
-Geräte die Überwacht werden sollen, werden einfach mit einem Namen und einer MAC Addresse in der Tabelle hinterlegt. Das Modul erstellt dann eine Boolean Variable mit Switch Profil welche in weiter Prozesse eingebunden werden kann. Das Modul selbst löscht keine Variablen, sollte sich ein Name ändern, dann wird eine neue erstellt und die alte im Objektbaum belassen. 
-### Debugging
+**Geräte**
+Geräte die Überwacht werden sollen, werden einfach mit einem Namen und einer MAC Addresse in der Tabelle hinterlegt. Das Modul erstellt dann eine Boolean Variable mit Switch Profil welche in weiter Prozesse eingebunden werden kann um ein Gerät zu blocken oder eine blockade aufzulösen. 
+Das Modul selbst löscht keine Variablen, sollte sich ein Name ändern, dann wird eine neue erstellt und die alte im Objektbaum belassen. **
+**Debugging**
 Das Modul gibt divers Informatioen im Debug Bereich des Moduls aus. 
 
 ### 5. Versionsinformation
