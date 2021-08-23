@@ -26,8 +26,6 @@ if (!defined('vtBoolean')) {
 
 			$this->RegisterPropertyString("Devices", "");
 
-			$this->RegisterTimer("Check Presence",0,"PM_CheckPresence(\$_IPS['TARGET']);");
-
 		}
 
 		public function Destroy() {
@@ -120,7 +118,7 @@ if (!defined('vtBoolean')) {
 						//$this->SetBuffer("Cookie",$Cookie);
 					}
 					if ($code === 400 OR $code ) {
-							$this->SendDebug($this->Translate("Authentication"),$this->Translate('Login Failure - We have received an HTTP response status: 400. Probably a controller login failure'),0);
+							$this->SendDebug($this->Translate("Authentication"),$this->Translate('Login Failure - We have received an HTTP response status: 400. Probably a controller login failure or no device is configured'),0);
 			
 					}
 				}
