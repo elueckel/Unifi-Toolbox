@@ -1,8 +1,23 @@
 {
     "translations": {
         "de": {
-            "Translation 1": "Übersetzung 1",
-            "Translation 2": "Übersetzung 2"
+            "Module Help": "Modul Hilfe",
+            "This Module allows to gather information converning the internet connection like the current public IP adress in conjunction with a USG or Dream Machine.": "Dieses Modul ermöglicht es Informationen über die Internetverbindung durch eine USG oder Dream Maschine, wie z.B. die öffentliche IP Adresse abzureufen.",
+            "Please select the type of controller you are using, enter its IP Adress, Port and a user allowed to log in.": "Bitte wählen sie die Art des Controllers und geben die IP Adresse, Port und einen Anwender ein der auf diesen zugreifen darf.",
+            "To manage certain devices, please use their MAC adress and a clear text name, which will be used to create a variable in the object tree.": "Um Geräte zu verwalten, geben sie bitte die MAC Addresse und einen Namen in der Form unten ein - anhand des Namens wird eine Boolean Variable im Objektbaum erstellt.",
+            "All data will be stored in variables in the object tree.": "Alle Informationen werden im Objektbaum als Variable zur Verfügung gestellt.",
+            "Updates will happen on a schedule every xyz seconds.": "Das Module prüft die Anwensenheit alle xyz Sekunden, wie im Module konfiguriert",
+            "For debugging, please use the Debug function of the module.": "Für das Prüfen der Funktionen, gibt es Modul Meldungen im Debugbereich aus",
+            "UniFi Toolbox -  Internet Controller Configuration": "UniFi Toolbox -  Internet Controller Konfiguration",
+            "Controller Type": "Art des Controllers",
+            "Server Adress": "Server Addresse",
+            "User Name": "Anmeldename",
+            "Password": "Passwort",
+            "Update Frequency": "Aktualisierungsfrequenz",
+            "sec - 0 is off": "Sek - 0 ist Aus",
+            "Connection Data": "Verbindungsdaten",
+            "Test Authentication": "Prüfe Anmeldung",
+            "Get Internet Data": "Daten Abfragen"
         }
     }
 }

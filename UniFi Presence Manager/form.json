@@ -1,12 +1,38 @@
 {
     "elements": [
         {
-            "type": "Label",
-            "label": "UniFi Toolbox - Internet Controller Configuration"
+            "type": "ExpansionPanel",
+            "caption": "Module Help",
+            "items": [
+                {
+                    "type": "Label",
+                    "label": "This Module allows to identify if a certain device is connected to the network to e.g. provide for presence management."
+                },
+                {
+                    "type": "Label",
+                    "label": "Please select the type of controller you are using, enter its IP Adress, Port and a user allowed to log in."
+                },
+                {
+                    "type": "Label",
+                    "label": "To manage certain devices, please use their MAC adress and a clear text name, which will be used to create a variable in the object tree."
+                },
+                {
+                    "type": "Label",
+                    "label": "The variable in the Object Tree can be used to see if a device is online or offline e.g. a mobile app, webfront or other automation."
+                },
+                {
+                    "type": "Label",
+                    "label": "Updates will happen on a schedule every xyz seconds."
+                },
+                {
+                    "type": "Label",
+                    "label": "For debugging, please use the Debug function of the module."
+                }
+            ]
         },
         {
             "type": "Label",
-            "label": "Please enter your credentials, ip-adress and port to your UniFi Controller."
+            "label": "UniFi Toolbox - Presence Manager Configuration"
         },
         {
             "type": "Select",
@@ -52,7 +78,7 @@
             "type": "NumberSpinner",
             "name": "Timer",
             "caption": "Update Frequency",
-            "suffix": "seconds - 0 is off"
+            "suffix": "sec - 0 is off"
         },
         {
             "type": "List",

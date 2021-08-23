@@ -1,12 +1,34 @@
 {
     "elements": [
         {
-            "type": "Label",
-            "label": "UniFi Toolbox - Internet Controller Configuration"
+            "type": "ExpansionPanel",
+            "caption": "Module Help",
+            "items": [
+                {
+                    "type": "Label",
+                    "label": "This Module allows to gather information converning the internet connection like the current public IP adress in conjunction with a USG or Dream Machine."
+                },
+                {
+                    "type": "Label",
+                    "label": "Please select the type of controller you are using, enter its IP Adress, Port and a user allowed to log in."
+                },
+                {
+                    "type": "Label",
+                    "label": "All data will be stored in variables in the object tree."
+                },
+                {
+                    "type": "Label",
+                    "label": "Updates will happen on a schedule every xyz seconds."
+                },
+                {
+                    "type": "Label",
+                    "label": "For debugging, please use the Debug function of the module."
+                }
+            ]
         },
         {
             "type": "Label",
-            "label": "Please enter your credentials, ip-adress and port to your UniFi Controller."
+            "label": "UniFi Toolbox - Internet Controller Configuration"
         },
         {
             "type": "Select",
@@ -52,7 +74,7 @@
             "type": "NumberSpinner",
             "name": "Timer",
             "caption": "Update Frequency",
-            "suffix": "seconds - 0 is off"
+            "suffix": "sec - 0 is off"
         },
         {
             "type": "CheckBox",
