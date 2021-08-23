@@ -49,12 +49,6 @@
             "caption": "Password"
         },
         {
-            "type": "NumberSpinner",
-            "name": "Timer",
-            "caption": "Update Frequency",
-            "suffix": "seconds - 0 is off"
-        },
-        {
             "type": "List",
             "name": "Devices",
             "caption": "Devices",
@@ -94,13 +88,8 @@
             "items": [
                 {
                     "type": "Button",
-                    "label": "Test Authentication",
-                    "onClick": "PM_AuthenticateAndGetData($id);"
-                },
-                {
-                    "type": "Button",
-                    "label": "Check Presence",
-                    "onClick": "PM_CheckPresence($id);"
+                    "label": "Test Authentication and Blocking",
+                    "onClick": "DB_AuthenticateAndProcessRequest($id);"
                 }
             ]
         }

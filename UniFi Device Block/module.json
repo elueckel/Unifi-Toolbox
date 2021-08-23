@@ -1,0 +1,12 @@
+{
+    "id": "{FC3E71F1-BF95-D45D-0676-BA3D10D02CB8}",
+    "name": "UniFi Device Blocker",
+    "type": 3,
+    "vendor": "UniFi",
+    "aliases": [],
+    "parentRequirements": [],
+    "childRequirements": [],
+    "implemented": [],
+    "prefix": "DB",
+    "url": "https://github.com/elueckel/Unifi-Toolbox/Device-Blocker"
+}

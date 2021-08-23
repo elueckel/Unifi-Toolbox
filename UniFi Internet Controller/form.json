@@ -1,5 +1,81 @@
 {
-    "elements": [],
-    "actions": [],
+    "elements": [
+        {
+            "type": "Label",
+            "label": "UniFi Toolbox - Internet Controller Configuration"
+        },
+        {
+            "type": "Label",
+            "label": "Please enter your credentials, ip-adress and port to your UniFi Controller."
+        },
+        {
+            "type": "Select",
+            "name": "ControllerType",
+            "caption": "Controller Type",
+            "options": [
+                {
+                    "caption": "Dream Maschine / Pro / CloudKey V2",
+                    "value": 0
+                },
+                {
+                    "caption": "CloudKey",
+                    "value": 1
+                }
+            ]
+        },
+        {
+            "type": "ValidationTextBox",
+            "name": "Site",
+            "caption": "Site"
+        },
+        {
+            "type": "ValidationTextBox",
+            "name": "ServerAdress",
+            "caption": "Server Adress"
+        },
+        {
+            "type": "NumberSpinner",
+            "name": "ServerPort",
+            "caption": "Server Port"
+        },
+        {
+            "type": "ValidationTextBox",
+            "name": "UserName",
+            "caption": "User Name"
+        },
+        {
+            "type": "PasswordTextBox",
+            "name": "Password",
+            "caption": "Password"
+        },
+        {
+            "type": "NumberSpinner",
+            "name": "Timer",
+            "caption": "Update Frequency",
+            "suffix": "seconds - 0 is off"
+        },
+        {
+            "type": "CheckBox",
+            "name": "ConnectionData",
+            "caption": "Connection Data"
+        }        
+    ],
+    "actions": [
+        {
+            "type": "RowLayout",
+            "items": [
+                {
+                    "type": "Button",
+                    "label": "Test Authentication",
+                    "onClick": "IC_AuthenticateAndGetData($id);"
+                },
+                {
+                    "type": "Button",
+                    "label": "Get Internet Data",
+                    "onClick": "IC_GetInternetData($id);"
+                }
+            ]
+        }
+    ],
     "status": []
 }
