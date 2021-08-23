@@ -2,10 +2,12 @@
 
 Die UniFi Toolbox ist eine Sammlung von Modulen welche verschiedene Aktionen in Verbindung mit einem UniFi Netzwerk Controller unterstützen. 
 
-# Voraussetzungen:
+## Voraussetzungen:
 * Symcon 5.5 oder höher
 * UniFi Dream Machine
 * UniFi Controller
+
+## Komponenten das Moduls
 
 Folgende Module beinhaltet das UniFi Toolbox Repository:
 
@@ -17,3 +19,4 @@ Folgende Module beinhaltet das UniFi Toolbox Repository:
 	
 - __UniFi Device Blocker__ ([Dokumentation](UniFi%20Device%20Blocker))  
 	Mit dem Device Blocker können Geräte anhand ihrer MAC Adresse vom Zugang auf das Netzwerk geblockt werden, z.B. um die Nutzung von Geräten im Kinderzimmer nach 20 Uhr zu sperren und am Morgen wieder zu aktivieren.
+
