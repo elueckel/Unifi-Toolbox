@@ -1,7 +1,7 @@
 # UniFi Device Blocker
 Dieses Modul ermöglicht es Geräte im Netz zu blockieren, um z.B. den Zugang der Kinder zu Internet nach 20 Uhr zu blockieren.
 
-### Inhaltsverzeichnis
+## Inhaltsverzeichnis
 
 1. [Funktionsumfang](#1-funktionsumfang)
 2. [Voraussetzungen](#2-voraussetzungen)
@@ -10,7 +10,7 @@ Dieses Modul ermöglicht es Geräte im Netz zu blockieren, um z.B. den Zugang de
 5. [Versionsinformation](#5-versionsinformation)
 
 
-### 1. Funktionsumfang
+## 1. Funktionsumfang
 
 * Unterstützung für UniFi Cloudkey 1
 * Unterstützung für UniFi Cloudkey 2 und Dream Maschine
@@ -18,16 +18,16 @@ Dieses Modul ermöglicht es Geräte im Netz zu blockieren, um z.B. den Zugang de
 * Erstellt pro Gerät eine Variable welche z.B. für die Automation oder Überwachung genutzt werden kann (Boolean)
 * Abfragen der Controller erfolgt zeitgesteuert alle xx Sekunden
 
-### 2. Vorraussetzungen
+## 2. Vorraussetzungen
 
 - IP-Symcon ab Version 5.5
 
-### 3. Software-Installation
+## 3. Software-Installation
 
 * Über den Module Store das 'UniFi Presence Manager'-Modul installieren.
 * Alternativ über das Module Control folgende URL hinzufügen
 
-### 4. Einrichten der Instanzen in IP-Symcon
+## 4. Einrichten der Instanzen in IP-Symcon
 
  Unter 'Instanz hinzufügen' kann das 'UniFi Presence Manager'-Modul mithilfe des Schnellfilters gefunden werden.  
 	- Weitere Informationen zum Hinzufügen von Instanzen in der [Dokumentation der Instanzen](https://www.symcon.de/service/dokumentation/konzepte/instanzen/#Instanz_hinzufügen)
@@ -62,7 +62,7 @@ Das Modul selbst löscht keine Variablen, sollte sich ein Name ändern, dann wir
 **Debugging**
 Das Modul gibt divers Informatioen im Debug Bereich des Moduls aus. 
 
-### 5. Versionsinformation
+## 5. Versionsinformation
 
 Version 0.3 (Beta) - 23-08-2021
 * Unterstützung für UniFi Cloudkey 1
