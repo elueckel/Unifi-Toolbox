@@ -24,7 +24,7 @@ Dieses Modul ermöglicht es Geräte im Netz zu blockieren, um z.B. den Zugang de
 
 ## 3. Software-Installation
 
-* Über den Module Store das 'UniFi Presence Manager'-Modul installieren.
+* Über den Module Store das 'UniFi Device Blocker'-Modul installieren.
 * Alternativ über das Module Control folgende URL hinzufügen
 
 ## 4. Einrichten der Instanzen in IP-Symcon
