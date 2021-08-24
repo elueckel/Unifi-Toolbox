@@ -1,5 +1,5 @@
 # UniFi Presence Manager
-Beschreibung des Moduls.
+Dieses Modul ermöglicht es Geräte im Netz zu überwachen, um z.B. eine Anwsenheitskontrolle zu ermöglichen.
 
 ### Inhaltsverzeichnis
 
@@ -7,13 +7,15 @@ Beschreibung des Moduls.
 2. [Voraussetzungen](#2-voraussetzungen)
 3. [Software-Installation](#3-software-installation)
 4. [Einrichten der Instanzen in IP-Symcon](#4-einrichten-der-instanzen-in-ip-symcon)
-5. [Statusvariablen und Profile](#5-statusvariablen-und-profile)
-6. [WebFront](#6-webfront)
-7. [PHP-Befehlsreferenz](#7-php-befehlsreferenz)
+5. [Versionsinformation](#5-versionsinformation)
 
 ### 1. Funktionsumfang
 
-*
+* Unterstützung für UniFi Cloudkey 1
+* Unterstützung für UniFi Cloudkey 2 und Dream Maschine
+* Anlegen von zu überwachenden Geräten mit Name und MAC Adresse 
+* Erstellt pro Gerät eine Variable welche z.B. für die Automation oder Überwachung genutzt werden kann (Boolean)
+* Abfragen der Controller erfolgt zeitgesteuert alle xx Sekunden
 
 ### 2. Vorraussetzungen
 
@@ -31,11 +33,33 @@ Beschreibung des Moduls.
 
 __Konfigurationsseite__:
 
-Name     | Beschreibung
--------- | ------------------
-         |
-         |
+**Art des Controllers**
 
+Da sich die APIs von CloudKey 1 und CloudKey2/Dreammaschine unterscheiden, kann hier der Controller gewählt werden
+
+**Benutzername & Kennwort**
+
+Account mit dem sich das Modul mit dem Controller verbindet
+
+**Site**
+
+Site die im Controller hinterlegt ist 
+
+**IP Adresse und Port**
+
+Bei der Dream Maschine ist der Port 443, bei einem Controller im Standard 8443. IP Addresse des CloudKeys oder der Dream Maschine.
+
+**Aktualisierungsfrequenz**
+
+Da der Controller aktiv abfragt werden muss, kann man hier eine Frequenz hinterlegen wie oft dies geschehen soll. 
+
+**Geräte**
+
+Geräte die Überwacht werden sollen, werden einfach mit einem Namen und einer MAC Addresse in der Tabelle hinterlegt. Das Modul erstellt dann eine Boolean Variable mit Switch Profil welche in weiter Prozesse eingebunden werden kann um ein Gerät zu blocken oder eine blockade aufzulösen. 
+Das Modul selbst löscht keine Variablen, sollte sich ein Name ändern, dann wird eine neue erstellt und die alte im Objektbaum belassen.
+
+**Debugging**
+Das Modul gibt diverse Informatioen im Debug Bereich aus. 
 ### 5. Statusvariablen und Profile
 
 Die Statusvariablen/Kategorien werden automatisch angelegt. Das Löschen einzelner kann zu Fehlfunktionen führen.

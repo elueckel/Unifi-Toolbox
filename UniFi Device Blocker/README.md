@@ -16,7 +16,7 @@ Dieses Modul ermöglicht es Geräte im Netz zu blockieren, um z.B. den Zugang de
 * Unterstützung für UniFi Cloudkey 2 und Dream Maschine
 * Anlegen von zu überwachenden Geräten mit Name und MAC Adresse 
 * Erstellt pro Gerät eine Variable welche z.B. für die Automation oder Überwachung genutzt werden kann (Boolean)
-* Abfragen der Controller erfolgt zeitgesteuert alle xx Sekunden
+* Das Modul reagiert auf die Änderung einer Variable
 
 ## 2. Vorraussetzungen
 
@@ -36,7 +36,7 @@ __Konfigurationsseite__:
 
 **Art des Controllers**
 
-Da sich die APIs von CloudKey 1 und CloudKey2/Dreammaschine unterscheiden kann hier der Controller gewählt werden
+Da sich die APIs von CloudKey 1 und CloudKey2/Dreammaschine unterscheiden, kann hier der Controller gewählt werden
 
 **Benutzername & Kennwort**
 
@@ -60,7 +60,7 @@ Geräte die Überwacht werden sollen, werden einfach mit einem Namen und einer M
 Das Modul selbst löscht keine Variablen, sollte sich ein Name ändern, dann wird eine neue erstellt und die alte im Objektbaum belassen.
 
 **Debugging**
-Das Modul gibt divers Informatioen im Debug Bereich des Moduls aus. 
+Das Modul gibt diverse Informatioen im Debug Bereich aus. 
 
 ## 5. Versionsinformation
 
