@@ -53,7 +53,7 @@
         {
             "type": "ValidationTextBox",
             "name": "ServerAdress",
-            "caption": "Server Adress"
+            "caption": "Server Address"
         },
         {
             "type": "NumberSpinner",

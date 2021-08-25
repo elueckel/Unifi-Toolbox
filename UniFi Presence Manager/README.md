@@ -53,6 +53,10 @@ Bei der Dream Maschine ist der Port 443, bei einem Controller im Standard 8443. 
 
 Da der Controller aktiv abfragt werden muss, kann man hier eine Frequenz hinterlegen wie oft dies geschehen soll. 
 
+**Allgemeine Anwesenheit Aktualisier**
+
+Die Allgemeine Anwesenheit Aktualisiert Variable wird immer unabhängig vom Gerät aktualisiert und kann somit eine generische Aktion auslösen. 
+
 **Geräte**
 
 Geräte die Überwacht werden sollen, werden einfach mit einem Namen und einer MAC Addresse in der Tabelle hinterlegt. Das Modul erstellt dann eine Boolean Variable mit Switch Profil welche in weiter Prozesse eingebunden werden kann um ein Gerät zu blocken oder eine blockade aufzulösen. 
@@ -60,32 +64,14 @@ Das Modul selbst löscht keine Variablen, sollte sich ein Name ändern, dann wir
 
 **Debugging**
 Das Modul gibt diverse Informatioen im Debug Bereich aus. 
-### 5. Statusvariablen und Profile
+## 5. Versionsinformation
 
-Die Statusvariablen/Kategorien werden automatisch angelegt. Das Löschen einzelner kann zu Fehlfunktionen führen.
+Version 0.3 (Beta) - 23-08-2021
+* Unterstützung für UniFi Cloudkey 1
+* Unterstützung für UniFi Cloudkey 2 und Dream Maschine
+* Anlegen von zu überwachenden Geräten mit Name und MAC Adresse 
+* Erstellt pro Gerät eine Variable welche z.B. für die Automation oder Überwachung genutzt werden kann (Boolean)
+* Abfragen der Controller erfolgt zeitgesteuert alle xx Sekunden
 
-#### Statusvariablen
-
-Name   | Typ     | Beschreibung
------- | ------- | ------------
-       |         |
-       |         |
-
-#### Profile
-
-Name   | Typ
------- | -------
-       |
-       |
-
-### 6. WebFront
-
-Die Funktionalität, die das Modul im WebFront bietet.
-
-### 7. PHP-Befehlsreferenz
-
-`boolean PM_BeispielFunktion(integer $InstanzID);`
-Erklärung der Funktion.
-
-Beispiel:
-`PM_BeispielFunktion(12345);`
+Version 0.31 (Beta) - 25-08-2021
+* Neue Variable die bei jedem Update unabhängig vom Gerät aktualisiert wird

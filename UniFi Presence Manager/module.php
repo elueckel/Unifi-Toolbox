@@ -23,6 +23,7 @@ if (!defined('vtBoolean')) {
 			$this->RegisterPropertyString("UserName","");
 			$this->RegisterPropertyString("Password","");
 			$this->RegisterPropertyInteger("Timer", "0");
+			$this->RegisterPropertyBoolean("GeneralPresenceUpdatedVariable","0");
 
 			$this->RegisterPropertyString("Devices", "");
 
@@ -53,6 +54,8 @@ if (!defined('vtBoolean')) {
 					$this->MaintainVariable($DeviceMac, $DeviceName, vtBoolean, "~Presence", $vpos++, isset($DevicesJSON));	
 				}
 			}
+
+			$this->MaintainVariable("GeneralPresenceUpdatedVariable", $this->Translate("Presence Updated"), vtBoolean, "~Switch", 10, $this->ReadPropertyBoolean("GeneralPresenceUpdatedVariable") == 1);
 
 			$TimerMS = $this->ReadPropertyInteger("Timer") * 1000;
 			$this->SetTimerInterval("Check Presence",$TimerMS);
@@ -177,6 +180,9 @@ if (!defined('vtBoolean')) {
 						if ($DeviceMac == $DeviceMacClean) {	
 							if ($OldPresenceValue == 0) { //check if new value is different and only than trigger a replacement
 								SetValue($this->GetIDForIdent($DeviceMac),1);
+								if ($this->ReadPropertyBoolean("GeneralPresenceUpdatedVariable") == 1) {
+									SetValue($this->GetIDForIdent("GeneralPresenceUpdatedVariable"),1);
+								}
 								$this->SendDebug($this->Translate("Presence Manager"),$this->Translate("Device ACTIVE with MAC: ".$DeviceMac),0); 
 							}
 							break;
@@ -185,6 +191,9 @@ if (!defined('vtBoolean')) {
 							if ($Index === array_key_last($ActiveDevices["data"])) {
 								if ($OldPresenceValue == 1) {
 									SetValue($this->GetIDForIdent($DeviceMac),0);
+									if ($this->ReadPropertyBoolean("GeneralPresenceUpdatedVariable") == 1) {
+										SetValue($this->GetIDForIdent("GeneralPresenceUpdatedVariable"),1);
+									}
 									$this->SendDebug($this->Translate("Presence Manager"),$this->Translate("Device NOT active with MAC: ".$DeviceMac),0); 
 								}
 							}

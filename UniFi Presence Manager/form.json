@@ -57,7 +57,7 @@
         {
             "type": "ValidationTextBox",
             "name": "ServerAdress",
-            "caption": "Server Adress"
+            "caption": "Server Address"
         },
         {
             "type": "NumberSpinner",
@@ -79,6 +79,15 @@
             "name": "Timer",
             "caption": "Update Frequency",
             "suffix": "sec - 0 is off"
+        },
+        {
+            "type": "Label",
+            "label": "The General Presence Updated variable will always be updated and can be used to trigger general updates independent of the sender."
+        },
+        {
+            "type": "CheckBox",
+            "name": "GeneralPresenceUpdatedVariable",
+            "caption": "General Presence Updated Variable"
         },
         {
             "type": "List",
