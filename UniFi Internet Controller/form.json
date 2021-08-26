@@ -78,8 +78,13 @@
         },
         {
             "type": "CheckBox",
-            "name": "ConnectionData",
-            "caption": "Connection Data"
+            "name": "ConnectionData01",
+            "caption": "Connection Data WAN Port 1"
+        },
+        {
+            "type": "CheckBox",
+            "name": "ConnectionData02",
+            "caption": "Connection Data WAN Port 2"
         }        
     ],
     "actions": [

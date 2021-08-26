@@ -15,7 +15,10 @@
             "Password": "Passwort",
             "Update Frequency": "Aktualisierungsfrequenz",
             "sec - 0 is off": "Sek - 0 ist Aus",
-            "Connection Data": "Verbindungsdaten",
+            "Connection Data WAN Port 1": "Verbindungsdaten WAN Port 1",
+            "Connection Data WAN Port 2": "Verbindungsdaten WAN Port 2",
+            "WAN 1 External IP Address": "WAN 1 Externe IP Adresse",
+            "WAN 2 External IP Address": "WAN 2 Externe IP Adresse",
             "Test Authentication": "Prüfe Anmeldung",
             "Get Internet Data": "Daten Abfragen"
         }

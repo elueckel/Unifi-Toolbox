@@ -24,7 +24,8 @@ if (!defined('vtBoolean')) {
 			$this->RegisterPropertyString("Password","");
 			$this->RegisterPropertyInteger("Timer", "0");
 
-			$this->RegisterPropertyBoolean("ConnectionData",0);
+			$this->RegisterPropertyBoolean("ConnectionData01",0);
+			$this->RegisterPropertyBoolean("ConnectionData02",0);
 
 			$this->RegisterTimer("Collect Connection Data",0,"IC_GetInternetData(\$_IPS['TARGET']);");
 
@@ -40,7 +41,8 @@ if (!defined('vtBoolean')) {
 			parent::ApplyChanges();
 
 			$vpos = 100;
-			$this->MaintainVariable("WAN0IP", $this->Translate("WAN 0 External IP Adress"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("ConnectionData") == "1");
+			$this->MaintainVariable("WAN1IP", $this->Translate("WAN 1 External IP Address"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("ConnectionData01") == "1");
+			$this->MaintainVariable("WAN2IP", $this->Translate("WAN 2 External IP Address"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("ConnectionData02") == "1");
 
 			$TimerMS = $this->ReadPropertyInteger("Timer") * 1000;
 			$this->SetTimerInterval("Collect Connection Data",$TimerMS);
@@ -97,10 +99,9 @@ if (!defined('vtBoolean')) {
 						$this->SendDebug($this->Translate("Authentication"),$this->Translate('Login Successful'),0); 
 						$this->SendDebug($this->Translate("Authentication"),$this->Translate('Cookie Provided is: ').$Cookie,0);
 					}
-					if ($code === 400 OR $code ) {
-							$this->SendDebug($this->Translate("Authentication"),$this->Translate('Login Failure - We have received an HTTP response status: 400. Probably a controller login failure'),0);
-			
-					}
+					//if ($code === 400 OR $code ) {
+					//		$this->SendDebug($this->Translate("Authentication"),$this->Translate('Login Failure - We have received an HTTP response status: 400. Probably a controller login failure'),0);
+					//}
 				}
 			}
 
@@ -144,27 +145,57 @@ if (!defined('vtBoolean')) {
 
 			//Query JSON File for Internetdata
 
-			if ($this->ReadPropertyBoolean("ConnectionData") == "1") {
+			if ($this->ReadPropertyBoolean("ConnectionData01") == "1") {
 
 				$this->AuthenticateAndGetData();
 				$RawData = $this->GetBuffer("RawData");
 				$JSONData = json_decode($RawData,true);
 
-				$WAN0IP = $JSONData["data"][0]["ip_addrs"][0];
-
-				if (isset($WAN0IP)) {
-					if ($WAN0IP !== GetValue($this->GetIDForIdent("WAN0IP"))) {
-						$this->SendDebug($this->Translate("Internet Data"),$this->Translate("IP Adress has been updated to").$WAN0IP,0); 
-						SetValue($this->GetIDForIdent("WAN0IP"),$WAN0IP);
-					}
-					else {
-						$this->SendDebug($this->Translate("Internet Data"),$this->Translate("IP Adress has not been updated"),0); 
+				if (isset($JSONData["data"][0]["ip_addrs"][0])) {
+					$WAN1IP = $JSONData["data"][0]["ip_addrs"][0];
+					if (isset($WAN1IP)) {
+						if ($WAN1IP !== GetValue($this->GetIDForIdent("WAN1IP"))) {
+							$this->SendDebug($this->Translate("Internet Data WAN 01"),$this->Translate("IP Adress 1 has been updated to ").$WAN1IP,0); 
+							SetValue($this->GetIDForIdent("WAN1IP"),$WAN1IP);
+						}
+						else {
+							$this->SendDebug($this->Translate("Internet Data WAN 01"),$this->Translate("IP Adress 1 has not been updated since it is still the same"),0); 
+						}
 					}
 				}
+				else {
+					$this->SendDebug($this->Translate("Internet Data WAN 01"),$this->Translate("No data for WAN Port 1"),0); 
+				}
 			}
+
+			if ($this->ReadPropertyBoolean("ConnectionData02") == "1") {
+
+				$this->AuthenticateAndGetData();
+				$RawData = $this->GetBuffer("RawData");
+				$JSONData = json_decode($RawData,true);
+
+				if (isset($JSONData["data"][0]["ip_addrs"][1])) {
+					$WAN2IP = $JSONData["data"][0]["ip_addrs"][1];
+					if (isset($WAN2IP)) {
+						if ($WAN2IP !== GetValue($this->GetIDForIdent("WAN2IP"))) {
+							$this->SendDebug($this->Translate("Internet Data WAN 02"),$this->Translate("IP Adress 2 has been updated to ").$WAN2IP,0); 
+							SetValue($this->GetIDForIdent("WAN1IP"),$WAN2IP);
+						}
+						else {
+							$this->SendDebug($this->Translate("Internet Data WAN 02"),$this->Translate("IP Adress 2 has not been updated since it is still the same"),0); 
+						}
+					}
+				}
+				else {
+					$this->SendDebug($this->Translate("Internet Data WAN 02"),$this->Translate("No data for WAN Port 2"),0); 
+				}
+
+			}
+			/*
 			else {
 				$this->SendDebug($this->Translate("Module"),$this->Translate("No data query has been actived - please select one"),0); 
 			}
+			*/
 
 		}
 
