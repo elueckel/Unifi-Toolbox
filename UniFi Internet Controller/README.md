@@ -65,3 +65,6 @@ Version 0.3 (Beta) - 23-08-2021
 * Unterstützung für UniFi Cloudkey 1
 * Unterstützung für UniFi Cloudkey 2 und Dream Maschine
 * Abfrage der externen IP Adresse (WAN01)
+
+Version 0.4 (Beta) - 26-08-2021
+* Unterstützung für 2 WAN Adapter
