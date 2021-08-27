@@ -133,13 +133,12 @@ if (!defined('vtBoolean')) {
 				//Get MAC Adress from Config form
 				$DevicesList = $this->ReadPropertyString("Devices");
 				$DevicesJSON = json_decode($DevicesList,true);
-			
-
+				
 				if (isset($DevicesJSON)) {
 					foreach ($DevicesJSON as $Device) {
-						$this->SendDebug($this->Translate("Device Blocker"),$this->Translate("Device in Config ").$Device["varDeviceName"].$this->Translate(" device from Sender ").$SenderName,0);
-						if ($SenderName = $Device["varDeviceName"]) {
+						if ($SenderName == $Device["varDeviceName"]) {
 							$DeviceMacAdress = $Device["varDeviceMAC"];
+							$this->SendDebug($this->Translate("Device Blocker"),$this->Translate("Device to be blocked ").$Device["varDeviceName"].$this->Translate(" device from Sender ").$SenderName,0);
 						}
 					}
 				}
@@ -209,7 +208,6 @@ if (!defined('vtBoolean')) {
 					$RawData = curl_exec($ch);
 					$HTTP_Code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 					$this->SendDebug($this->Translate("Device Blocker"),$this->Translate("Feedback from UniFi Controller: ").$RawData." / HTTP Message ".$HTTP_Code ,0);
-					//var_dump(curl_getinfo($ch));
 					curl_close($ch);
 
 				}

@@ -70,3 +70,6 @@ Version 0.3 (Beta) - 23-08-2021
 * Anlegen von zu überwachenden Geräten mit Name und MAC Adresse 
 * Erstellt pro Gerät eine Variable welche z.B. für die Automation oder Überwachung genutzt werden kann (Boolean)
 * Abfragen der Controller erfolgt zeitgesteuert alle xx Sekunden
+
+Version 0.31 (Beta) - 27-08-2021
+* Fix bei der Logik zum blocken

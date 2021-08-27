@@ -179,7 +179,7 @@ if (!defined('vtBoolean')) {
 					if (isset($WAN2IP)) {
 						if ($WAN2IP !== GetValue($this->GetIDForIdent("WAN2IP"))) {
 							$this->SendDebug($this->Translate("Internet Data WAN 02"),$this->Translate("IP Adress 2 has been updated to ").$WAN2IP,0); 
-							SetValue($this->GetIDForIdent("WAN1IP"),$WAN2IP);
+							SetValue($this->GetIDForIdent("WAN2IP"),$WAN2IP);
 						}
 						else {
 							$this->SendDebug($this->Translate("Internet Data WAN 02"),$this->Translate("IP Adress 2 has not been updated since it is still the same"),0); 
