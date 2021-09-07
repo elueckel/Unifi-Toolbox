@@ -16,8 +16,6 @@ if (!defined('vtBoolean')) {
 			//Never delete this line!
 			parent::Create();
 
-			$this->RegisterPropertyBoolean("active",0);
-
 			$this->RegisterPropertyInteger("ControllerType", 0);
 			$this->RegisterPropertyString("ServerAdress","192.168.1.1");
 			$this->RegisterPropertyInteger("ServerPort", "443");
@@ -26,26 +24,11 @@ if (!defined('vtBoolean')) {
 			$this->RegisterPropertyString("Password","");
 			$this->RegisterPropertyInteger("Timer", "0");
 
-			$this->RegisterPropertyBoolean("WAN1IP",0);
-			$this->RegisterPropertyBoolean("WAN2IP",0);
+			$this->RegisterPropertyBoolean("ConnectionData01",0);
+			$this->RegisterPropertyBoolean("ConnectionData02",0);
 
-			$this->RegisterPropertyBoolean("version",0);
-			$this->RegisterPropertyBoolean("update_available",0);
-			$this->RegisterPropertyBoolean("update_downloaded",0);
-			$this->RegisterPropertyBoolean("uptime",0);
-			$this->RegisterPropertyBoolean("ubnt_device_type",0);
-			$this->RegisterPropertyBoolean("udm_version",0);
-
-			$this->RegisterPropertyBoolean("isp_name",0);
-			$this->RegisterPropertyBoolean("isp_organization",0);
-			$this->RegisterPropertyBoolean("WAN1availability",0);
-			$this->RegisterPropertyBoolean("WAN1latency_average",0);
-			$this->RegisterPropertyBoolean("WAN1time_period",0);
-			$this->RegisterPropertyBoolean("WAN2availability",0);
-			$this->RegisterPropertyBoolean("WAN2latency_average",0);
-			$this->RegisterPropertyBoolean("WAN2time_period",0);
-			
 			$this->RegisterTimer("Collect Connection Data",0,"IC_GetInternetData(\$_IPS['TARGET']);");
+
 		}
 
 		public function Destroy() {
@@ -58,36 +41,16 @@ if (!defined('vtBoolean')) {
 			parent::ApplyChanges();
 
 			$vpos = 100;
-			$this->MaintainVariable("WAN1IP", $this->Translate("WAN1 External IP Address"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("WAN1IP") == "1");
-			$this->MaintainVariable("WAN1availability", $this->Translate("WAN1 availability"), vtInteger, "~Intensity.100", $vpos++,  $this->ReadPropertyBoolean("WAN1availability") == "1");
-			$this->MaintainVariable("WAN1latency_average", $this->Translate("WAN1 latency-average"), vtInteger, "", $vpos++,  $this->ReadPropertyBoolean("WAN1latency_average") == "1");
-			$this->MaintainVariable("WAN1time_period", $this->Translate("WAN1 time-period"), vtInteger, "", $vpos++,  $this->ReadPropertyBoolean("WAN1time_period") == "1");
-			$this->MaintainVariable("WAN2IP", $this->Translate("WAN2 External IP Address"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("WAN2IP") == "1");
-			$this->MaintainVariable("WAN2availability", $this->Translate("WAN2 availability"), vtInteger, "~Intensity.100", $vpos++,  $this->ReadPropertyBoolean("WAN2availability") == "1");
-			$this->MaintainVariable("WAN2latency_average", $this->Translate("WAN2 latency-average"), vtInteger, "", $vpos++,  $this->ReadPropertyBoolean("WAN2latency_average") == "1");
-			$this->MaintainVariable("WAN2time_period", $this->Translate("WAN2 time-period"), vtInteger, "", $vpos++,  $this->ReadPropertyBoolean("WAN2time_period") == "1");
-			$this->MaintainVariable("isp_name", $this->Translate("ISP Name"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("isp_name") == "1");
-			$this->MaintainVariable("isp_organization", $this->Translate("ISP Organization"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("isp_organization") == "1");
-			$this->MaintainVariable("version", $this->Translate("Unifi Network Version"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("version") == "1");
-			$this->MaintainVariable("update_available", $this->Translate("Update available"), vtBoolean, "", $vpos++,  $this->ReadPropertyBoolean("update_available") == "1");
-			$this->MaintainVariable("update_downloaded", $this->Translate("Update downloaded"), vtBoolean, "", $vpos++,  $this->ReadPropertyBoolean("update_downloaded") == "1");
-			$this->MaintainVariable("uptime", $this->Translate("Uptime"), vtInteger, "~UnixTimestamp", $vpos++,  $this->ReadPropertyBoolean("uptime") == "1");
-			$this->MaintainVariable("ubnt_device_type", $this->Translate("UBNT Device Type"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("ubnt_device_type") == "1");
-			$this->MaintainVariable("udm_version", $this->Translate("UDM Version"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("udm_version") == "1");
+			$this->MaintainVariable("WAN1IP", $this->Translate("WAN 1 External IP Address"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("ConnectionData01") == "1");
+			$this->MaintainVariable("WAN2IP", $this->Translate("WAN 2 External IP Address"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("ConnectionData02") == "1");
 
-            if ($this->ReadPropertyBoolean("active")) {
-				// activate timer
-                $TimerMS = $this->ReadPropertyInteger("Timer") * 1000;
-                $this->SetTimerInterval("Collect Connection Data", $TimerMS);
-            }
-			else {
-				// deactivate timer
-                $this->SetTimerInterval("Collect Connection Data", 0);
-			}
+			$TimerMS = $this->ReadPropertyInteger("Timer") * 1000;
+			$this->SetTimerInterval("Collect Connection Data",$TimerMS);
+
 		}
 
 
-		public function AuthenticateAndGetData($UnifiAPI = "") {
+		public function AuthenticateAndGetData() {
 			
 			$ControllerType = $this->ReadPropertyInteger("ControllerType");
 			$ServerAdress = $this->ReadPropertyString("ServerAdress");
@@ -98,13 +61,11 @@ if (!defined('vtBoolean')) {
 
 			////////////////////////////////////////
 			//Change the Unifi API to be called here
-            if ("" == $UnifiAPI) {
-                $UnifiAPI = "api/s/".$Site."/stat/sysinfo";
-            }
+			$UnifiAPI = "api/s/".$Site."/stat/sysinfo";
 			////////////////////////////////////////
 
-
 			//Generic Section providing for Authenthication against a Dream Maschine or Classic CloudKey
+
 
 			$ch = curl_init();
 
@@ -144,7 +105,6 @@ if (!defined('vtBoolean')) {
 				}
 			}
 
-
 			// Section below will collect and store it into a buffer
 			
 			if (isset($Cookie)) {
@@ -183,123 +143,59 @@ if (!defined('vtBoolean')) {
 
 		public function GetInternetData() {
 
-			// query JSON file for internet data
-			$this->AuthenticateAndGetData();
-			$RawData = $this->GetBuffer("RawData");
-			$JSONData = json_decode($RawData,true);
+			//Query JSON File for Internetdata
 
+			if ($this->ReadPropertyBoolean("ConnectionData01") == "1") {
 
-			// get IP addresses
-			$variableArray = array(
-				array('ident' => "WAN1IP",	'localeName' => "WAN1 External IP Address", 'index' => 0),
-				array('ident' => "WAN2IP",	'localeName' => "WAN2 External IP Address", 'index' => 1),
-			);
+				$this->AuthenticateAndGetData();
+				$RawData = $this->GetBuffer("RawData");
+				$JSONData = json_decode($RawData,true);
 
-            foreach ($variableArray as $variable) {
-                if ($this->ReadPropertyBoolean($variable['ident']) == "1") {
-//					$this->SendDebug("GetInternetData", print_r($JSONData), 0);
-
-                    if (isset($JSONData['data'][0]["ip_addrs"][$variable['index']])) {
-                        $value = $JSONData['data'][0]["ip_addrs"][$variable['index']];
-                        if (isset($value)) {
-                            if ($value !== GetValue($this->GetIDForIdent($variable['ident']))) {
-                                $this->SendDebug($this->Translate($variable['localeName']), $this->Translate("updated to ").$value, 0);
-                                SetValue($this->GetIDForIdent($variable['ident']), $value);
-                            } else {
-                                $this->SendDebug($this->Translate($variable['localeName']), $this->Translate("no update received"), 0);
-                            }
-                        }
-                    } else {
-                        $this->SendDebug($this->Translate($variable['localeName']), $this->Translate("No data"), 0);
-                    }
-                }
-            }
-
-
-			// get everything else (beside IP addresses)
-			$variableArray = array(
-				array('ident' => "version",	'localeName' => "Unifi Network Version"),
-				array('ident' => "update_available",	'localeName' => "Update available"),
-				array('ident' => "update_downloaded",	'localeName' => "Update downloaded"),
-				array('ident' => "uptime",	'localeName' => "Uptime", 'valueCorrection' => "\$value = (time() - (time() % 60)) - (\$value - (\$value % 60));"),	// value correction to avoid an update for every cycle
-				array('ident' => "ubnt_device_type",	'localeName' => "UBNT Device Type"),
-				array('ident' => "udm_version",	'localeName' => "UDM Version"),
-			);
-
-            foreach ($variableArray as $variable) {
-                if ($this->ReadPropertyBoolean($variable['ident']) == "1") {
-                    if (isset($JSONData['data'][0][$variable['ident']])) {
-                        $value = $JSONData['data'][0][$variable['ident']];
-                        if (isset($value)) {
-							if(isset($variable['valueCorrection']))
-							{
-								eval($variable['valueCorrection']);
-							}
-
-                            if ($value !== GetValue($this->GetIDForIdent($variable['ident']))) {
-                                $this->SendDebug($this->Translate($variable['localeName']), $this->Translate("updated to ").$value, 0);
-                                SetValue($this->GetIDForIdent($variable['ident']), $value);
-                            } else {
-                                $this->SendDebug($this->Translate($variable['localeName']), $this->Translate("no update received"), 0);
-                            }
-                        }
-                    } else {
-                        $this->SendDebug($this->Translate($variable['localeName']), $this->Translate("No data"), 0);
-                    }
-                }
-            }
-
-
-			// query JSON file for internet data
-			$Site = $this->ReadPropertyString("Site");
-			$this->AuthenticateAndGetData("api/stat/sites");
-			$RawData = $this->GetBuffer("RawData");
-			$JSONData = json_decode($RawData,true);
-//			$this->SendDebug("GetInternetData2", print_r($JSONData), 0);
-			
-			// get everything else
-			$healthArray = $JSONData['data'][0]['health'];
-
-			$variableArray = array(
-				array('ident' => "isp_name", 'json' => "return (isset(\$health['isp_name']) ? \$health['isp_name'] : null);", 'localeName' => "ISP Name"),
-				array('ident' => "isp_organization", 'json' => "return (isset(\$health['isp_organization']) ? \$health['isp_organization'] : null);", 'localeName' => "ISP Organization"),
-				array('ident' => "WAN1availability", 'json' => "return (isset(\$health['uptime_stats']['WAN']['availability']) ? \$health['uptime_stats']['WAN']['availability'] : null);", 'localeName' => "WAN1 availablity"),
-				array('ident' => "WAN1latency_average", 'json' => "return (isset(\$health['uptime_stats']['WAN']['latency_average']) ? \$health['uptime_stats']['WAN']['latency_average'] : null);", 'localeName' => "WAN1 latency_average"),
-				array('ident' => "WAN1time_period", 'json' => "return (isset(\$health['uptime_stats']['WAN']['time_period']) ? \$health['uptime_stats']['WAN']['time_period'] : null);", 'localeName' => "WAN1 time_period"),
-				array('ident' => "WAN2availability", 'json' => "return (isset(\$health['uptime_stats']['WAN2']['availability']) ? \$health['uptime_stats']['WAN2']['availability'] : null);", 'localeName' => "WAN2 availablity"),
-				array('ident' => "WAN2latency_average", 'json' => "return (isset(\$health['uptime_stats']['WAN2']['latency_average']) ? \$health['uptime_stats']['WAN2']['latency_average'] : null);", 'localeName' => "WAN2 latency_average",),
-				array('ident' => "WAN2time_period", 'json' => "return (isset(\$health['uptime_stats']['WAN2']['time_period']) ? \$health['uptime_stats']['WAN2']['time_period'] : null);", 'localeName' => "WAN2 time_period"),
-			);
-
-			foreach ($healthArray as $health) {
-				if (isset($health['subsystem']) && 'wan' == $health['subsystem']) {
-
-					foreach ($variableArray as $variable) {
-						if ($this->ReadPropertyBoolean($variable['ident']) == "1") {
-							if (null !== eval($variable['json'])) {
-								$value = eval($variable['json']);
-								if (isset($value)) {
-									if(isset($variable['valueCorrection']))
-									{
-										eval($variable['valueCorrection']);
-									}
-		
-									if ($value !== GetValue($this->GetIDForIdent($variable['ident']))) {
-										$this->SendDebug($this->Translate($variable['localeName']), $this->Translate("updated to ").$value, 0);
-										SetValue($this->GetIDForIdent($variable['ident']), $value);
-									} else {
-										$this->SendDebug($this->Translate($variable['localeName']), $this->Translate("no update received"), 0);
-									}
-
-								}
-							} else {
-								$this->SendDebug($this->Translate($variable['localeName']), $this->Translate("No data"), 0);
-							}
+				if (isset($JSONData["data"][0]["ip_addrs"][0])) {
+					$WAN1IP = $JSONData["data"][0]["ip_addrs"][0];
+					if (isset($WAN1IP)) {
+						if ($WAN1IP !== GetValue($this->GetIDForIdent("WAN1IP"))) {
+							$this->SendDebug($this->Translate("Internet Data WAN 01"),$this->Translate("IP Adress 1 has been updated to ").$WAN1IP,0); 
+							SetValue($this->GetIDForIdent("WAN1IP"),$WAN1IP);
+						}
+						else {
+							$this->SendDebug($this->Translate("Internet Data WAN 01"),$this->Translate("IP Adress 1 has not been updated since it is still the same"),0); 
 						}
 					}
-
+				}
+				else {
+					$this->SendDebug($this->Translate("Internet Data WAN 01"),$this->Translate("No data for WAN Port 1"),0); 
 				}
 			}
+
+			if ($this->ReadPropertyBoolean("ConnectionData02") == "1") {
+
+				$this->AuthenticateAndGetData();
+				$RawData = $this->GetBuffer("RawData");
+				$JSONData = json_decode($RawData,true);
+
+				if (isset($JSONData["data"][0]["ip_addrs"][1])) {
+					$WAN2IP = $JSONData["data"][0]["ip_addrs"][1];
+					if (isset($WAN2IP)) {
+						if ($WAN2IP !== GetValue($this->GetIDForIdent("WAN2IP"))) {
+							$this->SendDebug($this->Translate("Internet Data WAN 02"),$this->Translate("IP Adress 2 has been updated to ").$WAN2IP,0); 
+							SetValue($this->GetIDForIdent("WAN2IP"),$WAN2IP);
+						}
+						else {
+							$this->SendDebug($this->Translate("Internet Data WAN 02"),$this->Translate("IP Adress 2 has not been updated since it is still the same"),0); 
+						}
+					}
+				}
+				else {
+					$this->SendDebug($this->Translate("Internet Data WAN 02"),$this->Translate("No data for WAN Port 2"),0); 
+				}
+
+			}
+			/*
+			else {
+				$this->SendDebug($this->Translate("Module"),$this->Translate("No data query has been actived - please select one"),0); 
+			}
+			*/
 
 		}
 
