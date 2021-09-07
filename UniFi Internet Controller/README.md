@@ -54,7 +54,23 @@ Da der Controller aktiv abfragt werden muss, kann man hier eine Frequenz hinterl
 
 **Verbindungsdaten**
 
-Wenn dieser Schalter aktiviert ist, fragt das Modul den Controller in Berzug auf Verbindungsdaten ab.
+Je aktiviertem Schalter, frägt das Modul den Controller in Bezug auf folgende Daten ab:
+WAN1 public IP
+WAN1 availability
+WAN1 latency-average
+WAN1 time-period
+WAN2 public IP
+WAN2 availability
+WAN2 latency-average
+WAN2 time-period
+ISP Name
+ISP Organization
+Unifi Network Version
+Update available
+Update downloaded
+Uptime
+UBNT Device Type
+UDM Version
 
 **Debugging**
 Das Modul gibt diverse Informatioen im Debug Bereich aus. 
