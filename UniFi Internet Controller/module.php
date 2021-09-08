@@ -58,27 +58,27 @@ if (!defined('vtBoolean')) {
 			parent::ApplyChanges();
 
 			$vpos = 100;
-			$this->MaintainVariable("WAN1IP", $this->Translate("WAN1 External IP Address"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("WAN1IP") == "1");
+			$this->MaintainVariable("WAN1IP", $this->Translate("WAN1 External IP Address"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("WAN1IP"));
 
-			$this->MaintainVariable("WAN1availability", $this->Translate("WAN1 availability"), vtInteger, "~Intensity.100", $vpos++,  $this->ReadPropertyBoolean("WAN1availability") == "1" && $this->ReadPropertyInteger("ControllerType") == 0);
-			$this->MaintainVariable("WAN1latency_average", $this->Translate("WAN1 latency-average"), vtInteger, "", $vpos++,  $this->ReadPropertyBoolean("WAN1latency_average") == "1" && $this->ReadPropertyInteger("ControllerType") == 0);
-			$this->MaintainVariable("WAN1time_period", $this->Translate("WAN1 time-period"), vtInteger, "", $vpos++,  $this->ReadPropertyBoolean("WAN1time_period") == "1" && $this->ReadPropertyInteger("ControllerType") == 0);
+			$this->MaintainVariable("WAN1availability", $this->Translate("WAN1 availability"), vtInteger, "~Intensity.100", $vpos++,  $this->ReadPropertyBoolean("WAN1availability") && 0 == $this->ReadPropertyInteger("ControllerType"));
+			$this->MaintainVariable("WAN1latency_average", $this->Translate("WAN1 latency-average"), vtInteger, "", $vpos++,  $this->ReadPropertyBoolean("WAN1latency_average") && 0 == $this->ReadPropertyInteger("ControllerType"));
+			$this->MaintainVariable("WAN1time_period", $this->Translate("WAN1 time-period"), vtInteger, "", $vpos++,  $this->ReadPropertyBoolean("WAN1time_period") && 0 == $this->ReadPropertyInteger("ControllerType"));
 
-			$this->MaintainVariable("WAN2IP", $this->Translate("WAN2 External IP Address"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("WAN2IP") == "1");
+			$this->MaintainVariable("WAN2IP", $this->Translate("WAN2 External IP Address"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("WAN2IP"));
 
-			$this->MaintainVariable("WAN2availability", $this->Translate("WAN2 availability"), vtInteger, "~Intensity.100", $vpos++,  $this->ReadPropertyBoolean("WAN2availability") == "1" && $this->ReadPropertyInteger("ControllerType") == 0);
-			$this->MaintainVariable("WAN2latency_average", $this->Translate("WAN2 latency-average"), vtInteger, "", $vpos++,  $this->ReadPropertyBoolean("WAN2latency_average") == "1" && $this->ReadPropertyInteger("ControllerType") == 0);
-			$this->MaintainVariable("WAN2time_period", $this->Translate("WAN2 time-period"), vtInteger, "", $vpos++,  $this->ReadPropertyBoolean("WAN2time_period") == "1" && $this->ReadPropertyInteger("ControllerType") == 0);
-			$this->MaintainVariable("isp_name", $this->Translate("ISP Name"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("isp_name") == "1" && $this->ReadPropertyInteger("ControllerType") == 0);
-			$this->MaintainVariable("isp_organization", $this->Translate("ISP Organization"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("isp_organization") == "1" && $this->ReadPropertyInteger("ControllerType") == 0);
+			$this->MaintainVariable("WAN2availability", $this->Translate("WAN2 availability"), vtInteger, "~Intensity.100", $vpos++,  $this->ReadPropertyBoolean("WAN2availability") && 0 == $this->ReadPropertyInteger("ControllerType"));
+			$this->MaintainVariable("WAN2latency_average", $this->Translate("WAN2 latency-average"), vtInteger, "", $vpos++,  $this->ReadPropertyBoolean("WAN2latency_average") && 0 == $this->ReadPropertyInteger("ControllerType"));
+			$this->MaintainVariable("WAN2time_period", $this->Translate("WAN2 time-period"), vtInteger, "", $vpos++,  $this->ReadPropertyBoolean("WAN2time_period") && 0 == $this->ReadPropertyInteger("ControllerType"));
+			$this->MaintainVariable("isp_name", $this->Translate("ISP Name"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("isp_name") && 0 == $this->ReadPropertyInteger("ControllerType"));
+			$this->MaintainVariable("isp_organization", $this->Translate("ISP Organization"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("isp_organization") && 0 == $this->ReadPropertyInteger("ControllerType"));
 
-			$this->MaintainVariable("version", $this->Translate("Unifi Network Version"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("version") == "1");
-			$this->MaintainVariable("update_available", $this->Translate("Update available"), vtBoolean, "", $vpos++,  $this->ReadPropertyBoolean("update_available") == "1");
-			$this->MaintainVariable("update_downloaded", $this->Translate("Update downloaded"), vtBoolean, "", $vpos++,  $this->ReadPropertyBoolean("update_downloaded") == "1");
-			$this->MaintainVariable("uptime", $this->Translate("Uptime"), vtInteger, "~UnixTimestamp", $vpos++,  $this->ReadPropertyBoolean("uptime") == "1");
+			$this->MaintainVariable("version", $this->Translate("Unifi Network Version"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("version"));
+			$this->MaintainVariable("update_available", $this->Translate("Update available"), vtBoolean, "", $vpos++,  $this->ReadPropertyBoolean("update_available"));
+			$this->MaintainVariable("update_downloaded", $this->Translate("Update downloaded"), vtBoolean, "", $vpos++,  $this->ReadPropertyBoolean("update_downloaded"));
+			$this->MaintainVariable("uptime", $this->Translate("Uptime"), vtInteger, "~UnixTimestamp", $vpos++,  $this->ReadPropertyBoolean("uptime"));
 
-			$this->MaintainVariable("ubnt_device_type", $this->Translate("UBNT Device Type"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("ubnt_device_type") == "1" && $this->ReadPropertyInteger("ControllerType") == 0);
-			$this->MaintainVariable("udm_version", $this->Translate("UDM Version"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("udm_version") == "1" && $this->ReadPropertyInteger("ControllerType") == 0);
+			$this->MaintainVariable("ubnt_device_type", $this->Translate("UBNT Device Type"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("ubnt_device_type") && 0 == $this->ReadPropertyInteger("ControllerType"));
+			$this->MaintainVariable("udm_version", $this->Translate("UDM Version"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("udm_version") && 0 == $this->ReadPropertyInteger("ControllerType"));
 
             if ($this->ReadPropertyBoolean("active")) {
 				// activate timer
@@ -230,7 +230,7 @@ if (!defined('vtBoolean')) {
 						);
 
 				foreach ($variableArray as $variable) {
-					if ($this->ReadPropertyBoolean($variable['ident']) == "1") {
+					if ($this->ReadPropertyBoolean($variable['ident'])) {
 //					$this->SendDebug("GetInternetData", print_r($JSONData), 0);
 
 						if (isset($JSONData['data'][0]["ip_addrs"][$variable['index']])) {
@@ -265,7 +265,7 @@ if (!defined('vtBoolean')) {
 				}
 
 				foreach ($variableArray as $variable) {
-					if ($this->ReadPropertyBoolean($variable['ident']) == "1") {
+					if ($this->ReadPropertyBoolean($variable['ident'])) {
 						if (isset($JSONData['data'][0][$variable['ident']])) {
 							$value = $JSONData['data'][0][$variable['ident']];
 							if (isset($value)) {
@@ -325,7 +325,7 @@ if (!defined('vtBoolean')) {
                 foreach ($healthArray as $health) {
                     if (isset($health['subsystem']) && 'wan' == $health['subsystem']) {
                         foreach ($variableArray as $variable) {
-                            if ($this->ReadPropertyBoolean($variable['ident']) == "1") {
+                            if ($this->ReadPropertyBoolean($variable['ident'])) {
                                 if (null !== eval($variable['json'])) {
                                     $value = eval($variable['json']);
                                     if (isset($value)) {
