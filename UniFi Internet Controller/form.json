@@ -88,6 +88,35 @@
         },
         {
             "type": "CheckBox",
+            "name": "WAN2IP",
+            "caption": "WAN2 External IP Address"
+        },
+        {
+            "type": "CheckBox",
+            "name": "version",
+            "caption": "Unifi Network Version"
+        },
+        {
+            "type": "CheckBox",
+            "name": "update_available",
+            "caption": "Update available"
+        },
+        {
+            "type": "CheckBox",
+            "name": "update_downloaded",
+            "caption": "Update downloaded"
+        },
+        {
+            "type": "CheckBox",
+            "name": "uptime",
+            "caption": "Uptime"
+        },
+        {
+            "type": "Label",
+            "label": "Nachfolgende Werte sind nur mit DreamMachine verfügbar:"
+        },
+        {
+            "type": "CheckBox",
             "name": "WAN1availability",
             "caption": "WAN1 availability"
         },
@@ -100,11 +129,6 @@
             "type": "CheckBox",
             "name": "WAN1time_period",
             "caption": "WAN1 time-period"
-        },
-        {
-            "type": "CheckBox",
-            "name": "WAN2IP",
-            "caption": "WAN2 External IP Address"
         },
         {
             "type": "CheckBox",
@@ -130,26 +154,6 @@
             "type": "CheckBox",
             "name": "isp_organization",
             "caption": "ISP Organization"
-        },
-        {
-            "type": "CheckBox",
-            "name": "version",
-            "caption": "Unifi Network Version"
-        },
-        {
-            "type": "CheckBox",
-            "name": "update_available",
-            "caption": "Update available"
-        },
-        {
-            "type": "CheckBox",
-            "name": "update_downloaded",
-            "caption": "Update downloaded"
-        },
-        {
-            "type": "CheckBox",
-            "name": "uptime",
-            "caption": "Uptime"
         },
         {
             "type": "CheckBox",
