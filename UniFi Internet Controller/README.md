@@ -68,3 +68,21 @@ Version 0.3 (Beta) - 23-08-2021
 
 Version 0.4 (Beta) - 26-08-2021
 * Unterstützung für 2 WAN Adapter
+
+Version 1.0 - 09-09-2021
+* WAN1 public IP
+* WAN1 availability
+* WAN1 latency-average
+* WAN1 time-period
+* WAN2 public IP
+* WAN2 availability
+* WAN2 latency-average
+* WAN2 time-period
+* ISP Name
+* ISP Organization
+* Unifi Network Version
+* Update available
+* Update downloaded
+* Uptime
+* UBNT Device Type
+* UDM Version

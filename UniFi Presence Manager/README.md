@@ -75,3 +75,6 @@ Version 0.3 (Beta) - 23-08-2021
 
 Version 0.31 (Beta) - 25-08-2021
 * Neue Variable die bei jedem Update unabhängig vom Gerät aktualisiert wird
+
+Version 1.0 - 09-09-2021
+* keine weiteren Änderungen

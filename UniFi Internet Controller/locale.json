@@ -20,7 +20,12 @@
             "WAN 1 External IP Address": "WAN 1 Externe IP Adresse",
             "WAN 2 External IP Address": "WAN 2 Externe IP Adresse",
             "Test Authentication": "Prüfe Anmeldung",
-            "Get Internet Data": "Daten Abfragen"
+            "Get Internet Data": "Daten Abfragen",
+            "No data": "Keine Daten",
+            "updated to ": "Daten aktualisiert zu ",
+            "no update received": "Keine Datenupdate erhalten",
+            " seconds": " Sekunden",
+            " milliseconds": " Millisekunden"
         }
     }
 }

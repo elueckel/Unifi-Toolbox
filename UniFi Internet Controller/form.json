@@ -78,14 +78,88 @@
         },
         {
             "type": "CheckBox",
-            "name": "ConnectionData01",
-            "caption": "Connection Data WAN Port 1"
+            "name": "WAN1IP",
+            "caption": "WAN1 External IP Address"
         },
         {
             "type": "CheckBox",
-            "name": "ConnectionData02",
-            "caption": "Connection Data WAN Port 2"
-        }        
+            "name": "WAN2IP",
+            "caption": "WAN2 External IP Address"
+        },
+        {
+            "type": "CheckBox",
+            "name": "version",
+            "caption": "Unifi Network Version"
+        },
+        {
+            "type": "CheckBox",
+            "name": "update_available",
+            "caption": "Update available"
+        },
+        {
+            "type": "CheckBox",
+            "name": "update_downloaded",
+            "caption": "Update downloaded"
+        },
+        {
+            "type": "CheckBox",
+            "name": "uptime",
+            "caption": "Uptime"
+        },
+        {
+            "type": "Label",
+            "label": "Nachfolgende Werte sind nur mit DreamMachine verfügbar:"
+        },
+        {
+            "type": "CheckBox",
+            "name": "WAN1availability",
+            "caption": "WAN1 availability"
+        },
+        {
+            "type": "CheckBox",
+            "name": "WAN1latency_average",
+            "caption": "WAN1 latency-average"
+        },
+        {
+            "type": "CheckBox",
+            "name": "WAN1time_period",
+            "caption": "WAN1 time-period"
+        },
+        {
+            "type": "CheckBox",
+            "name": "WAN2availability",
+            "caption": "WAN2 availability"
+        },
+        {
+            "type": "CheckBox",
+            "name": "WAN2latency_average",
+            "caption": "WAN2 latency-average"
+        },
+        {
+            "type": "CheckBox",
+            "name": "WAN2time_period",
+            "caption": "WAN2 time-period"
+        },
+        {
+            "type": "CheckBox",
+            "name": "isp_name",
+            "caption": "ISP Name"
+        },
+        {
+            "type": "CheckBox",
+            "name": "isp_organization",
+            "caption": "ISP Organization"
+        },
+        {
+            "type": "CheckBox",
+            "name": "ubnt_device_type",
+            "caption": "UBNT Device Type"
+        },
+        {
+            "type": "CheckBox",
+            "name": "udm_version",
+            "caption": "UDM Version"
+        }
     ],
     "actions": [
         {
@@ -94,7 +168,7 @@
                 {
                     "type": "Button",
                     "label": "Test Authentication",
-                    "onClick": "IC_AuthenticateAndGetData($id);"
+                    "onClick": "IC_AuthenticateAndGetData($id, '');"
                 },
                 {
                     "type": "Button",
@@ -104,5 +178,16 @@
             ]
         }
     ],
-    "status": []
+    "status": [
+        {
+            "code": 200,
+            "icon": "error",
+            "caption": "IP oder Port sind nicht erreichtbar"
+        },
+        {
+            "code": 201,
+            "icon": "error",
+            "caption": "Login nicht erfolgreich"
+        }
+    ]
 }
