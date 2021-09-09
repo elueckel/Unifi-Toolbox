@@ -1,11 +1,6 @@
 {
     "elements": [
         {
-            "type": "CheckBox",
-            "caption": "Active",
-            "name": "active"
-        },
-        {
             "type": "ExpansionPanel",
             "caption": "Module Help",
             "items": [

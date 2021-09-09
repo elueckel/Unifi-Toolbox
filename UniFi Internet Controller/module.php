@@ -16,8 +16,6 @@ if (!defined('vtBoolean')) {
 			//Never delete this line!
 			parent::Create();
 
-			$this->RegisterPropertyBoolean("active",0);
-
 			$this->RegisterPropertyInteger("ControllerType", 0);
 			$this->RegisterPropertyString("ServerAdress","192.168.1.1");
 			$this->RegisterPropertyInteger("ServerPort", "443");
@@ -69,9 +67,9 @@ if (!defined('vtBoolean')) {
 			$this->MaintainVariable("WAN2availability", $this->Translate("WAN2 availability"), vtInteger, "~Intensity.100", $vpos++,  $this->ReadPropertyBoolean("WAN2availability") && 0 == $this->ReadPropertyInteger("ControllerType"));
 			$this->MaintainVariable("WAN2latency_average", $this->Translate("WAN2 latency-average"), vtInteger, "", $vpos++,  $this->ReadPropertyBoolean("WAN2latency_average") && 0 == $this->ReadPropertyInteger("ControllerType"));
 			$this->MaintainVariable("WAN2time_period", $this->Translate("WAN2 time-period"), vtInteger, "", $vpos++,  $this->ReadPropertyBoolean("WAN2time_period") && 0 == $this->ReadPropertyInteger("ControllerType"));
+
 			$this->MaintainVariable("isp_name", $this->Translate("ISP Name"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("isp_name") && 0 == $this->ReadPropertyInteger("ControllerType"));
 			$this->MaintainVariable("isp_organization", $this->Translate("ISP Organization"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("isp_organization") && 0 == $this->ReadPropertyInteger("ControllerType"));
-
 			$this->MaintainVariable("version", $this->Translate("Unifi Network Version"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("version"));
 			$this->MaintainVariable("update_available", $this->Translate("Update available"), vtBoolean, "", $vpos++,  $this->ReadPropertyBoolean("update_available"));
 			$this->MaintainVariable("update_downloaded", $this->Translate("Update downloaded"), vtBoolean, "", $vpos++,  $this->ReadPropertyBoolean("update_downloaded"));
@@ -80,21 +78,9 @@ if (!defined('vtBoolean')) {
 			$this->MaintainVariable("ubnt_device_type", $this->Translate("UBNT Device Type"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("ubnt_device_type") && 0 == $this->ReadPropertyInteger("ControllerType"));
 			$this->MaintainVariable("udm_version", $this->Translate("UDM Version"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("udm_version") && 0 == $this->ReadPropertyInteger("ControllerType"));
 
-            if ($this->ReadPropertyBoolean("active")) {
-				// activate timer
-                $TimerMS = $this->ReadPropertyInteger("Timer") * 1000;
-                $this->SetTimerInterval("Collect Connection Data", $TimerMS);
+            $TimerMS = $this->ReadPropertyInteger("Timer") * 1000;
+			$this->SetTimerInterval("Collect Connection Data",$TimerMS);
 
-				// instance active
-				$this->SetStatus(102);
-			}
-			else {
-				// deactivate timer
-                $this->SetTimerInterval("Collect Connection Data", 0);
-
-				// instance inactive
-				$this->SetStatus(104);
-			}
 		}
 
 
@@ -250,7 +236,7 @@ if (!defined('vtBoolean')) {
 				}
 
 
-				// get everything else (beside IP addresses)
+				// get everything else (besides IP addresses)
 				$variableArray = array(
 							array('ident' => "version",	'localeName' => "Unifi Network Version"),
 							array('ident' => "update_available",	'localeName' => "Update available"),
