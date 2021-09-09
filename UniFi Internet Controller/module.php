@@ -44,6 +44,24 @@ if (!defined('vtBoolean')) {
 			$this->RegisterPropertyBoolean("WAN2time_period",0);
 			
 			$this->RegisterTimer("Collect Connection Data",0,"IC_GetInternetData(\$_IPS['TARGET']);");
+
+			if (IPS_VariableProfileExists("IC.TimeS") == false){
+				IPS_CreateVariableProfile("IC.TimeS", 1);
+				IPS_SetVariableProfileValues("IC.TimeS", 0, 0, 1);
+				IPS_SetVariableProfileDigits("IC.TimeS", 2);
+				IPS_SetVariableProfileText("IC.TimeS", "", $this->Translate(" seconds"));
+				IPS_SetVariableProfileIcon("IC.TimeS",  "Clock");
+			}
+
+			if (IPS_VariableProfileExists("IC.TimeMS") == false){
+				IPS_CreateVariableProfile("IC.TimeMS", 1);
+				IPS_SetVariableProfileValues("IC.TimeMS", 0, 0, 1);
+				IPS_SetVariableProfileDigits("IC.TimeMS", 2);
+				IPS_SetVariableProfileText("IC.TimeMS", "", $this->Translate(" milliseconds"));
+				IPS_SetVariableProfileIcon("IC.TimeMS",  "Clock");
+			}
+
+
 		}
 
 		public function Destroy() {
@@ -59,14 +77,14 @@ if (!defined('vtBoolean')) {
 			$this->MaintainVariable("WAN1IP", $this->Translate("WAN1 External IP Address"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("WAN1IP"));
 
 			$this->MaintainVariable("WAN1availability", $this->Translate("WAN1 availability"), vtInteger, "~Intensity.100", $vpos++,  $this->ReadPropertyBoolean("WAN1availability") && 0 == $this->ReadPropertyInteger("ControllerType"));
-			$this->MaintainVariable("WAN1latency_average", $this->Translate("WAN1 latency-average"), vtInteger, "", $vpos++,  $this->ReadPropertyBoolean("WAN1latency_average") && 0 == $this->ReadPropertyInteger("ControllerType"));
-			$this->MaintainVariable("WAN1time_period", $this->Translate("WAN1 time-period"), vtInteger, "", $vpos++,  $this->ReadPropertyBoolean("WAN1time_period") && 0 == $this->ReadPropertyInteger("ControllerType"));
+			$this->MaintainVariable("WAN1latency_average", $this->Translate("WAN1 latency-average"), vtInteger, "IC.TimeMS", $vpos++,  $this->ReadPropertyBoolean("WAN1latency_average") && 0 == $this->ReadPropertyInteger("ControllerType"));
+			$this->MaintainVariable("WAN1time_period", $this->Translate("WAN1 time-period"), vtInteger, "IC.TimeS", $vpos++,  $this->ReadPropertyBoolean("WAN1time_period") && 0 == $this->ReadPropertyInteger("ControllerType"));
 
 			$this->MaintainVariable("WAN2IP", $this->Translate("WAN2 External IP Address"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("WAN2IP"));
 
 			$this->MaintainVariable("WAN2availability", $this->Translate("WAN2 availability"), vtInteger, "~Intensity.100", $vpos++,  $this->ReadPropertyBoolean("WAN2availability") && 0 == $this->ReadPropertyInteger("ControllerType"));
-			$this->MaintainVariable("WAN2latency_average", $this->Translate("WAN2 latency-average"), vtInteger, "", $vpos++,  $this->ReadPropertyBoolean("WAN2latency_average") && 0 == $this->ReadPropertyInteger("ControllerType"));
-			$this->MaintainVariable("WAN2time_period", $this->Translate("WAN2 time-period"), vtInteger, "", $vpos++,  $this->ReadPropertyBoolean("WAN2time_period") && 0 == $this->ReadPropertyInteger("ControllerType"));
+			$this->MaintainVariable("WAN2latency_average", $this->Translate("WAN2 latency-average"), vtInteger, "IC.TimeMS", $vpos++,  $this->ReadPropertyBoolean("WAN2latency_average") && 0 == $this->ReadPropertyInteger("ControllerType"));
+			$this->MaintainVariable("WAN2time_period", $this->Translate("WAN2 time-period"), vtInteger, "IC.TimeS", $vpos++,  $this->ReadPropertyBoolean("WAN2time_period") && 0 == $this->ReadPropertyInteger("ControllerType"));
 
 			$this->MaintainVariable("isp_name", $this->Translate("ISP Name"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("isp_name") && 0 == $this->ReadPropertyInteger("ControllerType"));
 			$this->MaintainVariable("isp_organization", $this->Translate("ISP Organization"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("isp_organization") && 0 == $this->ReadPropertyInteger("ControllerType"));
@@ -80,6 +98,15 @@ if (!defined('vtBoolean')) {
 
             $TimerMS = $this->ReadPropertyInteger("Timer") * 1000;
 			$this->SetTimerInterval("Collect Connection Data",$TimerMS);
+
+			if (0 == $TimerMS) {
+				// instance inactive
+				$this->SetStatus(104);
+			}
+			else {
+				// instance active
+				$this->SetStatus(102);
+			}
 
 		}
 

@@ -36,7 +36,9 @@
             "Get Internet Data": "Daten Abfragen",
             "No data": "Keine Daten",
             "updated to ": "Daten aktualisiert zu ",
-            "no update received": "Keine Datenupdate erhalten"
+            "no update received": "Keine Datenupdate erhalten",
+            " seconds": " Sekunden",
+            " milliseconds": " Millisekunden"
         }
     }
 }

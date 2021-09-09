@@ -60,6 +60,15 @@ if (!defined('vtBoolean')) {
 			$TimerMS = $this->ReadPropertyInteger("Timer") * 1000;
 			$this->SetTimerInterval("Check Presence",$TimerMS);
 
+			if (0 == $TimerMS) {
+				// instance inactive
+				$this->SetStatus(104);
+			}
+			else {
+				// instance active
+				$this->SetStatus(102);
+			}
+
 		}
 
 
