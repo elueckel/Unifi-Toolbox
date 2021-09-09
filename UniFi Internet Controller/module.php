@@ -348,6 +348,6 @@ if (!defined('vtBoolean')) {
                 }
             }
 
-		}
-
 	}
+
+}
