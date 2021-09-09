@@ -73,3 +73,6 @@ Version 0.3 (Beta) - 23-08-2021
 
 Version 0.31 (Beta) - 27-08-2021
 * Fix bei der Logik zum blocken
+
+Version 1.0 - 09-09-2021
+* keine weiteren Änderungen
