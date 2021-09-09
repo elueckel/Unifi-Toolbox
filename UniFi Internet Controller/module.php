@@ -24,25 +24,9 @@ if (!defined('vtBoolean')) {
 			$this->RegisterPropertyString("Password","");
 			$this->RegisterPropertyInteger("Timer", "0");
 
-			$this->RegisterPropertyBoolean("WAN1IP",0);
-			$this->RegisterPropertyBoolean("WAN2IP",0);
+			$this->RegisterPropertyBoolean("ConnectionData01",0);
+			$this->RegisterPropertyBoolean("ConnectionData02",0);
 
-			$this->RegisterPropertyBoolean("version",0);
-			$this->RegisterPropertyBoolean("update_available",0);
-			$this->RegisterPropertyBoolean("update_downloaded",0);
-			$this->RegisterPropertyBoolean("uptime",0);
-			$this->RegisterPropertyBoolean("ubnt_device_type",0);
-			$this->RegisterPropertyBoolean("udm_version",0);
-
-			$this->RegisterPropertyBoolean("isp_name",0);
-			$this->RegisterPropertyBoolean("isp_organization",0);
-			$this->RegisterPropertyBoolean("WAN1availability",0);
-			$this->RegisterPropertyBoolean("WAN1latency_average",0);
-			$this->RegisterPropertyBoolean("WAN1time_period",0);
-			$this->RegisterPropertyBoolean("WAN2availability",0);
-			$this->RegisterPropertyBoolean("WAN2latency_average",0);
-			$this->RegisterPropertyBoolean("WAN2time_period",0);
-			
 			$this->RegisterTimer("Collect Connection Data",0,"IC_GetInternetData(\$_IPS['TARGET']);");
 
 			if (IPS_VariableProfileExists("IC.TimeS") == false){
@@ -60,8 +44,6 @@ if (!defined('vtBoolean')) {
 				IPS_SetVariableProfileText("IC.TimeMS", "", $this->Translate(" milliseconds"));
 				IPS_SetVariableProfileIcon("IC.TimeMS",  "Clock");
 			}
-
-
 		}
 
 		public function Destroy() {
@@ -96,7 +78,7 @@ if (!defined('vtBoolean')) {
 			$this->MaintainVariable("ubnt_device_type", $this->Translate("UBNT Device Type"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("ubnt_device_type") && 0 == $this->ReadPropertyInteger("ControllerType"));
 			$this->MaintainVariable("udm_version", $this->Translate("UDM Version"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("udm_version") && 0 == $this->ReadPropertyInteger("ControllerType"));
 
-            $TimerMS = $this->ReadPropertyInteger("Timer") * 1000;
+      $TimerMS = $this->ReadPropertyInteger("Timer") * 1000;
 			$this->SetTimerInterval("Collect Connection Data",$TimerMS);
 
 			if (0 == $TimerMS) {
@@ -107,11 +89,11 @@ if (!defined('vtBoolean')) {
 				// instance active
 				$this->SetStatus(102);
 			}
-
+      
 		}
 
 
-		public function AuthenticateAndGetData($UnifiAPI = "") {
+		public function AuthenticateAndGetData() {
 			
 			$ControllerType = $this->ReadPropertyInteger("ControllerType");
 			$ServerAdress = $this->ReadPropertyString("ServerAdress");
@@ -122,13 +104,11 @@ if (!defined('vtBoolean')) {
 
 			////////////////////////////////////////
 			//Change the Unifi API to be called here
-            if ("" == $UnifiAPI) {
-                $UnifiAPI = "api/s/".$Site."/stat/sysinfo";
-            }
+			$UnifiAPI = "api/s/".$Site."/stat/sysinfo";
 			////////////////////////////////////////
 
-
 			//Generic Section providing for Authenthication against a Dream Maschine or Classic CloudKey
+
 
 			$ch = curl_init();
 
@@ -177,7 +157,6 @@ if (!defined('vtBoolean')) {
 					//}
 				}
 			}
-
 
 			// Section below will collect and store it into a buffer
 			
@@ -297,8 +276,15 @@ if (!defined('vtBoolean')) {
 							$this->SendDebug($this->Translate($variable['localeName']), $this->Translate("No data"), 0);
 						}
 					}
+
 				}
+
 			}
+			/*
+			else {
+				$this->SendDebug($this->Translate("Module"),$this->Translate("No data query has been actived - please select one"),0); 
+			}
+			*/
 
 
 			// special properties of Unifi DreamMachine
@@ -319,7 +305,7 @@ if (!defined('vtBoolean')) {
                 $this->AuthenticateAndGetData("api/stat/sites");
                 $RawData = $this->GetBuffer("RawData");
                 $JSONData = json_decode($RawData, true);
-//				$this->SendDebug("GetInternetData2", print_r($JSONData), 0);
+//				      $this->SendDebug("GetInternetData2", print_r($JSONData), 0);
             
                 // get everything else
                 $healthArray = $JSONData['data'][0]['health'];
