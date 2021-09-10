@@ -1,5 +1,5 @@
 # UniFi Internet Controller
-Dieses Modul ermöglicht es Informationen über die Internetverbindung durch eine USG oder Dream Maschine, wie z.B. die öffentliche IP Adresse abzurufen.
+Dieses Modul ermöglicht es Informationen über die Internetverbindung durch eine USG oder DreamMaschine, wie z.B. die öffentliche IP-Adresse abzurufen.
 
 ## Inhaltsverzeichnis
 
@@ -11,12 +11,12 @@ Dieses Modul ermöglicht es Informationen über die Internetverbindung durch ein
 
 ## 1. Funktionsumfang
 
-* Unterstützung für UniFi Cloudkey 1
-* Unterstützung für UniFi Cloudkey 2 und Dream Maschine
+* Unterstützung für UniFi CloudKey 1 (UC-CK)
+* Unterstützung für UniFi CloudKey 2 (UCK-G2) und DreamMaschine (UDM)
 * Abfragen der Controller erfolgt zeitgesteuert alle xx Sekunden
-* Aktuelle Datenpunkte: Externe IP Adresse
+* Aktuelle Datenpunkte: Externe IP-Adresse
 
-## 2. Vorraussetzungen
+## 2. Voraussetzungen
 
 - IP-Symcon ab Version 5.5
 
@@ -34,7 +34,7 @@ __Konfigurationsseite__:
 
 **Art des Controllers**
 
-Da sich die APIs von CloudKey 1 und CloudKey2/Dreammaschine unterscheiden, kann hier der Controller gewählt werden
+Da sich die APIs von CloudKey 1 und CloudKey2/DreamMaschine unterscheiden, kann hier der Controller gewählt werden
 
 **Benutzername & Kennwort**
 
@@ -44,9 +44,9 @@ Account mit dem sich das Modul mit dem Controller verbindet
 
 Site die im Controller hinterlegt ist 
 
-**IP Adresse und Port**
+**IP-Adresse und Port**
 
-Bei der Dream Maschine ist der Port 443, bei einem Controller im Standard 8443. IP Addresse des CloudKeys oder der Dream Maschine.
+Bei der DreamMaschine ist der Port 443, bei einem Controller im Standard 8443. IP-Adresse des CloudKeys oder der DreamMaschine.
 
 **Aktualisierungsfrequenz**
 
@@ -54,17 +54,18 @@ Da der Controller aktiv abfragt werden muss, kann man hier eine Frequenz hinterl
 
 **Verbindungsdaten**
 
-Wenn dieser Schalter aktiviert ist, fragt das Modul den Controller in Berzug auf Verbindungsdaten ab.
+Wenn dieser Schalter aktiviert ist, fragt das Modul den Controller in Bezug auf Verbindungsdaten ab.
 
 **Debugging**
-Das Modul gibt diverse Informatioen im Debug Bereich aus. 
+
+Das Modul gibt diverse Informationen im Debug Bereich aus. 
 
 ## 5. Versionsinformation
 
 Version 0.3 (Beta) - 23-08-2021
-* Unterstützung für UniFi Cloudkey 1
-* Unterstützung für UniFi Cloudkey 2 und Dream Maschine
-* Abfrage der externen IP Adresse (WAN01)
+* Unterstützung für UniFi CloudKey 1
+* Unterstützung für UniFi CloudKey 2 und DreamMaschine
+* Abfrage der externen IP-Adresse (WAN01)
 
 Version 0.4 (Beta) - 26-08-2021
 * Unterstützung für 2 WAN Adapter
