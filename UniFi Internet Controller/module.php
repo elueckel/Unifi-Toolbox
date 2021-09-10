@@ -16,7 +16,7 @@ class UniFiInternetController extends IPSModule
 		//Never delete this line!
 		parent::Create();
 
-		$this->RegisterPropertyInteger("ControllerType", 0);
+		//$this->RegisterPropertyInteger("ControllerType", 0);
 		$this->RegisterPropertyString("ServerAdress","192.168.1.1");
 		$this->RegisterPropertyInteger("ServerPort", "443");
 		$this->RegisterPropertyString("Site","default");
@@ -76,25 +76,25 @@ class UniFiInternetController extends IPSModule
 		$vpos = 100;
 		$this->MaintainVariable("WAN1IP", $this->Translate("WAN1 External IP Address"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("WAN1IP"));
 
-		$this->MaintainVariable("WAN1availability", $this->Translate("WAN1 availability"), vtInteger, "~Intensity.100", $vpos++,  $this->ReadPropertyBoolean("WAN1availability") && 0 == $this->ReadPropertyInteger("ControllerType"));
-		$this->MaintainVariable("WAN1latency_average", $this->Translate("WAN1 latency-average"), vtInteger, "IC.TimeMS", $vpos++,  $this->ReadPropertyBoolean("WAN1latency_average") && 0 == $this->ReadPropertyInteger("ControllerType"));
-		$this->MaintainVariable("WAN1time_period", $this->Translate("WAN1 time-period"), vtInteger, "IC.TimeS", $vpos++,  $this->ReadPropertyBoolean("WAN1time_period") && 0 == $this->ReadPropertyInteger("ControllerType"));
+		$this->MaintainVariable("WAN1availability", $this->Translate("WAN1 availability"), vtInteger, "~Intensity.100", $vpos++,  $this->ReadPropertyBoolean("WAN1availability"));
+		$this->MaintainVariable("WAN1latency_average", $this->Translate("WAN1 latency-average"), vtInteger, "IC.TimeMS", $vpos++,  $this->ReadPropertyBoolean("WAN1latency_average"));
+		$this->MaintainVariable("WAN1time_period", $this->Translate("WAN1 time-period"), vtInteger, "IC.TimeS", $vpos++,  $this->ReadPropertyBoolean("WAN1time_period"));
 
 		$this->MaintainVariable("WAN2IP", $this->Translate("WAN2 External IP Address"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("WAN2IP"));
 
-		$this->MaintainVariable("WAN2availability", $this->Translate("WAN2 availability"), vtInteger, "~Intensity.100", $vpos++,  $this->ReadPropertyBoolean("WAN2availability") && 0 == $this->ReadPropertyInteger("ControllerType"));
-		$this->MaintainVariable("WAN2latency_average", $this->Translate("WAN2 latency-average"), vtInteger, "IC.TimeMS", $vpos++,  $this->ReadPropertyBoolean("WAN2latency_average") && 0 == $this->ReadPropertyInteger("ControllerType"));
-		$this->MaintainVariable("WAN2time_period", $this->Translate("WAN2 time-period"), vtInteger, "IC.TimeS", $vpos++,  $this->ReadPropertyBoolean("WAN2time_period") && 0 == $this->ReadPropertyInteger("ControllerType"));
+		$this->MaintainVariable("WAN2availability", $this->Translate("WAN2 availability"), vtInteger, "~Intensity.100", $vpos++,  $this->ReadPropertyBoolean("WAN2availability"));
+		$this->MaintainVariable("WAN2latency_average", $this->Translate("WAN2 latency-average"), vtInteger, "IC.TimeMS", $vpos++,  $this->ReadPropertyBoolean("WAN2latency_average"));
+		$this->MaintainVariable("WAN2time_period", $this->Translate("WAN2 time-period"), vtInteger, "IC.TimeS", $vpos++,  $this->ReadPropertyBoolean("WAN2time_period"));
 
-		$this->MaintainVariable("isp_name", $this->Translate("ISP Name"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("isp_name") && 0 == $this->ReadPropertyInteger("ControllerType"));
-		$this->MaintainVariable("isp_organization", $this->Translate("ISP Organization"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("isp_organization") && 0 == $this->ReadPropertyInteger("ControllerType"));
+		$this->MaintainVariable("isp_name", $this->Translate("ISP Name"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("isp_name"));
+		$this->MaintainVariable("isp_organization", $this->Translate("ISP Organization"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("isp_organization"));
 		$this->MaintainVariable("version", $this->Translate("Unifi Network Version"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("version"));
 		$this->MaintainVariable("update_available", $this->Translate("Update available"), vtBoolean, "", $vpos++,  $this->ReadPropertyBoolean("update_available"));
 		$this->MaintainVariable("update_downloaded", $this->Translate("Update downloaded"), vtBoolean, "", $vpos++,  $this->ReadPropertyBoolean("update_downloaded"));
 		$this->MaintainVariable("uptime", $this->Translate("Uptime"), vtInteger, "~UnixTimestamp", $vpos++,  $this->ReadPropertyBoolean("uptime"));
 
-		$this->MaintainVariable("ubnt_device_type", $this->Translate("UBNT Device Type"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("ubnt_device_type") && 0 == $this->ReadPropertyInteger("ControllerType"));
-		$this->MaintainVariable("udm_version", $this->Translate("UDM Version"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("udm_version") && 0 == $this->ReadPropertyInteger("ControllerType"));
+		$this->MaintainVariable("ubnt_device_type", $this->Translate("UBNT Device Type"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("ubnt_device_type"));
+		$this->MaintainVariable("udm_version", $this->Translate("UDM Version"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("udm_version"));
 
 		$TimerMS = $this->ReadPropertyInteger("Timer") * 1000;
 		$this->SetTimerInterval("Collect Connection Data",$TimerMS);
@@ -113,7 +113,7 @@ class UniFiInternetController extends IPSModule
 
 	public function AuthenticateAndGetData($UnifiAPI = "") {
 		
-		$ControllerType = $this->ReadPropertyInteger("ControllerType");
+		//$ControllerType = $this->ReadPropertyInteger("ControllerType");
 		$ServerAdress = $this->ReadPropertyString("ServerAdress");
 		$ServerPort = $this->ReadPropertyInteger("ServerPort");
 		$Username = $this->ReadPropertyString("UserName");
@@ -132,14 +132,14 @@ class UniFiInternetController extends IPSModule
 
 		$ch = curl_init();
 
-		if ($ControllerType == 0) {
+		//if ($ControllerType == 0) {
 			$SuffixURL = "/api/auth/login";
 			curl_setopt($ch, CURLOPT_POSTFIELDS, "username=".$Username."&password=".$Password);
-		}
-		elseif ($ControllerType == 1) {
+		//}
+		/*elseif ($ControllerType == 1) {
 			$SuffixURL = "/api/login";
 			curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(['username' => $Username, 'password' => $Password]));
-		}				
+		}*/				
 		curl_setopt($ch, CURLOPT_POST, TRUE);
 		curl_setopt($ch, CURLOPT_URL, "https://".$ServerAdress.":".$ServerPort.$SuffixURL);
 		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
@@ -184,12 +184,12 @@ class UniFiInternetController extends IPSModule
 		if (isset($Cookie)) {
 
 			$ch = curl_init();
-			if ($ControllerType == 0) {
+			//if ($ControllerType == 0) {
 				$MiddlePartURL = "/proxy/network/";
-			}
+			/*}
 			elseif ($ControllerType == 1) {
 				$MiddlePartURL = "/";
-			}	
+			}*/	
 			curl_setopt($ch, CURLOPT_URL, "https://".$ServerAdress.":".$ServerPort.$MiddlePartURL.$UnifiAPI);
 			curl_setopt($ch, CURLOPT_HTTPGET, TRUE);
 			curl_setopt($ch , CURLOPT_RETURNTRANSFER, true);
@@ -271,11 +271,11 @@ class UniFiInternetController extends IPSModule
 						array('ident' => "uptime",	'localeName' => "Uptime", 'valueCorrection' => "\$value = (time() - (time() % 60)) - (\$value - (\$value % 60));"),	// value correction to avoid an update for every cycle
 					);
 
-			if($this->ReadPropertyInteger("ControllerType") == 0)
-			{
+			//if($this->ReadPropertyInteger("ControllerType") == 0)
+			//{
 				$variableArray[] = array('ident' => "ubnt_device_type",	'localeName' => "UBNT Device Type");
 				$variableArray[] = array('ident' => "udm_version",	'localeName' => "UDM Version");
-			}
+			//}
 
 			foreach ($variableArray as $variable) {
 				if ($this->ReadPropertyBoolean($variable['ident'])) {
@@ -302,17 +302,17 @@ class UniFiInternetController extends IPSModule
 
 
 		// special properties of Unifi DreamMachine
-		if($this->ReadPropertyInteger("ControllerType") == 0 
-			&& ($this->ReadPropertyBoolean("WAN1availability")
+		//if($this->ReadPropertyInteger("ControllerType") == 0 
+		/*	&& (*/$this->ReadPropertyBoolean("WAN1availability")
 				|| $this->ReadPropertyBoolean("WAN1latency_average")
 				|| $this->ReadPropertyBoolean("WAN1time_period")
 				|| $this->ReadPropertyBoolean("WAN2availability")
 				|| $this->ReadPropertyBoolean("WAN2latency_average")
 				|| $this->ReadPropertyBoolean("WAN2time_period")
 				|| $this->ReadPropertyBoolean("isp_name")
-				|| $this->ReadPropertyBoolean("isp_organization")
-			)
-		)
+				|| $this->ReadPropertyBoolean("isp_organization");
+			//)
+		//)
 		{
 			// query JSON file for internet data
 			$Site = $this->ReadPropertyString("Site");
