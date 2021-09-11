@@ -6,7 +6,7 @@
             "items": [
                 {
                     "type": "Label",
-                    "label": "This Module allows to gather information converning the internet connection like the current public IP adress in conjunction with a USG or Dream Machine."
+                    "label": "This Module allows to gather information converning the internet connection like the current public IP adress in conjunction with a Dream Machine."
                 },
                 {
                     "type": "Label",
@@ -28,22 +28,7 @@
         },
         {
             "type": "Label",
-            "label": "UniFi Toolbox - Internet Controller Configuration"
-        },
-        {
-            "type": "Select",
-            "name": "ControllerType",
-            "caption": "Controller Type",
-            "options": [
-                {
-                    "caption": "Dream Maschine / Pro / CloudKey V2",
-                    "value": 0
-                },
-                {
-                    "caption": "CloudKey",
-                    "value": 1
-                }
-            ]
+            "label": "UniFi Toolbox - Dream Maschine Internet Controller Configuration"
         },
         {
             "type": "ValidationTextBox",
@@ -77,88 +62,110 @@
             "suffix": "sec - 0 is off"
         },
         {
-            "type": "CheckBox",
-            "name": "WAN1IP",
-            "caption": "WAN1 External IP Address"
+            "type": "Label",
+            "label": ""
         },
-        {
-            "type": "CheckBox",
-            "name": "WAN2IP",
-            "caption": "WAN2 External IP Address"
-        },
-        {
-            "type": "CheckBox",
-            "name": "version",
-            "caption": "Unifi Network Version"
-        },
-        {
-            "type": "CheckBox",
-            "name": "update_available",
-            "caption": "Update available"
-        },
-        {
-            "type": "CheckBox",
-            "name": "update_downloaded",
-            "caption": "Update downloaded"
-        },
-        {
-            "type": "CheckBox",
-            "name": "uptime",
-            "caption": "Uptime"
+        { 
+            "type": "RowLayout",
+            "items": [
+                {
+                    "type": "CheckBox",
+                    "name": "WAN1IP",
+                    "caption": "WAN1 External IP Address"
+                },{
+                    "type": "CheckBox",
+                    "name": "WAN1availability",
+                    "caption": "WAN1 availability"
+                },{
+                    "type": "CheckBox",
+                    "name": "WAN1latency_average",
+                    "caption": "WAN1 latency-average"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "WAN1time_period",
+                    "caption": "WAN1 time-period"
+                }
+            ]
         },
         {
             "type": "Label",
-            "label": "Nachfolgende Werte sind nur mit DreamMachine verfügbar:"
+            "label": ""
+        },
+        { 
+            "type": "RowLayout",
+            "items": [
+                {
+                    "type": "CheckBox",
+                    "name": "WAN2IP",
+                    "caption": "WAN2 External IP Address"
+                },{
+                    "type": "CheckBox",
+                    "name": "WAN2availability",
+                    "caption": "WAN2 availability"
+                },{
+                    "type": "CheckBox",
+                    "name": "WAN2latency_average",
+                    "caption": "WAN2 latency-average"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "WAN2time_period",
+                    "caption": "WAN2 time-period"
+                }
+            ]
         },
         {
-            "type": "CheckBox",
-            "name": "WAN1availability",
-            "caption": "WAN1 availability"
+            "type": "Label",
+            "label": ""
+        },
+        { 
+            "type": "RowLayout",
+            "items": [
+                {
+                    "type": "CheckBox",
+                    "name": "version",
+                    "caption": "Unifi Network Version"
+                },{
+                    "type": "CheckBox",
+                    "name": "update_available",
+                    "caption": "Update available"
+                },{
+                    "type": "CheckBox",
+                    "name": "update_downloaded",
+                    "caption": "Update downloaded"
+                },{
+                    "type": "CheckBox",
+                    "name": "uptime",
+                    "caption": "Uptime"
+                }
+            ]
         },
         {
-            "type": "CheckBox",
-            "name": "WAN1latency_average",
-            "caption": "WAN1 latency-average"
+            "type": "Label",
+            "label": ""
         },
-        {
-            "type": "CheckBox",
-            "name": "WAN1time_period",
-            "caption": "WAN1 time-period"
-        },
-        {
-            "type": "CheckBox",
-            "name": "WAN2availability",
-            "caption": "WAN2 availability"
-        },
-        {
-            "type": "CheckBox",
-            "name": "WAN2latency_average",
-            "caption": "WAN2 latency-average"
-        },
-        {
-            "type": "CheckBox",
-            "name": "WAN2time_period",
-            "caption": "WAN2 time-period"
-        },
-        {
-            "type": "CheckBox",
-            "name": "isp_name",
-            "caption": "ISP Name"
-        },
-        {
-            "type": "CheckBox",
-            "name": "isp_organization",
-            "caption": "ISP Organization"
-        },
-        {
-            "type": "CheckBox",
-            "name": "ubnt_device_type",
-            "caption": "UBNT Device Type"
-        },
-        {
-            "type": "CheckBox",
-            "name": "udm_version",
-            "caption": "UDM Version"
+        { 
+            "type": "RowLayout",
+            "items": [
+                {
+                    "type": "CheckBox",
+                    "name": "isp_name",
+                    "caption": "ISP Name"
+                },{
+                    "type": "CheckBox",
+                    "name": "isp_organization",
+                    "caption": "ISP Organization"
+                },{
+                    "type": "CheckBox",
+                    "name": "ubnt_device_type",
+                    "caption": "UBNT Device Type"
+                },{
+                    "type": "CheckBox",
+                    "name": "udm_version",
+                    "caption": "UDM Version"
+                }
+            ]
         }
     ],
     "actions": [
