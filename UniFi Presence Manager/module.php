@@ -180,10 +180,12 @@ if (!defined('vtBoolean')) {
 				foreach ($DevicesJSON as $Device) {
 					//Build a clean array out of the devices mentioned in the config form with : or - 
 					$DeviceMac = str_replace(array("-",":"), "", $Device["varDeviceMAC"]);
+					$DeviceMac = strtolower($DeviceMac);
 
 					//Itterate through all device and check if one of them matches the list in the config form.
 					foreach ($ActiveDevices["data"] as $Index=>$Device) {
 						$DeviceMacClean = str_replace(array("-",":"), "", $Device["mac"]);
+						$DeviceMacClean = strtolower($DeviceMacClean);
 
 						$OldPresenceValue = GetValue($this->GetIDForIdent($DeviceMac));
 						if ($DeviceMac == $DeviceMacClean) {	
