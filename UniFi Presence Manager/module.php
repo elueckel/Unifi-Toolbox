@@ -117,11 +117,11 @@ if (!defined('vtBoolean')) {
 			if (isset($results[1])) {
 				$Cookie = implode(';', $results[1]);
 				if (!empty($body)) {
-					if (($code >= 200) && ($code < 400)) { 
+					if (($code == 200) && ($code != 400)) { 
 						$this->SendDebug($this->Translate("Authentication"),$this->Translate('Login Successful'),0); 
 						$this->SendDebug($this->Translate("Authentication"),$this->Translate('Cookie Provided is: ').$Cookie,0);
 					}
-					if ($code === 400 OR $code ) {
+					if ($code == 400) {
 							$this->SendDebug($this->Translate("Authentication"),$this->Translate('Login Failure - We have received an HTTP response status: 400. Probably a controller login failure'),0);
 			
 					}

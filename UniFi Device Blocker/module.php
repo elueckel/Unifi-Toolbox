@@ -49,7 +49,7 @@ if (!defined('vtBoolean')) {
 					$DeviceName = $Device["varDeviceName"];
 					$DeviceNameClean = str_replace(array("-",":"," "), "", $DeviceName);
 					$this->MaintainVariable($DeviceNameClean, $DeviceName, vtBoolean, "~Switch", $vpos++, isset($DevicesJSON));
-					SetValue($this->GetIDForIdent($DeviceNameClean),1); // make a device will not a disconnected when the module is initialized
+					$this->SetValue($this->GetIDForIdent($DeviceNameClean),1); // make a device will not a disconnected when the module is initialized
 
 					$this->EnableAction($DeviceNameClean);
 					
@@ -112,12 +112,12 @@ if (!defined('vtBoolean')) {
 			if (isset($results[1])) {
 				$Cookie = implode(';', $results[1]);
 				if (!empty($body)) {
-					if (($code >= 200) && ($code < 400)) { 
+					if ($code == 200) { 
 						$this->SendDebug($this->Translate("Authentication"),$this->Translate('Login Successful'),0); 
 						$this->SendDebug($this->Translate("Authentication"),$this->Translate('Cookie Provided is: ').$Cookie,0);
 						//$this->SetBuffer("Cookie",$Cookie);
 					}
-					if ($code === 400 OR $code ) {
+					if ($code == 400) {
 							$this->SendDebug($this->Translate("Authentication"),$this->Translate('Login Failure - We have received an HTTP response status: 400. Probably a controller login failure or no device is configured'),0);
 			
 					}

@@ -157,13 +157,13 @@ class UniFiDMInternetController extends IPSModule {
 		if (isset($results[1])) {
 			$Cookie = implode(';', $results[1]);
 			if (!empty($body)) {
-				if (($code >= 200) && ($code < 400)) { 
+				if (($code == 200) && ($code != 400)) { 
 					$this->SendDebug($this->Translate("Authentication"),$this->Translate('Login Successful'),0); 
 					$this->SendDebug($this->Translate("Authentication"),$this->Translate('Cookie Provided is: ').$Cookie,0);
 				}
-				//if ($code === 400 OR $code ) {
-				//		$this->SendDebug($this->Translate("Authentication"),$this->Translate('Login Failure - We have received an HTTP response status: 400. Probably a controller login failure'),0);
-				//}
+				if ($code == 400) {
+					$this->SendDebug($this->Translate("Authentication"),$this->Translate('Login Failure - We have received an HTTP response status: 400. Probably a controller login failure'),0);
+				}
 			}
 		}
 
@@ -185,8 +185,8 @@ class UniFiDMInternetController extends IPSModule {
 
 			$RawData = curl_exec($ch);
 			curl_close($ch);
-			$JSON = json_decode($RawData,true);
-			$this->SetBuffer("$RawData",$RawData);
+			//$JSON = json_decode($RawData,true);
+			//$this->SetBuffer("RawData",$RawData);
 			
 			if (isset($RawData) AND $RawData != "Unauthorized") {
 				$this->SendDebug($this->Translate("UniFi API Call"),$this->Translate("Successfully Called"),0); 
