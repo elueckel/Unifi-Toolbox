@@ -149,8 +149,8 @@ if (!defined('vtBoolean')) {
 
 				$RawData = curl_exec($ch);
 				curl_close($ch);
-				$JSON = json_decode($RawData,true);
-				$this->SetBuffer("$RawData",$RawData);
+				//$JSON = json_decode($RawData,true);
+				//$this->SetBuffer("$RawData",$RawData);
 				
 				if (isset($RawData) AND $RawData != "Unauthorized") {
 					$this->SendDebug($this->Translate("UniFi API Call"),$this->Translate("Successfully Called"),0); 
