@@ -47,7 +47,7 @@ if (!defined('vtBoolean')) {
 			if (isset($DevicesJSON)) {
 				foreach ($DevicesJSON as $Device) {
 					$DeviceName = $Device["varDeviceName"];
-					$DeviceNameClean = str_replace(array("-",":"), "", $DeviceName);
+					$DeviceNameClean = str_replace(array("-",":"," "), "", $DeviceName);
 
 					if (@IPS_GetObjectIDByIdent($DeviceNameClean, $this->InstanceID) == false) {
 
