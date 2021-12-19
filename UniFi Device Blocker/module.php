@@ -48,15 +48,34 @@ if (!defined('vtBoolean')) {
 				foreach ($DevicesJSON as $Device) {
 					$DeviceName = $Device["varDeviceName"];
 					$DeviceNameClean = str_replace(array("-",":"," "), "", $DeviceName);
+
+					if (@IPS_GetObjectIDByIdent($DeviceNameClean, $this->InstanceID) == false) {
+
+						$DeviceNameCleanID = IPS_CreateVariable(0);
+						IPS_SetName($DeviceNameCleanID, $DeviceNameClean);
+						IPS_SetIdent($DeviceNameCleanID, $DeviceNameClean);
+						IPS_SetParent($DeviceNameCleanID, $this->InstanceID);
+						 
+						SetValue($DeviceNameCleanID,true);
+						$this->EnableAction($DeviceNameClean);
+						$this->RegisterMessage($DeviceNameCleanID, VM_UPDATE);
+
+					}
+
+					/*
+					
 					$this->MaintainVariable($DeviceNameClean, $DeviceName, vtBoolean, "~Switch", $vpos++, isset($DevicesJSON));
-					$this->SetValue($this->GetIDForIdent($DeviceNameClean),1); // make a device will not a disconnected when the module is initialized
+					$DeviceNameCleanID = @IPS_GetObjectIDByIdent($DeviceNameClean, $this->InstanceID);
+					SetValue($DeviceNameCleanID,true); // make a device will not a disconnected when the module is initialized
 
 					$this->EnableAction($DeviceNameClean);
 					
-					$DeviceNameCleanID = @IPS_GetObjectIDByIdent($DeviceNameClean, $this->InstanceID);
+					//$DeviceNameCleanID = @IPS_GetObjectIDByIdent($DeviceNameClean, $this->InstanceID);
 					if (IPS_GetObject($DeviceNameCleanID)['ObjectType'] == 2) {
 							$this->RegisterMessage($DeviceNameCleanID, VM_UPDATE);
 					}
+					*/
+					
 				}
 			}
 		}
@@ -115,7 +134,6 @@ if (!defined('vtBoolean')) {
 					if ($code == 200) { 
 						$this->SendDebug($this->Translate("Authentication"),$this->Translate('Login Successful'),0); 
 						$this->SendDebug($this->Translate("Authentication"),$this->Translate('Cookie Provided is: ').$Cookie,0);
-						//$this->SetBuffer("Cookie",$Cookie);
 					}
 					if ($code == 400) {
 							$this->SendDebug($this->Translate("Authentication"),$this->Translate('Login Failure - We have received an HTTP response status: 400. Probably a controller login failure or no device is configured'),0);
@@ -137,7 +155,7 @@ if (!defined('vtBoolean')) {
 				if (isset($DevicesJSON)) {
 					foreach ($DevicesJSON as $Device) {
 						if ($SenderName == $Device["varDeviceName"]) {
-							$DeviceMacAdress = $Device["varDeviceMAC"];
+							$DeviceMacAdress = strtolower($Device["varDeviceMAC"]);
 							$this->SendDebug($this->Translate("Device Blocker"),$this->Translate("Device to be blocked ").$Device["varDeviceName"].$this->Translate(" device from Sender ").$SenderName,0);
 						}
 					}
