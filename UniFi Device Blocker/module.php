@@ -63,6 +63,12 @@ if (!defined('vtBoolean')) {
 
 					}
 
+					foreach ($DevicesJSON as $Device) {
+						$VarID = @IPS_GetObjectIDByIdent($Device["varDeviceName"], $this->InstanceID);
+						$this->RegisterMessage($VarID, VM_UPDATE);
+					}
+				}
+
 					/*
 					
 					$this->MaintainVariable($DeviceNameClean, $DeviceName, vtBoolean, "~Switch", $vpos++, isset($DevicesJSON));
@@ -75,10 +81,9 @@ if (!defined('vtBoolean')) {
 					if (IPS_GetObject($DeviceNameCleanID)['ObjectType'] == 2) {
 							$this->RegisterMessage($DeviceNameCleanID, VM_UPDATE);
 					}
-					*/
-					
-				}
-			}
+					*/			
+			}				
+
 		}
 
 		public function MessageSink($TimeStamp, $SenderID, $Message, $Data) {
@@ -227,8 +232,15 @@ if (!defined('vtBoolean')) {
 					$RawData = curl_exec($ch);
 					$HTTP_Code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 					$this->SendDebug($this->Translate("Device Blocker"),$this->Translate("Feedback from UniFi Controller: ").$RawData." / HTTP Message ".$HTTP_Code ,0);
+					
+					$ControllerFeedbackComplete = json_decode($RawData,true);
+					$ControllerFeedbackOK =  $ControllerFeedbackComplete["meta"]["rc"];
+					$this->SendDebug($this->Translate("Device Blocker"),$this->Translate("Was block executed: ").$ControllerFeedbackOK ,0);
 					curl_close($ch);
-
+					if ($ControllerFeedbackOK == "ok") {
+						//WFC_SendPopup(12345, "Test", "Eine nette <br> Meldung"); 
+					}
+										
 				}
 
 			}
