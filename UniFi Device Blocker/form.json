@@ -77,7 +77,7 @@
         {
             "type": "Label",
             "bold": "true",
-            "label": "Device names must not contain a space - please use GardenCam without a space."
+            "label": "Device names must not contain a space - e.g. please use GardenCam without a space."
         },
         {
             "type": "List",
