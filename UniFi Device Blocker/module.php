@@ -54,6 +54,7 @@ if (!defined('vtBoolean')) {
 						$DeviceNameCleanID = IPS_CreateVariable(0);
 						IPS_SetName($DeviceNameCleanID, $DeviceNameClean);
 						IPS_SetIdent($DeviceNameCleanID, $DeviceNameClean);
+						IPS_SetVariableCustomProfile($DeviceNameCleanID, "~Switch");
 						IPS_SetParent($DeviceNameCleanID, $this->InstanceID);
 						 
 						SetValue($DeviceNameCleanID,true);
