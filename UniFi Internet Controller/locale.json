@@ -9,7 +9,7 @@
             "All data will be stored in variables in the object tree.": "Alle Informationen werden im Objektbaum als Variable zur Verfügung gestellt.",
             "Updates will happen on a schedule every xyz seconds.": "Das Module prüft die Anwensenheit alle xyz Sekunden, wie im Module konfiguriert",
             "For debugging, please use the Debug function of the module.": "Für das Prüfen der Funktionen, gibt es Modul Meldungen im Debugbereich aus",
-            "UniFi Toolbox -  Internet Controller Configuration": "UniFi Toolbox -  Internet Controller Konfiguration",
+            "UniFi Toolbox - Dream Maschine Internet Controller Configuration": "UniFi Toolbox - Dream Maschine Internet Controller Konfiguration",
             "Controller Type": "Art des Controllers",
             "Server Address": "Server Adresse",
             "User Name": "Anmeldename",
