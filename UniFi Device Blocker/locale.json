@@ -15,6 +15,7 @@
             "Password": "Passwort",
             "Update Frequency": "Aktualisierungsfrequenz",
             "sec - 0 is off": "Sek - 0 ist Aus",
+            "Device names must not contain a space - e.g. please use GardenCam without a space.": "Gerätenamen dürfen keine Leerzeichen enthalten, bitte z.B. GartenKamera verwenden",
             "Devices": "Geräte",
             "Devicename": "Gerätename",
             "MAC": "MAC",
