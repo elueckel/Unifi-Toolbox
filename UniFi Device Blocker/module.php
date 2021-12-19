@@ -155,7 +155,7 @@ if (!defined('vtBoolean')) {
 				if (isset($DevicesJSON)) {
 					foreach ($DevicesJSON as $Device) {
 						if ($SenderName == $Device["varDeviceName"]) {
-							$DeviceMacAdress = strtolower($Device["varDeviceMAC"]);
+							$DeviceMacAdress = $Device["varDeviceMAC"];
 							$this->SendDebug($this->Translate("Device Blocker"),$this->Translate("Device to be blocked ").$Device["varDeviceName"].$this->Translate(" device from Sender ").$SenderName,0);
 						}
 					}
