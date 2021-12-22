@@ -48,23 +48,28 @@ if (!defined('vtBoolean')) {
 				foreach ($DevicesJSON as $Device) {
 					$DeviceName = $Device["varDeviceName"];
 					$DeviceNameClean = str_replace(array("-",":"," "), "", $DeviceName);
+					$DeviceMacAdress = $Device["varDeviceMAC"];
+					$DeviceMacClean = str_replace(array(":"," "), "", $DeviceMacAdress);
 
-					if (@IPS_GetObjectIDByIdent($DeviceNameClean, $this->InstanceID) == false) {
+					if (@IPS_GetObjectIDByIdent($DeviceMacClean, $this->InstanceID) == false) {
 
-						$DeviceNameCleanID = IPS_CreateVariable(0);
-						IPS_SetName($DeviceNameCleanID, $DeviceNameClean);
-						IPS_SetIdent($DeviceNameCleanID, $DeviceNameClean);
-						IPS_SetVariableCustomProfile($DeviceNameCleanID, "~Switch");
-						IPS_SetParent($DeviceNameCleanID, $this->InstanceID);
+						$DeviceMacCleanID = IPS_CreateVariable(0);
+						IPS_SetName($DeviceMacCleanID, $DeviceName);
+						IPS_SetIdent($DeviceMacCleanID, $DeviceMacClean);
+						IPS_SetVariableCustomProfile($DeviceMacCleanID, "~Switch");
+						IPS_SetParent($DeviceMacCleanID, $this->InstanceID);
 						 
-						SetValue($DeviceNameCleanID,true);
-						$this->EnableAction($DeviceNameClean);
-						$this->RegisterMessage($DeviceNameCleanID, VM_UPDATE);
+						SetValue($DeviceMacCleanID,true);
+						IPS_Sleep(1000);
+						$this->EnableAction($DeviceMacClean);
+						$this->RegisterMessage($DeviceMacCleanID, VM_UPDATE);
 
 					}
 
 					foreach ($DevicesJSON as $Device) {
-						$VarID = @IPS_GetObjectIDByIdent($Device["varDeviceName"], $this->InstanceID);
+						$DeviceMacAdress = $Device["varDeviceMAC"];
+						$DeviceMacClean = str_replace(array(":"," "), "", $DeviceMacAdress);
+						$VarID = @IPS_GetObjectIDByIdent($DeviceMacClean, $this->InstanceID);
 						$this->RegisterMessage($VarID, VM_UPDATE);
 					}
 				}
@@ -141,9 +146,11 @@ if (!defined('vtBoolean')) {
 						$this->SendDebug($this->Translate("Authentication"),$this->Translate('Login Successful'),0); 
 						$this->SendDebug($this->Translate("Authentication"),$this->Translate('Cookie Provided is: ').$Cookie,0);
 					}
-					if ($code == 400) {
-							$this->SendDebug($this->Translate("Authentication"),$this->Translate('Login Failure - We have received an HTTP response status: 400. Probably a controller login failure or no device is configured'),0);
-			
+					else if ($code == 400) {
+						$this->SendDebug($this->Translate("Authentication"),$this->Translate('400 Bad Request - The server cannot or will not process the request due to an apparent client error.'),0);
+					}
+					else if ($code == 401 || $code == 403) {
+						$this->SendDebug($this->Translate("Authentication"),$this->Translate('401 Unauthorized / 403 Forbidden - The request contained valid data and was understood by the server, but the server is refusing action. Missing user permission?'),0);
 					}
 				}
 			}
@@ -152,6 +159,7 @@ if (!defined('vtBoolean')) {
 			if ($SenderID != "") {
 				$SenderObjectData = IPS_GetObject($SenderID);
 				$SenderName = ($SenderObjectData["ObjectName"]);
+				$SenderObjectIdent = ($SenderObjectData["ObjectIdent"]);
 				$SenderStatus = GetValue($SenderID);
 
 				//Get MAC Adress from Config form
@@ -160,9 +168,10 @@ if (!defined('vtBoolean')) {
 				
 				if (isset($DevicesJSON)) {
 					foreach ($DevicesJSON as $Device) {
-						if ($SenderName == $Device["varDeviceName"]) {
+						$DeviceMacClean = str_replace(array(":"," "), "", $Device["varDeviceMAC"]);
+						if ($SenderObjectIdent == $DeviceMacClean) {
 							$DeviceMacAdress = $Device["varDeviceMAC"];
-							$this->SendDebug($this->Translate("Device Blocker"),$this->Translate("Device to be blocked ").$Device["varDeviceName"].$this->Translate(" device from Sender ").$SenderName,0);
+							$this->SendDebug($this->Translate("Device Blocker"),$this->Translate("Device to be managed: ").$Device["varDeviceName"],0);
 						}
 					}
 				}
@@ -201,7 +210,7 @@ if (!defined('vtBoolean')) {
 					} 
 					else if ($SenderStatus == 0) {
 						$Command = "block-sta";
-						$this->SendDebug($this->Translate("Device Blocker"),$this->Translate("Module will try to block devie ").$SenderName.$this->Translate(" with MAC adress ").$DeviceMacAdress,0);
+						$this->SendDebug($this->Translate("Device Blocker"),$this->Translate("Module will try to block device ").$SenderName.$this->Translate(" with MAC adress ").$DeviceMacAdress,0);
 					}
 
 					//$CommandToController = json_encode(array($Command => $DeviceMacAdress));
@@ -235,9 +244,12 @@ if (!defined('vtBoolean')) {
 					
 					$ControllerFeedbackComplete = json_decode($RawData,true);
 					$ControllerFeedbackOK =  $ControllerFeedbackComplete["meta"]["rc"];
-					$this->SendDebug($this->Translate("Device Blocker"),$this->Translate("Was block executed: ").$ControllerFeedbackOK ,0);
+					$this->SendDebug($this->Translate("Device Blocker"),$this->Translate("Was operation executed: ").$ControllerFeedbackOK ,0);
 					curl_close($ch);
 					if ($ControllerFeedbackOK == "ok") {
+						//WFC_SendPopup(12345, "Test", "Eine nette <br> Meldung"); 
+					}
+					else if ($ControllerFeedbackOK == "error") {
 						//WFC_SendPopup(12345, "Test", "Eine nette <br> Meldung"); 
 					}
 										
