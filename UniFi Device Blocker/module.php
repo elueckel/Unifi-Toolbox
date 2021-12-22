@@ -133,7 +133,7 @@ if (!defined('vtBoolean')) {
 			$code        = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
 			$this->SendDebug($this->Translate("Authentication"),$this->Translate('Cookie Provided is: ').$code,0);
-			preg_match_all('|Set-Cookie: (.*);|U', substr($data, 0, $header_size), $results);
+			preg_match_all('|(?i)Set-Cookie: (.*);|U', substr($data, 0, $header_size), $results);
 			if (isset($results[1])) {
 				$Cookie = implode(';', $results[1]);
 				if (!empty($body)) {
