@@ -89,7 +89,7 @@ class UniFiDMInternetController extends IPSModule {
 		$this->MaintainVariable("isp_name", $this->Translate("ISP Name"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("isp_name"));
 		$this->MaintainVariable("isp_organization", $this->Translate("ISP Organization"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("isp_organization"));
 		$this->MaintainVariable("version", $this->Translate("Unifi Network Version"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("version"));
-		$this->MaintainVariable("previous_version", $this->Translate("Unifi Network Vorg�ngerversion"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("previous_version"));
+		$this->MaintainVariable("previous_version", $this->Translate("Unifi Network Vorgängerversion"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("previous_version"));
 		$this->MaintainVariable("update_available", $this->Translate("Update available"), vtBoolean, "", $vpos++,  $this->ReadPropertyBoolean("update_available"));
 		$this->MaintainVariable("update_downloaded", $this->Translate("Update downloaded"), vtBoolean, "", $vpos++,  $this->ReadPropertyBoolean("update_downloaded"));
 		$this->MaintainVariable("uptime", $this->Translate("Uptime"), vtInteger, "~UnixTimestamp", $vpos++,  $this->ReadPropertyBoolean("uptime"));
@@ -255,11 +255,11 @@ class UniFiDMInternetController extends IPSModule {
 					if (isset($JSONData['data'][0]["ip_addrs"][$variable['index']])) {
 						$value = $JSONData['data'][0]["ip_addrs"][$variable['index']];
 						if (isset($value)) {
-							if ($value !== GetValue($this->GetIDForIdent($variable['ident']))) {
+							if ($value != GetValue($this->GetIDForIdent($variable['ident']))) {
 								$this->SendDebug($this->Translate($variable['localeName']), $this->Translate("updated to ").$value, 0);
 								SetValue($this->GetIDForIdent($variable['ident']), $value);
 							} else {
-								$this->SendDebug($this->Translate($variable['localeName']), $this->Translate("no update received"), 0);
+								$this->SendDebug($this->Translate($variable['localeName']), $this->Translate("no update received")." (".$value.")", 0);
 							}
 						}
 					} else {
@@ -290,11 +290,11 @@ class UniFiDMInternetController extends IPSModule {
 								eval($variable['valueCorrection']);
 							}
 
-							if ($value !== GetValue($this->GetIDForIdent($variable['ident']))) {
+							if ($value != GetValue($this->GetIDForIdent($variable['ident']))) {
 								$this->SendDebug($this->Translate($variable['localeName']), $this->Translate("updated to ").$value, 0);
 								SetValue($this->GetIDForIdent($variable['ident']), $value);
 							} else {
-								$this->SendDebug($this->Translate($variable['localeName']), $this->Translate("no update received"), 0);
+								$this->SendDebug($this->Translate($variable['localeName']), $this->Translate("no update received")." (".$value.")", 0);
 							}
 						}
 					} else {
@@ -326,10 +326,10 @@ class UniFiDMInternetController extends IPSModule {
 			$variableArray = array(
 				array('ident' => "gw_version", 'json' => "return (isset(\$health['gw_version']) ? \$health['gw_version'] : null);", 'localeName' => "UDM UnifiOS Version"),
 				array('ident' => "wan_ip", 'json' => "return (isset(\$health['wan_ip']) ? \$health['wan_ip'] : null);", 'localeName' => "WAN IP active"),
-				array('ident' => "WAN1availability", 'json' => "return (isset(\$health['uptime_stats']['WAN']['availability']) ? \$health['uptime_stats']['WAN']['availability'] : null);", 'localeName' => "WAN1 availablity"),
+				array('ident' => "WAN1availability", 'json' => "return (isset(\$health['uptime_stats']['WAN']['availability']) ? round(\$health['uptime_stats']['WAN']['availability']) : null);", 'localeName' => "WAN1 availablity"),
 				array('ident' => "WAN1latency_average", 'json' => "return (isset(\$health['uptime_stats']['WAN']['latency_average']) ? \$health['uptime_stats']['WAN']['latency_average'] : null);", 'localeName' => "WAN1 latency_average"),
 				array('ident' => "WAN1time_period", 'json' => "return (isset(\$health['uptime_stats']['WAN']['time_period']) ? \$health['uptime_stats']['WAN']['time_period'] : null);", 'localeName' => "WAN1 time_period"),
-				array('ident' => "WAN2availability", 'json' => "return (isset(\$health['uptime_stats']['WAN2']['availability']) ? \$health['uptime_stats']['WAN2']['availability'] : null);", 'localeName' => "WAN2 availablity"),
+				array('ident' => "WAN2availability", 'json' => "return (isset(\$health['uptime_stats']['WAN2']['availability']) ? round(\$health['uptime_stats']['WAN2']['availability']) : null);", 'localeName' => "WAN2 availablity"),
 				array('ident' => "WAN2latency_average", 'json' => "return (isset(\$health['uptime_stats']['WAN2']['latency_average']) ? \$health['uptime_stats']['WAN2']['latency_average'] : null);", 'localeName' => "WAN2 latency_average",),
 				array('ident' => "WAN2time_period", 'json' => "return (isset(\$health['uptime_stats']['WAN2']['time_period']) ? \$health['uptime_stats']['WAN2']['time_period'] : null);", 'localeName' => "WAN2 time_period"),
 				array('ident' => "isp_name", 'json' => "return (isset(\$health['isp_name']) ? \$health['isp_name'] : null);", 'localeName' => "ISP Name"),
@@ -347,11 +347,11 @@ class UniFiDMInternetController extends IPSModule {
 										eval($variable['valueCorrection']);
 									}
 	
-									if ($value !== GetValue($this->GetIDForIdent($variable['ident']))) {
+									if ($value != GetValue($this->GetIDForIdent($variable['ident']))) {
 										$this->SendDebug($this->Translate($variable['localeName']), $this->Translate("updated to ").$value, 0);
 										SetValue($this->GetIDForIdent($variable['ident']), $value);
 									} else {
-										$this->SendDebug($this->Translate($variable['localeName']), $this->Translate("no update received"), 0);
+										$this->SendDebug($this->Translate($variable['localeName']), $this->Translate("no update received")." (".$value.")", 0);
 									}
 								}
 							} else {
