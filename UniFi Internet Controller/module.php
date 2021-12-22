@@ -157,12 +157,15 @@ class UniFiDMInternetController extends IPSModule {
 		if (isset($results[1])) {
 			$Cookie = implode(';', $results[1]);
 			if (!empty($body)) {
-				if (($code == 200) && ($code != 400)) { 
+				if (200 == $code) { 
 					$this->SendDebug($this->Translate("Authentication"),$this->Translate('Login Successful'),0); 
 					$this->SendDebug($this->Translate("Authentication"),$this->Translate('Cookie Provided is: ').$Cookie,0);
 				}
-				if ($code == 400) {
-					$this->SendDebug($this->Translate("Authentication"),$this->Translate('Login Failure - We have received an HTTP response status: 400. Probably a controller login failure'),0);
+				else if (400 == $code) {
+						$this->SendDebug($this->Translate("Authentication"),$this->Translate('400 Bad Request - The server cannot or will not process the request due to an apparent client error.'),0);
+				}
+				else if (401 == $code || 403 == $code) {
+					$this->SendDebug($this->Translate("Authentication"),$this->Translate('401 Unauthorized / 403 Forbidden - The request contained valid data and was understood by the server, but the server is refusing action. Missing user permission?'),0);
 				}
 			}
 		}
@@ -188,7 +191,17 @@ class UniFiDMInternetController extends IPSModule {
 			//$JSON = json_decode($RawData,true);
 			//$this->SetBuffer("RawData",$RawData);
 			
-			if (isset($RawData) AND $RawData != "Unauthorized") {
+			if (400 == $RawData) {
+				$this->SendDebug($this->Translate("UniFi API Call"),$this->Translate('400 Bad Request - The server cannot or will not process the request due to an apparent client error.'),0);
+				$this->SetStatus(201); // login seems to be not successful
+				return false;
+			}
+			else if (401 == $RawData || 403 == $RawData || $RawData == "Unauthorized") {
+				$this->SendDebug($this->Translate("UniFi API Call"),$this->Translate('401 Unauthorized / 403 Forbidden - The request contained valid data and was understood by the server, but the server is refusing action. Missing user permission?'),0);
+				$this->SetStatus(201); // login seems to be not successful
+				return false;
+			}
+			else if (isset($RawData)) {
 				$this->SendDebug($this->Translate("UniFi API Call"),$this->Translate("Successfully Called"),0); 
 				$this->SendDebug($this->Translate("UniFi API Call"),$this->Translate("Data Provided: ").$RawData,0);
 				$this->SetBuffer("RawData",$RawData);
@@ -196,9 +209,11 @@ class UniFiDMInternetController extends IPSModule {
 			else {
 				$this->SendDebug($this->Translate("UniFi API Call"),$this->Translate("API could not be called - check the login data. Do you see a Cookie?"),0); 
 				$this->SetStatus(201); // login seems to be not successful
+				return false;
 			}
 		}
 
+		return true;
 	}
 
 	public function GetInternetData() {
@@ -212,7 +227,7 @@ class UniFiDMInternetController extends IPSModule {
 			|| $this->ReadPropertyBoolean("ubnt_device_type")
 			|| $this->ReadPropertyBoolean("udm_version")) {
 			// query JSON file for internet data
-			$this->AuthenticateAndGetData();
+			if ($this->AuthenticateAndGetData()) {
 			$RawData = $this->GetBuffer("RawData");
 			$JSONData = json_decode($RawData, true);
 
@@ -274,6 +289,7 @@ class UniFiDMInternetController extends IPSModule {
 					}
 				}
 			}
+            }
 		}
 
 		$this->ReadPropertyBoolean("WAN1availability")
@@ -287,7 +303,7 @@ class UniFiDMInternetController extends IPSModule {
 		{
 
 			$Site = $this->ReadPropertyString("Site");
-			$this->AuthenticateAndGetData("api/stat/sites");
+            if ($this->AuthenticateAndGetData("api/stat/sites")) {
 			$RawData = $this->GetBuffer("RawData");
 			$JSONData = json_decode($RawData, true);
 
@@ -329,6 +345,7 @@ class UniFiDMInternetController extends IPSModule {
 					}
 				}
 			}
+            }
 		}
 	}
 }
