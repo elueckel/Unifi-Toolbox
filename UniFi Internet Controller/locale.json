@@ -29,6 +29,7 @@
             "ISP Name": "ISP Name",
             "ISP Organization": "ISP Organization",
             "WAN1 availability": "WAN1 Verfügbarkeit",
+            "WAN IP active": "WAN IP Aktiv",
             "WAN1 latency-average": "WAN1 Latenz-Durchschnitt",
             "WAN1 time-period": "WAN1 Betrachtungszeitraum",
             "WAN2 availability": "WAN2 Verfügbarkeit",
