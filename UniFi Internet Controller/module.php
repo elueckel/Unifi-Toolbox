@@ -28,14 +28,17 @@ class UniFiDMInternetController extends IPSModule {
 		$this->RegisterPropertyBoolean("WAN2IP",0);
 
 		$this->RegisterPropertyBoolean("version",0);
+		$this->RegisterPropertyBoolean("previous_version",0);
 		$this->RegisterPropertyBoolean("update_available",0);
 		$this->RegisterPropertyBoolean("update_downloaded",0);
 		$this->RegisterPropertyBoolean("uptime",0);
 		$this->RegisterPropertyBoolean("ubnt_device_type",0);
 		$this->RegisterPropertyBoolean("udm_version",0);
 
+		$this->RegisterPropertyBoolean("gw_version",0);
 		$this->RegisterPropertyBoolean("isp_name",0);
 		$this->RegisterPropertyBoolean("isp_organization",0);
+		$this->RegisterPropertyBoolean("wan_ip",0);
 		$this->RegisterPropertyBoolean("WAN1availability",0);
 		$this->RegisterPropertyBoolean("WAN1latency_average",0);
 		$this->RegisterPropertyBoolean("WAN1time_period",0);
@@ -74,6 +77,7 @@ class UniFiDMInternetController extends IPSModule {
 		parent::ApplyChanges();
 
 		$vpos = 100;
+		$this->MaintainVariable("wan_ip", $this->Translate("WAN IP active"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("wan_ip"));
 		$this->MaintainVariable("WAN1IP", $this->Translate("WAN1 External IP Address"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("WAN1IP"));
 		$this->MaintainVariable("WAN1availability", $this->Translate("WAN1 availability"), vtInteger, "~Intensity.100", $vpos++,  $this->ReadPropertyBoolean("WAN1availability"));
 		$this->MaintainVariable("WAN1latency_average", $this->Translate("WAN1 latency-average"), vtInteger, "IC.TimeMS", $vpos++,  $this->ReadPropertyBoolean("WAN1latency_average"));
@@ -85,12 +89,14 @@ class UniFiDMInternetController extends IPSModule {
 		$this->MaintainVariable("isp_name", $this->Translate("ISP Name"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("isp_name"));
 		$this->MaintainVariable("isp_organization", $this->Translate("ISP Organization"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("isp_organization"));
 		$this->MaintainVariable("version", $this->Translate("Unifi Network Version"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("version"));
+		$this->MaintainVariable("previous_version", $this->Translate("Unifi Network Vorg�ngerversion"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("previous_version"));
 		$this->MaintainVariable("update_available", $this->Translate("Update available"), vtBoolean, "", $vpos++,  $this->ReadPropertyBoolean("update_available"));
 		$this->MaintainVariable("update_downloaded", $this->Translate("Update downloaded"), vtBoolean, "", $vpos++,  $this->ReadPropertyBoolean("update_downloaded"));
 		$this->MaintainVariable("uptime", $this->Translate("Uptime"), vtInteger, "~UnixTimestamp", $vpos++,  $this->ReadPropertyBoolean("uptime"));
 
 		$this->MaintainVariable("ubnt_device_type", $this->Translate("UBNT Device Type"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("ubnt_device_type"));
 		$this->MaintainVariable("udm_version", $this->Translate("UDM Version"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("udm_version"));
+		$this->MaintainVariable("gw_version", $this->Translate("UDM UnifiOS Version"), vtString, "", $vpos++,  $this->ReadPropertyBoolean("gw_version"));
 
 		$TimerMS = $this->ReadPropertyInteger("Timer") * 1000;
 		$this->SetTimerInterval("Collect Connection Data",$TimerMS);
@@ -152,7 +158,9 @@ class UniFiDMInternetController extends IPSModule {
 		$body        = trim(substr($data, $header_size));
 		$code        = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-		$this->SendDebug($this->Translate("Authentication"),$this->Translate('Cookie Provided is: ').$code,0);
+		$this->SendDebug($this->Translate("Authentication"),$this->Translate('Return-Code Provided is: ').$code,0);
+		//$this->SendDebug($this->Translate("Debug"), $data,0);
+
 		preg_match_all('|(?i)Set-Cookie: (.*);|U', substr($data, 0, $header_size), $results);
 		if (isset($results[1])) {
 			$Cookie = implode(';', $results[1]);
@@ -185,6 +193,8 @@ class UniFiDMInternetController extends IPSModule {
 			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
 			curl_setopt($ch, CURLOPT_HTTPHEADER, array("cookie: ".$Cookie));
 			curl_setopt($ch, CURLOPT_SSLVERSION, 'CURL_SSLVERSION_TLSv1'); 	    
+
+			//$this->SendDebug("Debug: ", "https://".$ServerAdress.":".$ServerPort.$MiddlePartURL.$UnifiAPI, 0);
 
 			$RawData = curl_exec($ch);
 			curl_close($ch);
@@ -221,11 +231,13 @@ class UniFiDMInternetController extends IPSModule {
 		if($this->ReadPropertyBoolean("WAN1IP")
 			|| $this->ReadPropertyBoolean("WAN2IP")
 			|| $this->ReadPropertyBoolean("version")
+			|| $this->ReadPropertyBoolean("previous_version")
 			|| $this->ReadPropertyBoolean("update_available")
 			|| $this->ReadPropertyBoolean("update_downloaded")
 			|| $this->ReadPropertyBoolean("uptime")
 			|| $this->ReadPropertyBoolean("ubnt_device_type")
-			|| $this->ReadPropertyBoolean("udm_version")) {
+			|| $this->ReadPropertyBoolean("udm_version")
+		  ) {
 			// query JSON file for internet data
 			if ($this->AuthenticateAndGetData()) {
 			$RawData = $this->GetBuffer("RawData");
@@ -260,6 +272,7 @@ class UniFiDMInternetController extends IPSModule {
 			// get everything else (besides IP addresses)
 			$variableArray = array(
 				array('ident' => "version",	'localeName' => "Unifi Network Version"),
+				array('ident' => "previous_version",	'localeName' => "Unifi Network Vorgängerversion"),
 				array('ident' => "update_available",	'localeName' => "Update available"),
 				array('ident' => "update_downloaded",	'localeName' => "Update downloaded"),
 				array('ident' => "uptime",	'localeName' => "Uptime", 'valueCorrection' => "\$value = (time() - (time() % 60)) - (\$value - (\$value % 60));"),	// value correction to avoid an update for every cycle
@@ -292,24 +305,27 @@ class UniFiDMInternetController extends IPSModule {
             }
 		}
 
-		$this->ReadPropertyBoolean("WAN1availability")
+		if($this->ReadPropertyBoolean("gw_version")
+			|| $this->ReadPropertyBoolean("wan_ip")
+			|| $this->ReadPropertyBoolean("WAN1availability")
 			|| $this->ReadPropertyBoolean("WAN1latency_average")
 			|| $this->ReadPropertyBoolean("WAN1time_period")
 			|| $this->ReadPropertyBoolean("WAN2availability")
 			|| $this->ReadPropertyBoolean("WAN2latency_average")
 			|| $this->ReadPropertyBoolean("WAN2time_period")
 			|| $this->ReadPropertyBoolean("isp_name")
-			|| $this->ReadPropertyBoolean("isp_organization");
-		{
-
+			|| $this->ReadPropertyBoolean("isp_organization")
+		) {
 			$Site = $this->ReadPropertyString("Site");
             if ($this->AuthenticateAndGetData("api/stat/sites")) {
 			$RawData = $this->GetBuffer("RawData");
 			$JSONData = json_decode($RawData, true);
-
+			// $this->SendDebug("JSONData", $JSONData, 0);
 			$healthArray = $JSONData['data'][0]['health'];
 
 			$variableArray = array(
+				array('ident' => "gw_version", 'json' => "return (isset(\$health['gw_version']) ? \$health['gw_version'] : null);", 'localeName' => "UDM UnifiOS Version"),
+				array('ident' => "wan_ip", 'json' => "return (isset(\$health['wan_ip']) ? \$health['wan_ip'] : null);", 'localeName' => "WAN IP active"),
 				array('ident' => "WAN1availability", 'json' => "return (isset(\$health['uptime_stats']['WAN']['availability']) ? \$health['uptime_stats']['WAN']['availability'] : null);", 'localeName' => "WAN1 availablity"),
 				array('ident' => "WAN1latency_average", 'json' => "return (isset(\$health['uptime_stats']['WAN']['latency_average']) ? \$health['uptime_stats']['WAN']['latency_average'] : null);", 'localeName' => "WAN1 latency_average"),
 				array('ident' => "WAN1time_period", 'json' => "return (isset(\$health['uptime_stats']['WAN']['time_period']) ? \$health['uptime_stats']['WAN']['time_period'] : null);", 'localeName' => "WAN1 time_period"),
@@ -345,7 +361,7 @@ class UniFiDMInternetController extends IPSModule {
 					}
 				}
 			}
-            }
+		    }
 		}
 	}
 }
