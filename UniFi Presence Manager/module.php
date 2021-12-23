@@ -117,13 +117,15 @@ if (!defined('vtBoolean')) {
 			if (isset($results[1])) {
 				$Cookie = implode(';', $results[1]);
 				if (!empty($body)) {
-					if (($code == 200) && ($code != 400)) { 
+					if ($code == 200) { 
 						$this->SendDebug($this->Translate("Authentication"),$this->Translate('Login Successful'),0); 
 						$this->SendDebug($this->Translate("Authentication"),$this->Translate('Cookie Provided is: ').$Cookie,0);
 					}
-					if ($code == 400) {
-							$this->SendDebug($this->Translate("Authentication"),$this->Translate('Login Failure - We have received an HTTP response status: 400. Probably a controller login failure'),0);
-			
+					else if ($code == 400) {
+						$this->SendDebug($this->Translate("Authentication"),$this->Translate('400 Bad Request - The server cannot or will not process the request due to an apparent client error.'),0);
+					}
+					else if ($code == 401 || $code == 403) {
+						$this->SendDebug($this->Translate("Authentication"),$this->Translate('401 Unauthorized / 403 Forbidden - The request contained valid data and was understood by the server, but the server is refusing action. Missing user permission?'),0);
 					}
 				}
 			}

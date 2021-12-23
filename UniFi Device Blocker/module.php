@@ -173,8 +173,18 @@ if (!defined('vtBoolean')) {
 							$DeviceMacAdress = $Device["varDeviceMAC"];
 							$this->SendDebug($this->Translate("Device Blocker"),$this->Translate("Device to be managed: ").$Device["varDeviceName"],0);
 						}
+						else {
+							$DeviceMacAdress = "";
+						}
 					}
 				}
+
+				if (!isset($DeviceMacAdress)) {
+					$this->SendDebug($this->Translate("Device Blocker"),$this->Translate("The switched variable did not have an entry in the module configuration - execution stopped"),0);
+					exit;
+				}
+
+
 
 				
 				$this->SendDebug($this->Translate("Device Blocker"),$Cookie,0);
