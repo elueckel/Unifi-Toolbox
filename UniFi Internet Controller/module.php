@@ -113,9 +113,8 @@ class UniFiDMInternetController extends IPSModule {
 	}
 
 
-	public function AuthenticateAndGetData($UnifiAPI = "") {
+	public function AuthenticateAndGetData() {
 		
-		//$ControllerType = $this->ReadPropertyInteger("ControllerType");
 		$ServerAdress = $this->ReadPropertyString("ServerAdress");
 		$ServerPort = $this->ReadPropertyInteger("ServerPort");
 		$Username = $this->ReadPropertyString("UserName");
@@ -124,9 +123,9 @@ class UniFiDMInternetController extends IPSModule {
 
 		////////////////////////////////////////
 		//Change the Unifi API to be called here
-		if ("" == $UnifiAPI) {
-			$UnifiAPI = "api/s/".$Site."/stat/sysinfo";
-		}
+		
+		$UnifiAPI = "api/s/".$Site."/stat/sysinfo";
+		
 		////////////////////////////////////////
 
 
