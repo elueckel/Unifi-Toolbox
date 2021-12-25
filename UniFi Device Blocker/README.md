@@ -76,3 +76,8 @@ Version 0.31 (Beta) - 27-08-2021
 
 Version 1.0 - 09-09-2021
 * keine weiteren Änderungen
+
+Version 1.1 - 25-12-2021
+* Fix - Memory Leak
+* Fix - HTTP Response Error Message
+* Variablen Management umgestellt - es Ident wird jetzt die MAC verwendet

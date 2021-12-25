@@ -79,6 +79,6 @@ Version 0.31 (Beta) - 25-08-2021
 Version 1.0 - 09-09-2021
 * keine weiteren Änderungen
 
-Version 1.1 - 17-12-2021
+Version 1.1 - 25-12-2021
 * Fix - Memory Leak
 * Fix - HTTP Response Error Message
