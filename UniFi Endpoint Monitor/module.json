@@ -1,0 +1,12 @@
+{
+    "id": "{99B923B9-F641-5787-927E-22F6EBCE1FDE}",
+    "name": "UniFi Endpoint Monitor",
+    "type": 3,
+    "vendor": "UniFi",
+    "aliases": [],
+    "parentRequirements": [],
+    "childRequirements": [],
+    "implemented": [],
+    "prefix": "EM",
+    "url": "https://github.com/elueckel/Unifi-Toolbox/tree/main/UniFi%20Endpoint%20Monitor"
+}

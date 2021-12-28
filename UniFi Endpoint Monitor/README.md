@@ -1,5 +1,5 @@
-# UniFi Presence Manager
-Dieses Modul ermöglicht es Geräte im Netz zu überwachen, um z.B. eine Anwsenheitskontrolle zu ermöglichen.
+# UniFi Endpoint Monitor
+Dieses Modul ermöglicht es Endgeräte im Netz zu überwachen und diverse Daten in Symcon darzustellen.
 
 ### Inhaltsverzeichnis
 
@@ -53,35 +53,30 @@ Bei der Dream Maschine ist der Port 443, bei einem Controller im Standard 8443. 
 
 Da der Controller aktiv abfragt werden muss, kann man hier eine Frequenz hinterlegen wie oft dies geschehen soll. 
 
-**Allgemeine Anwesenheit Aktualisier**
+**MAC Adresse**
 
-Die Allgemeine Anwesenheit Aktualisiert Variable wird immer unabhängig vom Gerät aktualisiert und kann somit eine generische Aktion auslösen. 
+Die MAC Adresse des zu überwachenden Geräts. Diese am besten aus dem Controller auslesen.
 
-**Geräte**
+**Art der Verbindung**
 
-Geräte die Überwacht werden sollen, werden einfach mit einem Namen und einer MAC Addresse in der Tabelle hinterlegt. Das Modul erstellt dann eine Boolean Variable mit Switch Profil welche in weiter Prozesse eingebunden werden kann um ein Gerät zu blocken oder eine blockade aufzulösen. 
-Das Modul selbst löscht keine Variablen, sollte sich ein Name ändern, dann wird eine neue erstellt und die alte im Objektbaum belassen.
+Basierend auf der Art der Verbindung stehen unterschiedliche Informationen zur Verfügung. Die meisten werden von Geräten im WLAN generiert. 
+
+**Netzwerkdaten**
+
+Netzwerkdaten umfassen logische Daten wie IP Adresse oder Hostname. 
+
+**Verbindungsdaten**
+
+Hier werden verfügbare physische Daten bereitgestellt. Hierzu zählen bei WLAN Geräten Informationen zu Verbingunsqualität, Zuletzt gesehen, Uptime, Kanal, Art der Technologie, SSID, Dämpfung, Signalstärke. 
+
+**Übertragungsdaten**
+
+Bei WLAN Geräten werden hier Informationen zu übertragenen Daten und Paketen geliefert.
 
 **Debugging**
 Das Modul gibt diverse Informatioen im Debug Bereich aus. 
+
 ## 5. Versionsinformation
 
-Version 0.3 (Beta) - 23-08-2021
-* Unterstützung für UniFi Cloudkey 1
-* Unterstützung für UniFi Cloudkey 2 und Dream Maschine
-* Anlegen von zu überwachenden Geräten mit Name und MAC Adresse 
-* Erstellt pro Gerät eine Variable welche z.B. für die Automation oder Überwachung genutzt werden kann (Boolean)
-* Abfragen der Controller erfolgt zeitgesteuert alle xx Sekunden
-
-Version 0.31 (Beta) - 25-08-2021
-* Neue Variable die bei jedem Update unabhängig vom Gerät aktualisiert wird
-
-Version 1.0 - 09-09-2021
-* keine weiteren Änderungen
-
-Version 1.1 - 25-12-2021
-* Fix - Memory Leak
-* Fix - HTTP Response Error Message
-
 Version 1.2 - 27-12-2021
-* Neu - Endpoint Monitor zur Überwachung von Endgeräten
+* Neu - Modul verfügbar
