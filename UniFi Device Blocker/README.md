@@ -21,6 +21,8 @@ Dieses Modul ermöglicht es Geräte im Netz zu blockieren, um z.B. den Zugang de
 ## 2. Vorraussetzungen
 
 - IP-Symcon ab Version 5.5
+- Unifi Benutzer mit Owner oder Super-Admin Rechten (Limited-Admin Rechte sind nicht ausreichend!)
+
 
 ## 3. Software-Installation
 
@@ -56,7 +58,8 @@ Da der Controller aktiv abfragt werden muss, kann man hier eine Frequenz hinterl
 
 **Geräte**
 
-Geräte die Überwacht werden sollen, werden einfach mit einem Namen und einer MAC Addresse in der Tabelle hinterlegt. Das Modul erstellt dann eine Boolean Variable mit Switch Profil welche in weiter Prozesse eingebunden werden kann um ein Gerät zu blocken oder eine blockade aufzulösen. 
+Geräte die Überwacht werden sollen, werden einfach mit einem Namen und einer MAC Addresse in der Tabelle hinterlegt. 
+Das Modul erstellt dann eine Boolean-Variable mit Switch-Profil, welche in weiter Prozesse eingebunden werden kann um ein Gerät zu blocken (=false) oder eine blockade aufzulösen (=true).
 Das Modul selbst löscht keine Variablen, sollte sich ein Name ändern, dann wird eine neue erstellt und die alte im Objektbaum belassen.
 
 **Debugging**
