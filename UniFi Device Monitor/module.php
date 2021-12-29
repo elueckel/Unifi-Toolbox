@@ -32,7 +32,7 @@ if (!defined('vtBoolean')) {
 			$this->RegisterPropertyBoolean("DataPointSpecific", 0);
 			
 
-			$this->RegisterTimer("Device Monitor",0,"DM_EndpointMonitor(\$_IPS['TARGET']);");
+			$this->RegisterTimer("Device Monitor",0,"DM_DeviceMonitor(\$_IPS['TARGET']);");
 
 		}
 
