@@ -10,7 +10,7 @@ if (!defined('vtBoolean')) {
     define('vtArray', 8);
     define('vtObject', 9);
 }
-	class UniFiEndpointMonitor extends IPSModule
+	class UnifiEndpointMonitor extends IPSModule
 	{
 		public function Create() {
 			//Never delete this line!

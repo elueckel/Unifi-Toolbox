@@ -49,7 +49,7 @@ if (!defined('vtBoolean')) {
 			$vpos = 100;
 			$this->MaintainVariable("DeviceModel", $this->Translate("Device Model"), vtString, "", $vpos++, $this->ReadPropertyBoolean("DataPointBasic") == 1);
 			$this->MaintainVariable("SoftwareVersion", $this->Translate("Software Version"), vtString, "", $vpos++, $this->ReadPropertyBoolean("DataPointBasic") == 1);
-			$this->MaintainVariable("Satisfaction", $this->Translate("Satisfaction"), vtString, "", $vpos++, $this->ReadPropertyBoolean("DataPointBasic") == 1);
+			//$this->MaintainVariable("Satisfaction", $this->Translate("Satisfaction"), vtString, "", $vpos++, $this->ReadPropertyBoolean("DataPointBasic") == 1);
 			$this->MaintainVariable("LastSeen", $this->Translate("Last Seen"), vtString, "", $vpos++, $this->ReadPropertyBoolean("DataPointBasic") == 1);
 			$this->MaintainVariable("Uptime", $this->Translate("Uptime in hours"), vtString, "", $vpos++, $this->ReadPropertyBoolean("DataPointBasic") == 1);
 			//$this->MaintainVariable("IPAddress", $this->Translate("IP Address"), vtString, "", $vpos++, $this->ReadPropertyBoolean("DataPointBasic") == 1);
@@ -205,9 +205,9 @@ if (!defined('vtBoolean')) {
 					$SoftwareVersion = $JSONData["data"][0]["version"];
 					SetValue($this->GetIDForIdent("SoftwareVersion"),$SoftwareVersion);
 					$this->SendDebug($this->Translate("Device Monitor"),$this->Translate("Software Version ").$SoftwareVersion,0);
-					$Satisfaction = $JSONData["data"][0]["satisfaction"];
-					SetValue($this->GetIDForIdent("Satisfaction"),$Satisfaction);
-					$this->SendDebug($this->Translate("Device Monitor"),$this->Translate("Device Satisfaction ").$Satisfaction,0); 
+					//$Satisfaction = $JSONData["data"][0]["satisfaction"];
+					//SetValue($this->GetIDForIdent("Satisfaction"),$Satisfaction);
+					//$this->SendDebug($this->Translate("Device Monitor"),$this->Translate("Device Satisfaction ").$Satisfaction,0); 
 					$SLastSeen = $JSONData["data"][0]["last_seen"];
 					SetValue($this->GetIDForIdent("LastSeen"),gmdate("Y-m-d H:i:s", $SLastSeen));
 					$this->SendDebug($this->Translate("Device Monitor"),$this->Translate("Connection Data Last Seen ").gmdate("Y-m-d H:i:s", $SLastSeen),0); 
