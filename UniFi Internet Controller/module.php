@@ -49,7 +49,7 @@ class UniFiDMInternetController extends IPSModule {
 		$this->RegisterTimer("Collect Connection Data",0,"IC_GetInternetData(\$_IPS['TARGET']);");
 
 		if (IPS_VariableProfileExists("IC.TimeS") == false){
-			IPS_CreateVariableProfile("IC.TimeS", 1);
+			IPS_CreateVariableProfile("IC.TimeS", vtInteger);
 			IPS_SetVariableProfileValues("IC.TimeS", 0, 0, 1);
 			IPS_SetVariableProfileDigits("IC.TimeS", 2);
 			IPS_SetVariableProfileText("IC.TimeS", "", $this->Translate(" seconds"));
@@ -57,7 +57,7 @@ class UniFiDMInternetController extends IPSModule {
 		}
 
 		if (IPS_VariableProfileExists("IC.TimeMS") == false){
-			IPS_CreateVariableProfile("IC.TimeMS", 1);
+			IPS_CreateVariableProfile("IC.TimeMS", vtInteger);
 			IPS_SetVariableProfileValues("IC.TimeMS", 0, 0, 1);
 			IPS_SetVariableProfileDigits("IC.TimeMS", 2);
 			IPS_SetVariableProfileText("IC.TimeMS", "", $this->Translate(" milliseconds"));
