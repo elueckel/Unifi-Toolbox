@@ -167,24 +167,22 @@ if (!defined('vtBoolean')) {
 				$DevicesJSON = json_decode($DevicesList,true);
 				
 				if (isset($DevicesJSON)) {
+					$DeviceMacAdress = "";
+
 					foreach ($DevicesJSON as $Device) {
 						$DeviceMacClean = str_replace(array(":"," "), "", $Device["varDeviceMAC"]);
 						if ($SenderObjectIdent == $DeviceMacClean) {
 							$DeviceMacAdress = $Device["varDeviceMAC"];
 							$this->SendDebug($this->Translate("Device Blocker"),$this->Translate("Device to be managed: ").$Device["varDeviceName"],0);
-						}
-						else {
-							$DeviceMacAdress = "";
+							break;
 						}
 					}
 				}
 
-				if (!isset($DeviceMacAdress)) {
+				if (!isset($DeviceMacAdress) || "" == $DeviceMacAdress) {
 					$this->SendDebug($this->Translate("Device Blocker"),$this->Translate("The switched variable did not have an entry in the module configuration - execution stopped"),0);
 					exit;
 				}
-
-
 
 				
 				$this->SendDebug($this->Translate("Device Blocker"),$Cookie,0);
