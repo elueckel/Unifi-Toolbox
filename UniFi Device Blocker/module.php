@@ -282,9 +282,11 @@ if (!defined('vtBoolean')) {
 
 			if(false !== $VarID) {
 				$this->SetValue($DeviceMacClean, false);
+				return true;
 			}
 			else {
 				$this->SendDebug($this->Translate("Device Blocker"), "block(".$DeviceMacAddress.")", 0);
+				return false;
 			}
 		}
 
@@ -295,9 +297,11 @@ if (!defined('vtBoolean')) {
 
 			if(false !== $VarID) {
 				$this->SetValue($DeviceMacClean, true);
+				return true;
 			}
 			else {
 				$this->SendDebug($this->Translate("Device Blocker"), "unblock(".$DeviceMacAddress.")", 0);
+				return false;
 			}
 		}
 
