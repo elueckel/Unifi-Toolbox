@@ -17,7 +17,7 @@ if (!defined('vtBoolean')) {
 			parent::Create();
 
 			$this->RegisterPropertyInteger("ControllerType", 0);
-			$this->RegisterPropertyString("ServerAdress","192.168.1.1");
+			$this->RegisterPropertyString("ServerAddress","192.168.1.1");
 			$this->RegisterPropertyInteger("ServerPort", "443");
 			$this->RegisterPropertyString("Site","default");
 			$this->RegisterPropertyString("UserName","");
@@ -95,7 +95,7 @@ if (!defined('vtBoolean')) {
 		public function AuthenticateAndGetData() {
 			
 			$ControllerType = $this->ReadPropertyInteger("ControllerType");
-			$ServerAdress = $this->ReadPropertyString("ServerAdress");
+			$ServerAddress = $this->ReadPropertyString("ServerAddress");
 			$ServerPort = $this->ReadPropertyInteger("ServerPort");
 			$Username = $this->ReadPropertyString("UserName");
 			$Password = $this->ReadPropertyString("Password");
@@ -122,7 +122,7 @@ if (!defined('vtBoolean')) {
 				curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(['username' => $Username, 'password' => $Password]));
 			}				
 			curl_setopt($ch, CURLOPT_POST, TRUE);
-			curl_setopt($ch, CURLOPT_URL, "https://".$ServerAdress.":".$ServerPort.$SuffixURL);
+			curl_setopt($ch, CURLOPT_URL, "https://".$ServerAddress.":".$ServerPort.$SuffixURL);
 			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
 			curl_setopt($ch, CURLOPT_HEADER, true);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
@@ -167,7 +167,7 @@ if (!defined('vtBoolean')) {
 				elseif ($ControllerType == 1) {
 					$MiddlePartURL = "/";
 				}	
-				curl_setopt($ch, CURLOPT_URL, "https://".$ServerAdress.":".$ServerPort.$MiddlePartURL.$UnifiAPI."/".$DeviceMac);
+				curl_setopt($ch, CURLOPT_URL, "https://".$ServerAddress.":".$ServerPort.$MiddlePartURL.$UnifiAPI."/".$DeviceMac);
 				curl_setopt($ch, CURLOPT_HTTPGET, TRUE);
 				curl_setopt($ch , CURLOPT_RETURNTRANSFER, true);
 				curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); 
