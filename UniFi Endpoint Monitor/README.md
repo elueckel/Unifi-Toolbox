@@ -17,7 +17,7 @@ Dieses Modul ermöglicht es Endgeräte im Netz zu überwachen und diverse Daten 
 * Erstellt pro Gerät eine Variable welche z.B. für die Automation oder Überwachung genutzt werden kann (Boolean)
 * Abfragen der Controller erfolgt zeitgesteuert alle xx Sekunden
 
-### 2. Vorraussetzungen
+### 2. Voraussetzungen
 
 - IP-Symcon ab Version 5.5
 
@@ -35,7 +35,7 @@ __Konfigurationsseite__:
 
 **Art des Controllers**
 
-Da sich die APIs von CloudKey 1 und CloudKey2/Dreammaschine unterscheiden, kann hier der Controller gewählt werden
+Da sich die APIs von CloudKey 1 und CloudKey2/Dreammachine unterscheiden, kann hier der Controller gewählt werden
 
 **Benutzername & Kennwort**
 
@@ -47,7 +47,7 @@ Site die im Controller hinterlegt ist
 
 **IP Adresse und Port**
 
-Bei der Dream Maschine ist der Port 443, bei einem Controller im Standard 8443. IP Addresse des CloudKeys oder der Dream Maschine.
+Bei der Dream Maschine ist der Port 443, bei einem Controller im Standard 8443. IP-Adresse des CloudKeys oder der Dream Maschine.
 
 **Aktualisierungsfrequenz**
 
@@ -63,18 +63,18 @@ Basierend auf der Art der Verbindung stehen unterschiedliche Informationen zur V
 
 **Netzwerkdaten**
 
-Netzwerkdaten umfassen logische Daten wie IP Adresse oder Hostname. 
+Netzwerkdaten umfassen logische Daten wie IP-Adresse oder Hostname. 
 
 **Verbindungsdaten**
 
-Hier werden verfügbare physische Daten bereitgestellt. Hierzu zählen bei WLAN Geräten Informationen zu Verbingunsqualität, Zuletzt gesehen, Uptime, Kanal, Art der Technologie, SSID, Dämpfung, Signalstärke. 
+Hier werden verfügbare physische Daten bereitgestellt. Hierzu zählen bei WLAN-Geräten Informationen zu Verbindungsqualität, Zuletzt gesehen, Uptime, Kanal, Art der Technologie, SSID, Dämpfung, Signalstärke. 
 
 **Übertragungsdaten**
 
-Bei WLAN Geräten werden hier Informationen zu übertragenen Daten und Paketen geliefert.
+Bei WLAN-Geräten werden hier Informationen zu übertragenen Daten und Paketen geliefert.
 
 **Debugging**
-Das Modul gibt diverse Informatioen im Debug Bereich aus. 
+Das Modul gibt diverse Informationen im Debug Bereich aus. 
 
 ## 5. Versionsinformation
 
