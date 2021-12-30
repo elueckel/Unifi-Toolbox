@@ -7,7 +7,8 @@ Dieses Modul ermöglicht es Geräte im Netz zu blockieren, um z.B. den Zugang de
 2. [Voraussetzungen](#2-voraussetzungen)
 3. [Software-Installation](#3-software-installation)
 4. [Einrichten der Instanzen in IP-Symcon](#4-einrichten-der-instanzen-in-ip-symcon)
-5. [Versionsinformation](#5-versionsinformation)
+5. [PHP-Befehlsreferenz](#5-php-befehlsreferenz)
+6. [Versionsinformation](#6-versionsinformation)
 
 
 ## 1. Funktionsumfang
@@ -18,7 +19,7 @@ Dieses Modul ermöglicht es Geräte im Netz zu blockieren, um z.B. den Zugang de
 * Erstellt pro Gerät eine Variable welche z.B. für die Automation oder Überwachung genutzt werden kann (Boolean)
 * Das Modul reagiert auf die Änderung einer Variable
 
-## 2. Vorraussetzungen
+## 2. Voraussetzungen
 
 - IP-Symcon ab Version 5.5
 - Unifi Benutzer mit Owner oder Super-Admin Rechten (Limited-Admin Rechte sind nicht ausreichend!)
@@ -65,7 +66,26 @@ Das Modul selbst löscht keine Variablen, sollte sich ein Name ändern, dann wir
 **Debugging**
 Das Modul gibt diverse Informatioen im Debug Bereich aus. 
 
-## 5. Versionsinformation
+### 5. PHP-Befehlsreferenz
+
+#### Empfehlung
+Sofern nur eine Instanz des Unifi Device Blockers im Einsatz ist, sollte die $InstanzID wie folgt dynamisch ermittelt werden und nicht statisch gesetzt werden, da somit ein Löschen und Neuinstallieren der Unifi Device Blocker Instanz keine Auswirkung auf andere Skripte hat:
+
+`$InstanzID = IPS_GetInstanceListByModuleID("{FC3E71F1-BF95-D45D-0676-BA3D10D02CB8}")[0];`
+
+
+#### Funktionen
+
+`int DB_block(int $InstanzID, string $DeviceMacAddress)`
+
+Blockiert das Gerät mit der MAC Adresse $DeviceMacAddress, welche in der DeviceBlocker Instanz $InstanzID konfiguriert wurde.
+
+`int DB_unblock(int $InstanzID, string $DeviceMacAddress)`
+
+Erlaubt das Gerät mit der MAC Adresse $DeviceMacAddress, welche in der DeviceBlocker Instanz $InstanzID konfiguriert wurde.
+
+
+## 6. Versionsinformation
 
 Version 0.3 (Beta) - 23-08-2021
 * Unterstützung für UniFi Cloudkey 1
