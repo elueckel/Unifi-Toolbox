@@ -76,13 +76,15 @@ Sofern nur eine Instanz des Unifi Device Blockers im Einsatz ist, sollte die $In
 
 #### Funktionen
 
-`int DB_block(int $InstanzID, string $DeviceMacAddress)`
+`bool DB_block(int $InstanzID, string $DeviceMacAddress)`
 
 Blockiert das Gerät mit der MAC Adresse $DeviceMacAddress, welche in der DeviceBlocker Instanz $InstanzID konfiguriert wurde.
+Gibt false zurück, wenn Gerät in DeviceBlocker Instanz nicht gefunden wurde, ansonsten true.
 
-`int DB_unblock(int $InstanzID, string $DeviceMacAddress)`
+`bool DB_unblock(int $InstanzID, string $DeviceMacAddress)`
 
 Erlaubt das Gerät mit der MAC Adresse $DeviceMacAddress, welche in der DeviceBlocker Instanz $InstanzID konfiguriert wurde.
+Gibt false zurück, wenn Gerät in DeviceBlocker Instanz nicht gefunden wurde, ansonsten true.
 
 
 ## 6. Versionsinformation
