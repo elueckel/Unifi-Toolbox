@@ -52,9 +52,9 @@ if (!defined('vtBoolean')) {
 
 			//Connection Data General
 			$vpos = 200;
-			$this->MaintainVariable("Satisfaction", $this->Translate("Satisfaction"), vtString, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1);
+			$this->MaintainVariable("Satisfaction", $this->Translate("Satisfaction"), vtInteger, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1);
 			$this->MaintainVariable("LastSeen", $this->Translate("Last Seen"), vtString, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1);
-			$this->MaintainVariable("Uptime", $this->Translate("Uptime in hours"), vtString, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1);
+			$this->MaintainVariable("Uptime", $this->Translate("Uptime in hours"), vtInteger, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1);
 			//Connection Data Wired
 			$vpos = 230;
 			//$this->MaintainVariable("SwitchPort", $this->Translate("Switch Port"), vtString, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1 AND $this->ReadPropertyInteger("ConnectionType") == 1);
@@ -62,12 +62,12 @@ if (!defined('vtBoolean')) {
 			//Connection Data Wireless
 			$vpos = 250;
 			$this->MaintainVariable("Accesspoint", $this->Translate("Accesspoint"), vtString, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1 AND $this->ReadPropertyInteger("ConnectionType") == 0);
-			$this->MaintainVariable("Channel", $this->Translate("Channel"), vtString, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1 AND $this->ReadPropertyInteger("ConnectionType") == 0);
+			$this->MaintainVariable("Channel", $this->Translate("Channel"), vtInteger, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1 AND $this->ReadPropertyInteger("ConnectionType") == 0);
 			$this->MaintainVariable("Radio", $this->Translate("Radio"), vtString, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1 AND $this->ReadPropertyInteger("ConnectionType") == 0);
 			$this->MaintainVariable("ESSID", $this->Translate("ESS ID"), vtString, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1 AND $this->ReadPropertyInteger("ConnectionType") == 0);
-			$this->MaintainVariable("RSSI", $this->Translate("RSSI"), vtString, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1 AND $this->ReadPropertyInteger("ConnectionType") == 0);
-			$this->MaintainVariable("Noise", $this->Translate("Noise"), vtString, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1 AND $this->ReadPropertyInteger("ConnectionType") == 0);
-			$this->MaintainVariable("SignalStrength", $this->Translate("Signal Strength"), vtString, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1 AND $this->ReadPropertyInteger("ConnectionType") == 0);
+			$this->MaintainVariable("RSSI", $this->Translate("RSSI"), vtInteger, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1 AND $this->ReadPropertyInteger("ConnectionType") == 0);
+			$this->MaintainVariable("Noise", $this->Translate("Noise"), vtInteger, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1 AND $this->ReadPropertyInteger("ConnectionType") == 0);
+			$this->MaintainVariable("SignalStrength", $this->Translate("Signal Strength"), vtInteger, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1 AND $this->ReadPropertyInteger("ConnectionType") == 0);
 
 			//Transfer Data
 			$vpos = 300;
@@ -145,9 +145,13 @@ if (!defined('vtBoolean')) {
 					}
 					else if ($code == 400) {
 						$this->SendDebug($this->Translate("Authentication"),$this->Translate('400 Bad Request - The server cannot or will not process the request due to an apparent client error.'),0);
+						echo $this->Translate('400 Bad Request - The server cannot or will not process the request due to an apparent client error.');
+						exit();
 					}
 					else if ($code == 401 || $code == 403) {
 						$this->SendDebug($this->Translate("Authentication"),$this->Translate('401 Unauthorized / 403 Forbidden - The request contained valid data and was understood by the server, but the server is refusing action. Missing user permission?'),0);
+						echo $this->Translate('401 Unauthorized / 403 Forbidden - The request contained valid data and was understood by the server, but the server is refusing action. Missing user permission?');
+						exit();
 					}
 				}
 			}
@@ -191,6 +195,7 @@ if (!defined('vtBoolean')) {
 		public function EndpointMonitor() {
 
 			$this->AuthenticateAndGetData();
+
 			$RawData = $this->GetBuffer("RawData");
 			
 			if ($RawData !== "") {

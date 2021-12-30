@@ -51,14 +51,14 @@ if (!defined('vtBoolean')) {
 			$this->MaintainVariable("SoftwareVersion", $this->Translate("Software Version"), vtString, "", $vpos++, $this->ReadPropertyBoolean("DataPointBasic") == 1);
 			//$this->MaintainVariable("Satisfaction", $this->Translate("Satisfaction"), vtString, "", $vpos++, $this->ReadPropertyBoolean("DataPointBasic") == 1);
 			$this->MaintainVariable("LastSeen", $this->Translate("Last Seen"), vtString, "", $vpos++, $this->ReadPropertyBoolean("DataPointBasic") == 1);
-			$this->MaintainVariable("Uptime", $this->Translate("Uptime in hours"), vtString, "", $vpos++, $this->ReadPropertyBoolean("DataPointBasic") == 1);
+			$this->MaintainVariable("Uptime", $this->Translate("Uptime in hours"), vtInteger, "", $vpos++, $this->ReadPropertyBoolean("DataPointBasic") == 1);
 			//$this->MaintainVariable("IPAddress", $this->Translate("IP Address"), vtString, "", $vpos++, $this->ReadPropertyBoolean("DataPointBasic") == 1);
 			$this->MaintainVariable("Name", $this->Translate("Device Name"), vtString, "", $vpos++, $this->ReadPropertyBoolean("DataPointBasic") == 1);
 
 			//Hardware Data
 			$vpos = 200;
-			$this->MaintainVariable("CPULoad", $this->Translate("CPU Load"), vtString, "", $vpos++, $this->ReadPropertyBoolean("DataPointHardware") == 1);
-			$this->MaintainVariable("MemoryLoad", $this->Translate("Memory Load"), vtString, "", $vpos++, $this->ReadPropertyBoolean("DataPointHardware") == 1);
+			$this->MaintainVariable("CPULoad", $this->Translate("CPU Load"), vtInteger, "", $vpos++, $this->ReadPropertyBoolean("DataPointHardware") == 1);
+			$this->MaintainVariable("MemoryLoad", $this->Translate("Memory Load"), vtInteger, "", $vpos++, $this->ReadPropertyBoolean("DataPointHardware") == 1);
 			
 			
 			//Device Specific Data Connection Data UDM/USG
@@ -138,9 +138,13 @@ if (!defined('vtBoolean')) {
 					}
 					else if ($code == 400) {
 						$this->SendDebug($this->Translate("Authentication"),$this->Translate('400 Bad Request - The server cannot or will not process the request due to an apparent client error.'),0);
+						echo $this->Translate('400 Bad Request - The server cannot or will not process the request due to an apparent client error.');
+						exit();
 					}
 					else if ($code == 401 || $code == 403) {
 						$this->SendDebug($this->Translate("Authentication"),$this->Translate('401 Unauthorized / 403 Forbidden - The request contained valid data and was understood by the server, but the server is refusing action. Missing user permission?'),0);
+						echo $this->Translate('401 Unauthorized / 403 Forbidden - The request contained valid data and was understood by the server, but the server is refusing action. Missing user permission?');
+						exit();
 					}
 				}
 			}

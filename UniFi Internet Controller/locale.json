@@ -10,6 +10,8 @@
             "Updates will happen on a schedule every xyz seconds.": "Das Module prüft die Anwensenheit alle xyz Sekunden, wie im Module konfiguriert",
             "For debugging, please use the Debug function of the module.": "Für das Prüfen der Funktionen, gibt es Modul Meldungen im Debugbereich aus",
             "UniFi Toolbox - Dream Maschine Internet Controller Configuration": "UniFi Toolbox - Dream Maschine Internet Controller Konfiguration",
+            "400 Bad Request - The server cannot or will not process the request due to an apparent client error.": "400 Bad Request - Die Anfrage wird vom Controller nicht verarbeitet (falsche IP?) - Client Fehler.",
+            "401 Unauthorized / 403 Forbidden - The request contained valid data and was understood by the server, but the server is refusing action. Missing user permission?": "401 Unauthorized / 403 Forbidden - Die Anfrage ging an den richtigen Server, allerdings konnte sich Symcon nicht anmelden. Bitte Login Daten prüfen.",
             "Controller Type": "Art des Controllers",
             "Server Address": "Server Adresse",
             "User Name": "Anmeldename",
