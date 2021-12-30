@@ -285,7 +285,7 @@ if (!defined('vtBoolean')) {
 				return true;
 			}
 			else {
-				$this->SendDebug($this->Translate("Device Blocker"), "block(".$DeviceMacAddress.")", 0);
+				$this->SendDebug($this->Translate("Device Blocker"), "Error: block(".$DeviceMacAddress.")", 0);
 				return false;
 			}
 		}
@@ -300,7 +300,7 @@ if (!defined('vtBoolean')) {
 				return true;
 			}
 			else {
-				$this->SendDebug($this->Translate("Device Blocker"), "unblock(".$DeviceMacAddress.")", 0);
+				$this->SendDebug($this->Translate("Device Blocker"), "Error: unblock(".$DeviceMacAddress.")", 0);
 				return false;
 			}
 		}
