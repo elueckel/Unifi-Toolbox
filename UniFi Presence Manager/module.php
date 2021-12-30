@@ -124,12 +124,12 @@ if (!defined('vtBoolean')) {
 					else if ($code == 400) {
 						$this->SendDebug($this->Translate("Authentication"),$this->Translate('400 Bad Request - The server cannot or will not process the request due to an apparent client error.'),0);
 						echo $this->Translate('400 Bad Request - The server cannot or will not process the request due to an apparent client error.');
-						exit();
+						return false;
 					}
 					else if ($code == 401 || $code == 403) {
 						$this->SendDebug($this->Translate("Authentication"),$this->Translate('401 Unauthorized / 403 Forbidden - The request contained valid data and was understood by the server, but the server is refusing action. Missing user permission?'),0);
 						echo $this->Translate('401 Unauthorized / 403 Forbidden - The request contained valid data and was understood by the server, but the server is refusing action. Missing user permission?');
-						exit();
+						return false;
 					}
 				}
 			}
@@ -168,6 +168,7 @@ if (!defined('vtBoolean')) {
 				}
 			}
 
+			return true;
 		}
 
 		public function CheckPresence() {
