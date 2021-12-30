@@ -1,0 +1,12 @@
+{
+    "id": "{26117C51-539E-9E09-F409-AEB2B7896596}",
+    "name": "UniFi Device Monitor",
+    "type": 3,
+    "vendor": "UniFi",
+    "aliases": [],
+    "parentRequirements": [],
+    "childRequirements": [],
+    "implemented": [],
+    "prefix": "DM",
+    "url": "https://github.com/elueckel/Unifi-Toolbox/tree/main/UniFi%20Device%20Monitor"
+}

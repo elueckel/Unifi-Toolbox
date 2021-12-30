@@ -16,6 +16,8 @@
             "Update Frequency": "Aktualisierungsfrequenz",
             "sec - 0 is off": "Sek - 0 ist Aus",
             "The General Presence Updated variable will always be updated and can be used to trigger general updates independent of the sender.": "Die Allgemeine Anwesenheit Aktualisiert Variable wird immer unabhängig vom Gerät aktualisiert und kann somit eine generische Aktion auslösen.",
+            "400 Bad Request - The server cannot or will not process the request due to an apparent client error.": "400 Bad Request - Die Anfrage wird vom Controller nicht verarbeitet (falsche IP?) - Client Fehler.",
+            "401 Unauthorized / 403 Forbidden - The request contained valid data and was understood by the server, but the server is refusing action. Missing user permission?": "401 Unauthorized / 403 Forbidden - Die Anfrage ging an den richtigen Server, allerdings konnte sich Symcon nicht anmelden. Bitte Login Daten prüfen.",
             "General Presence Updated": "Allgemeine Anwesenheit Aktualisiert",
             "Devices": "Geräte",
             "Devicename": "Gerätename",
