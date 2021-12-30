@@ -3,8 +3,8 @@
         "de": {
             "Module Help": "Modul Hilfe",
             "This Module allows to monitor devices connected to a UniFi Network and provide data in variables.": "Dieses Modul ermöglicht es Geräte im Netz zu überwachen und Daten in Variablen anzuzeigen.",
-            "Please select the type of controller you are using, enter its IP Adress, Port and a user allowed to log in.": "Bitte wählen sie die Art des Controllers und geben die IP Adresse, Port und einen Anwender ein der auf diesen zugreifen darf.",
-            "To manage certain devices, please use their MAC adress - easiest method might be to take it from the controller interface.": "Um Geräte zu verwalten, geben sie bitte die MAC Addresse ein - diese können am einfachsten aus dem Controller ausgelesen werden.",
+            "Please select the type of controller you are using, enter its IP Address, Port and a user allowed to log in.": "Bitte wählen sie die Art des Controllers und geben die IP Adresse, Port und einen Anwender ein der auf diesen zugreifen darf.",
+            "To manage certain devices, please use their MAC address - easiest method might be to take it from the controller interface.": "Um Geräte zu verwalten, geben sie bitte die MAC Addresse ein - diese können am einfachsten aus dem Controller ausgelesen werden.",
             "Please turn on the data points you would like to monitor and variables will be created accordingly.": "Die gewünschten Datenpunkte können in der Konfiguration ausgewählt werden.",
             "Updates will happen on a schedule every xyz seconds.": "Das Module prüft die Anwensenheit alle xyz Sekunden, wie im Module konfiguriert",
             "For debugging, please use the Debug function of the module.": "Für das Prüfen der Funktionen, gibt es Modul Meldungen im Debugbereich aus",
