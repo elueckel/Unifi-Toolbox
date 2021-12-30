@@ -275,4 +275,30 @@ if (!defined('vtBoolean')) {
 		
 		}
 
+		// public function, which is blocking a device with MAC $DeviceMacAddress
+		public function block($DeviceMacAddress) {
+			$DeviceMacClean = str_replace(array(":"," "), "", $DeviceMacAddress);
+			$VarID = @IPS_GetObjectIDByIdent($DeviceMacClean, $this->InstanceID);
+
+			if(false !== $VarID) {
+				$this->SetValue($VarID, false);
+			}
+			else {
+				$this->SendDebug($this->Translate("Device Blocker"), "block(".$DeviceMacAddress.")", 0);
+			}
+		}
+
+		// public function, which is unblocking/allowing a device with MAC $DeviceMacAddress
+		public function unblock($DeviceMacAddress) {
+			$DeviceMacClean = str_replace(array(":"," "), "", $DeviceMacAddress);
+			$VarID = @IPS_GetObjectIDByIdent($DeviceMacClean, $this->InstanceID);
+
+			if(false !== $VarID) {
+				$this->SetValue($VarID, true);
+			}
+			else {
+				$this->SendDebug($this->Translate("Device Blocker"), "unblock(".$DeviceMacAddress.")", 0);
+			}
+		}
+
 	}
