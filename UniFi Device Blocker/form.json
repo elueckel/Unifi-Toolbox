@@ -10,11 +10,11 @@
                 },
                 {
                     "type": "Label",
-                    "label": "Please select the type of controller you are using, enter its IP Adress, Port and a user allowed to log in."
+                    "label": "Please select the type of controller you are using, enter its IP address, port and a user allowed to log in."
                 },
                 {
                     "type": "Label",
-                    "label": "To manage devices, please use their MAC adress and a clear text name, which will be used to create a variable in the object tree."
+                    "label": "To manage devices, please use their MAC address and a clear text name, which will be used to create a variable in the object tree."
                 },
                 {
                     "type": "Label",
