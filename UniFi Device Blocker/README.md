@@ -106,3 +106,7 @@ Version 1.1 - 25-12-2021
 * Fix - Memory Leak
 * Fix - HTTP Response Error Message
 * Variablen Management umgestellt - es Ident wird jetzt die MAC verwendet
+
+Version 1.2 - 30-12-2021
+* Neu - Verbessertes Fehlerhandling vor allem bei falschen Logins
+* Neu - Block kann jetzt als Funktion aufgerufen werden
