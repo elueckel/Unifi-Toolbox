@@ -83,5 +83,5 @@ Version 1.1 - 25-12-2021
 * Fix - Memory Leak
 * Fix - HTTP Response Error Message
 
-Version 1.2 - 27-12-2021
-* Neu - Endpoint Monitor zur Überwachung von Endgeräten
+Version 1.2 - 30-12-2021
+* Neu - Verbessertes Fehlerhandling vor allem bei falschen Logins
