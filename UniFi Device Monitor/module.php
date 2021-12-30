@@ -57,8 +57,8 @@ if (!defined('vtBoolean')) {
 
 			//Hardware Data
 			$vpos = 200;
-			$this->MaintainVariable("CPULoad", $this->Translate("CPU Load"), vtInteger, "", $vpos++, $this->ReadPropertyBoolean("DataPointHardware") == 1);
-			$this->MaintainVariable("MemoryLoad", $this->Translate("Memory Load"), vtInteger, "", $vpos++, $this->ReadPropertyBoolean("DataPointHardware") == 1);
+			$this->MaintainVariable("CPULoad", $this->Translate("CPU Load"), vtFloat, "", $vpos++, $this->ReadPropertyBoolean("DataPointHardware") == 1);
+			$this->MaintainVariable("MemoryLoad", $this->Translate("Memory Load"), vtFloat, "", $vpos++, $this->ReadPropertyBoolean("DataPointHardware") == 1);
 			
 			
 			//Device Specific Data Connection Data UDM/USG
