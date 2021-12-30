@@ -17,7 +17,7 @@ if (!defined('vtBoolean')) {
 			parent::Create();
 
 			$this->RegisterPropertyInteger("ControllerType", 0);
-			$this->RegisterPropertyString("ServerAdress","192.168.1.1");
+			$this->RegisterPropertyString("ServerAddress","192.168.1.1");
 			$this->RegisterPropertyInteger("ServerPort", "443");
 			$this->RegisterPropertyString("Site","default");
 			$this->RegisterPropertyString("UserName","");
@@ -48,8 +48,8 @@ if (!defined('vtBoolean')) {
 				foreach ($DevicesJSON as $Device) {
 					$DeviceName = $Device["varDeviceName"];
 					$DeviceNameClean = str_replace(array("-",":"," "), "", $DeviceName);
-					$DeviceMacAdress = $Device["varDeviceMAC"];
-					$DeviceMacClean = str_replace(array(":"," "), "", $DeviceMacAdress);
+					$DeviceMacAddress = $Device["varDeviceMAC"];
+					$DeviceMacClean = str_replace(array(":"," "), "", $DeviceMacAddress);
 
 					if (@IPS_GetObjectIDByIdent($DeviceMacClean, $this->InstanceID) == false) {
 
@@ -67,8 +67,8 @@ if (!defined('vtBoolean')) {
 					}
 
 					foreach ($DevicesJSON as $Device) {
-						$DeviceMacAdress = $Device["varDeviceMAC"];
-						$DeviceMacClean = str_replace(array(":"," "), "", $DeviceMacAdress);
+						$DeviceMacAddress = $Device["varDeviceMAC"];
+						$DeviceMacClean = str_replace(array(":"," "), "", $DeviceMacAddress);
 						$VarID = @IPS_GetObjectIDByIdent($DeviceMacClean, $this->InstanceID);
 						$this->RegisterMessage($VarID, VM_UPDATE);
 					}
@@ -103,7 +103,7 @@ if (!defined('vtBoolean')) {
 		public function AuthenticateAndProcessRequest() {
 			
 			$ControllerType = $this->ReadPropertyInteger("ControllerType");
-			$ServerAdress = $this->ReadPropertyString("ServerAdress");
+			$ServerAddress = $this->ReadPropertyString("ServerAddress");
 			$ServerPort = $this->ReadPropertyInteger("ServerPort");
 			$Username = $this->ReadPropertyString("UserName");
 			$Password = $this->ReadPropertyString("Password");
@@ -125,7 +125,7 @@ if (!defined('vtBoolean')) {
 				curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(['username' => $Username, 'password' => $Password]));
 			}				
 			curl_setopt($ch, CURLOPT_POST, TRUE);
-			curl_setopt($ch, CURLOPT_URL, "https://".$ServerAdress.":".$ServerPort.$SuffixURL);
+			curl_setopt($ch, CURLOPT_URL, "https://".$ServerAddress.":".$ServerPort.$SuffixURL);
 			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
 			curl_setopt($ch, CURLOPT_HEADER, true);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
@@ -162,24 +162,24 @@ if (!defined('vtBoolean')) {
 				$SenderObjectIdent = ($SenderObjectData["ObjectIdent"]);
 				$SenderStatus = GetValue($SenderID);
 
-				//Get MAC Adress from Config form
+				//Get MAC Address from Config form
 				$DevicesList = $this->ReadPropertyString("Devices");
 				$DevicesJSON = json_decode($DevicesList,true);
 				
 				if (isset($DevicesJSON)) {
-					$DeviceMacAdress = "";
+					$DeviceMacAddress = "";
 
 					foreach ($DevicesJSON as $Device) {
 						$DeviceMacClean = str_replace(array(":"," "), "", $Device["varDeviceMAC"]);
 						if ($SenderObjectIdent == $DeviceMacClean) {
-							$DeviceMacAdress = $Device["varDeviceMAC"];
+							$DeviceMacAddress = $Device["varDeviceMAC"];
 							$this->SendDebug($this->Translate("Device Blocker"),$this->Translate("Device to be managed: ").$Device["varDeviceName"],0);
 							break;
 						}
 					}
 				}
 
-				if (!isset($DeviceMacAdress) || "" == $DeviceMacAdress) {
+				if (!isset($DeviceMacAddress) || "" == $DeviceMacAddress) {
 					$this->SendDebug($this->Translate("Device Blocker"),$this->Translate("The switched variable did not have an entry in the module configuration - execution stopped"),0);
 					exit;
 				}
@@ -214,18 +214,18 @@ if (!defined('vtBoolean')) {
 
 					if ($SenderStatus == 1) {
 						$Command = "unblock-sta";
-						$this->SendDebug($this->Translate("Device Blocker"),$this->Translate("Module will try to unblock device ").$SenderName.$this->Translate(" with MAC adress ").$DeviceMacAdress,0);
+						$this->SendDebug($this->Translate("Device Blocker"),$this->Translate("Module will try to unblock device ").$SenderName.$this->Translate(" with MAC address ").$DeviceMacAddress,0);
 					} 
 					else if ($SenderStatus == 0) {
 						$Command = "block-sta";
-						$this->SendDebug($this->Translate("Device Blocker"),$this->Translate("Module will try to block device ").$SenderName.$this->Translate(" with MAC adress ").$DeviceMacAdress,0);
+						$this->SendDebug($this->Translate("Device Blocker"),$this->Translate("Module will try to block device ").$SenderName.$this->Translate(" with MAC address ").$DeviceMacAddress,0);
 					}
 
-					//$CommandToController = json_encode(array($Command => $DeviceMacAdress));
+					//$CommandToController = json_encode(array($Command => $DeviceMacAddress));
 					
 					$CommandToController = json_encode(array(
 						"cmd" => $Command,
-						"mac" => $DeviceMacAdress
+						"mac" => $DeviceMacAddress
 
 					), JSON_UNESCAPED_SLASHES);
 					//var_dump($CommandToController);
@@ -239,7 +239,7 @@ if (!defined('vtBoolean')) {
 						$MiddlePartURL = "/";
 					}	
 					curl_setopt($ch, CURLOPT_POST, true);
-					curl_setopt($ch, CURLOPT_URL, "https://".$ServerAdress.":".$ServerPort.$MiddlePartURL.$UnifiAPI);
+					curl_setopt($ch, CURLOPT_URL, "https://".$ServerAddress.":".$ServerPort.$MiddlePartURL.$UnifiAPI);
 					curl_setopt($ch, CURLOPT_HTTPHEADER, array('Cookie:'.$Cookie,$X_CSRF_Token,'Content-Type:application/json', 'Expect:'/*,'data='.$CommandToController*/));
 					curl_setopt($ch, CURLOPT_POSTFIELDS, $CommandToController);
 					curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); 
