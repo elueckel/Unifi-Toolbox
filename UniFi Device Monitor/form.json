@@ -14,7 +14,7 @@
                 },
                 {
                     "type": "Label",
-                    "label": "To manage certain devices, please use their MAC adress - easiest method might be to take it from the controller interface."
+                    "label": "To manage certain devices, please use their MAC address - easiest method might be to take it from the controller interface."
                 },
                 {
                     "type": "Label",
