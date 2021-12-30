@@ -281,7 +281,7 @@ if (!defined('vtBoolean')) {
 			$VarID = @IPS_GetObjectIDByIdent($DeviceMacClean, $this->InstanceID);
 
 			if(false !== $VarID) {
-				$this->SetValue($VarID, false);
+				$this->SetValue($DeviceMacClean, false);
 			}
 			else {
 				$this->SendDebug($this->Translate("Device Blocker"), "block(".$DeviceMacAddress.")", 0);
@@ -294,7 +294,7 @@ if (!defined('vtBoolean')) {
 			$VarID = @IPS_GetObjectIDByIdent($DeviceMacClean, $this->InstanceID);
 
 			if(false !== $VarID) {
-				$this->SetValue($VarID, true);
+				$this->SetValue($DeviceMacClean, true);
 			}
 			else {
 				$this->SendDebug($this->Translate("Device Blocker"), "unblock(".$DeviceMacAddress.")", 0);
