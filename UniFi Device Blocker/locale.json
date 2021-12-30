@@ -3,8 +3,8 @@
         "de": {
             "Module Help": "Modul Hilfe",
             "This Module allows to block devices from accessing the network - e.g. block internet access of children post 20:00.": "Dieses Modul ermöglicht es Geräte im Netz zu blockieren, um z.B. den Zugang der Kinder zu Internet nach 20 Uhr zu blockieren.",
-            "Please select the type of controller you are using, enter its IP Adress, Port and a user allowed to log in.": "Bitte wählen sie die Art des Controllers und geben die IP Adresse, Port und einen Anwender ein der auf diesen zugreifen darf.",
-            "To manage certain devices, please use their MAC adress and a clear text name, which will be used to create a variable in the object tree.": "Um Geräte zu verwalten, geben sie bitte die MAC Addresse und einen Namen in der Form unten ein - anhand des Namens wird eine Boolean Variable im Objektbaum erstellt.",
+            "Please select the type of controller you are using, enter its IP address, port and a user allowed to log in.": "Bitte wählen sie die Art des Controllers und geben die IP Adresse, Port und einen Anwender ein der auf diesen zugreifen darf.",
+            "To manage certain devices, please use their MAC address and a clear text name, which will be used to create a variable in the object tree.": "Um Geräte zu verwalten, geben sie bitte die MAC Addresse und einen Namen in der Form unten ein - anhand des Namens wird eine Boolean Variable im Objektbaum erstellt.",
             "This variable can than be turn on or off resulting in a block or unblock e.g. via the mobile app, webfront or other automation.": "Die Variable im Objektbaum kann im Webfront, der Mobile-App oder einer Automation genutzt werden um Geräte ein oder aus zu schalten.",
             "Updates will happen on a schedule every xyz seconds.": "Das Module prüft die Anwensenheit alle xyz Sekunden, wie im Module konfiguriert",
             "For debugging, please use the Debug function of the module.": "Für das Prüfen der Funktionen, gibt es Modul Meldungen im Debugbereich aus",
