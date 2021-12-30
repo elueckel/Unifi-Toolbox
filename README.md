@@ -24,11 +24,11 @@ Folgende Module beinhaltet das UniFi Toolbox Repository:
 	Mit dem Device Blocker können Geräte anhand ihrer MAC Adresse vom Zugang auf das Netzwerk geblockt werden, z.B. um die Nutzung von Geräten im Kinderzimmer nach 20 Uhr zu sperren und am Morgen wieder zu aktivieren.
 
 - __UniFi Device Monitor__ ([Dokumentation](UniFi%20Device%20Monitor))  
-	Mit dem Device Monitor können Geräte von UniFi überwacht werden - es stehen bei Firewalls (UDM/USG) Daten zur Internetverbindung zu Verfügung, bei generischen Geräten Daten zum Status und Hardware.
+	Mit dem Device Monitor können Geräte von UniFi überwacht werden - es stehen bei Firewalls (UDM/USG) Daten zur Internetverbindung zur Verfügung, bei generischen Geräten Daten zum Status und Hardware.
 
 - __UniFi Endpoint Monitor__ ([Dokumentation](UniFi%20Endpoint%20Monitor))  
 	Mit dem Endpoint Monitor können mit den UniFi Netzwerkverbunde Geräte überwacht werden. Hierbei wird zwischen Kabel und WLAN Verbindungen unterschieden, da im WLAN weit mehr Daten zur Verfügung stehen. 
 
 Für detaillierte Informationen zu den Modulen, wie z.B. zur Version bitte die Hilfeseiten der Module besuchen. 
 
-Dieses Modul ist für die nicht kommerzielle Nutzung kostenlos - bei kommerzieller Nutzung bitte den Author kontakieren. 
+Dieses Modul ist für die nicht kommerzielle Nutzung kostenlos - bei kommerzieller Nutzung bitte den Author kontaktieren. 
