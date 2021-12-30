@@ -72,21 +72,7 @@ if (!defined('vtBoolean')) {
 						$VarID = @IPS_GetObjectIDByIdent($DeviceMacClean, $this->InstanceID);
 						$this->RegisterMessage($VarID, VM_UPDATE);
 					}
-				}
-
-					/*
-					
-					$this->MaintainVariable($DeviceNameClean, $DeviceName, vtBoolean, "~Switch", $vpos++, isset($DevicesJSON));
-					$DeviceNameCleanID = @IPS_GetObjectIDByIdent($DeviceNameClean, $this->InstanceID);
-					SetValue($DeviceNameCleanID,true); // make a device will not a disconnected when the module is initialized
-
-					$this->EnableAction($DeviceNameClean);
-					
-					//$DeviceNameCleanID = @IPS_GetObjectIDByIdent($DeviceNameClean, $this->InstanceID);
-					if (IPS_GetObject($DeviceNameCleanID)['ObjectType'] == 2) {
-							$this->RegisterMessage($DeviceNameCleanID, VM_UPDATE);
-					}
-					*/			
+				}		
 			}				
 
 		}
