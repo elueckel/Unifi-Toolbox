@@ -1,5 +1,5 @@
 # UniFi Device Monitor
-Dieses Modul ermöglicht es Unifi Geräte im Netz zu überwachen und u.a. Verbindungs und Hardwaredaten abzufragen.
+Dieses Modul ermöglicht es Unifi Geräte im Netz zu überwachen und u.a. Verbindungs- und Hardwaredaten abzufragen.
 
 ### Inhaltsverzeichnis
 
@@ -17,7 +17,7 @@ Dieses Modul ermöglicht es Unifi Geräte im Netz zu überwachen und u.a. Verbin
 * Erstellt pro Gerät eine Variable welche z.B. für die Automation oder Überwachung genutzt werden kann (Boolean)
 * Abfragen der Controller erfolgt zeitgesteuert alle xx Sekunden
 
-### 2. Vorraussetzungen
+### 2. Voraussetzungen
 
 - IP-Symcon ab Version 5.5
 
@@ -35,7 +35,7 @@ __Konfigurationsseite__:
 
 **Art des Controllers**
 
-Da sich die APIs von CloudKey 1 und CloudKey2/Dreammaschine unterscheiden, kann hier der Controller gewählt werden
+Da sich die APIs von CloudKey 1 und CloudKey2/Dreammachine unterscheiden, kann hier der Controller gewählt werden
 
 **Benutzername & Kennwort**
 
@@ -47,7 +47,7 @@ Site die im Controller hinterlegt ist
 
 **IP Adresse und Port**
 
-Bei der Dream Maschine ist der Port 443, bei einem Controller im Standard 8443. IP Addresse des CloudKeys oder der Dream Maschine.
+Bei der Dream Maschine ist der Port 443, bei einem Controller im Standard 8443. IP-Adresse des CloudKeys oder der Dream Maschine.
 
 **Aktualisierungsfrequenz**
 
@@ -67,7 +67,7 @@ Netzwerkdaten umfassen logische Daten wie Gerätemodel, Softwareversion, Zufried
 
 **Hardwaredaten - Verfügbar für alle Geräte**
 
-Diese einstellung liest die CPU und Speicherlast aus.
+Diese Einstellung liest die CPU und Speicherlast aus.
 
 **Verbindungsdaten - nur bei Firewalls wie UDM/USG verfügbar**
 
@@ -75,10 +75,10 @@ Netzwerkdaten wie Public IP, übertragene Daten, Pakete und Fehler
 
 **Übertragungsdaten**
 
-Bei WLAN Geräten werden hier Informationen zu übertragenen Daten und Paketen geliefert.
+Bei WLAN-Geräten werden hier Informationen zu übertragenen Daten und Paketen geliefert.
 
 **Debugging**
-Das Modul gibt diverse Informatioen im Debug Bereich aus. 
+Das Modul gibt diverse Informationen im Debug Bereich aus. 
 
 ## 5. Versionsinformation
 
