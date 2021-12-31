@@ -13,8 +13,8 @@ Dieses Modul ermöglicht es Geräte im Netz zu blockieren, um z.B. den Zugang de
 
 ## 1. Funktionsumfang
 
-* Unterstützung für UniFi Cloudkey 1
-* Unterstützung für UniFi Cloudkey 2 und Dream Maschine
+* Unterstützung für UniFi CloudKey 1 (UC-CK)
+* Unterstützung für UniFi CloudKey 2 (UCK-G2) und DreamMachine (UDM)
 * Anlegen von zu überwachenden Geräten mit Name und MAC Adresse 
 * Erstellt pro Gerät eine Variable welche z.B. für die Automation oder Überwachung genutzt werden kann (Boolean)
 * Das Modul reagiert auf die Änderung einer Variable
@@ -23,7 +23,6 @@ Dieses Modul ermöglicht es Geräte im Netz zu blockieren, um z.B. den Zugang de
 
 - IP-Symcon ab Version 5.5
 - Unifi Benutzer mit Owner oder Super-Admin Rechten (Limited-Admin Rechte sind nicht ausreichend!)
-
 
 ## 3. Software-Installation
 
@@ -39,7 +38,7 @@ __Konfigurationsseite__:
 
 **Art des Controllers**
 
-Da sich die APIs von CloudKey 1 und CloudKey2/Dreammaschine unterscheiden, kann hier der Controller gewählt werden
+Da sich die APIs von CloudKey 1 und CloudKey2/DreamMachine unterscheiden, kann hier der Controller gewählt werden
 
 **Benutzername & Kennwort**
 
@@ -49,9 +48,9 @@ Account mit dem sich das Modul mit dem Controller verbindet
 
 Site die im Controller hinterlegt ist 
 
-**IP Adresse und Port**
+**IP-Adresse und Port**
 
-Bei der Dream Maschine ist der Port 443, bei einem Controller im Standard 8443. IP Addresse des CloudKeys oder der Dream Maschine.
+Bei der DreamMachine ist der Port 443, bei einem Controller im Standard 8443. IP-Adresse des CloudKeys oder der DreamMachine.
 
 **Aktualisierungsfrequenz**
 
@@ -64,7 +63,8 @@ Das Modul erstellt dann eine Boolean-Variable mit Switch-Profil, welche in weite
 Das Modul selbst löscht keine Variablen, sollte sich ein Name ändern, dann wird eine neue erstellt und die alte im Objektbaum belassen.
 
 **Debugging**
-Das Modul gibt diverse Informatioen im Debug Bereich aus. 
+
+Das Modul gibt diverse Informationen im Debug Bereich aus. 
 
 ### 5. PHP-Befehlsreferenz
 
@@ -90,8 +90,8 @@ Gibt false zurück, wenn Gerät in DeviceBlocker Instanz nicht gefunden wurde, a
 ## 6. Versionsinformation
 
 Version 0.3 (Beta) - 23-08-2021
-* Unterstützung für UniFi Cloudkey 1
-* Unterstützung für UniFi Cloudkey 2 und Dream Maschine
+* Unterstützung für UniFi CloudKey 1
+* Unterstützung für UniFi CloudKey 2 und DreamMachine
 * Anlegen von zu überwachenden Geräten mit Name und MAC Adresse 
 * Erstellt pro Gerät eine Variable welche z.B. für die Automation oder Überwachung genutzt werden kann (Boolean)
 * Abfragen der Controller erfolgt zeitgesteuert alle xx Sekunden

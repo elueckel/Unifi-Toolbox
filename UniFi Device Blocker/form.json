@@ -40,7 +40,7 @@
             "caption": "Controller Type",
             "options": [
                 {
-                    "caption": "Dream Maschine / Pro / CloudKey V2",
+                    "caption": "DreamMachine / Pro / CloudKey V2",
                     "value": 0
                 },
                 {
@@ -56,13 +56,17 @@
         },
         {
             "type": "ValidationTextBox",
-            "name": "ServerAdress",
-            "caption": "Server Address"
+            "name": "ServerAddress",
+            "caption": "Server Address",
+            "validate": "^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"
         },
         {
             "type": "NumberSpinner",
             "name": "ServerPort",
-            "caption": "Server Port"
+            "caption": "Server Port",
+            "digits": 0,
+            "minimum": 1,
+            "maximum": 65535
         },
         {
             "type": "ValidationTextBox",
@@ -120,10 +124,9 @@
                 {
                     "type": "Button",
                     "label": "Test Authentication and Blocking",
-                    "onClick": "DB_AuthenticateAndProcessRequest($id);"
+                    "onClick": "DB_AuthenticateAndProcessRequest($id, '');"
                 }
             ]
         }
-    ],
-    "status": []
+    ]
 }

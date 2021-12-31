@@ -40,7 +40,7 @@
             "caption": "Controller Type",
             "options": [
                 {
-                    "caption": "Dream Maschine / Pro / CloudKey V2",
+                    "caption": "DreamMachine / Pro / CloudKey V2",
                     "value": 0
                 },
                 {
@@ -82,7 +82,9 @@
             "type": "NumberSpinner",
             "name": "Timer",
             "caption": "Update Frequency",
-            "suffix": "sec - 0 is off"
+            "suffix": "sec - 0 is off",
+            "digits": 0,
+            "minimum": 0
         },
         {
             "type": "Label",
@@ -136,7 +138,7 @@
                 {
                     "type": "Button",
                     "label": "Test Authentication",
-                    "onClick": "DM_AuthenticateAndGetData($id);"
+                    "onClick": "DM_AuthenticateAndGetData($id, '');"
                 },
                 {
                     "type": "Button",
@@ -145,6 +147,5 @@
                 }
             ]
         }
-    ],
-    "status": []
+    ]
 }

@@ -1,5 +1,5 @@
 # UniFi Internet Controller
-Dieses Modul ermöglicht es Informationen über die Internetverbindung durch eine USG oder DreamMaschine, wie z.B. die öffentliche IP-Adresse abzurufen.
+Dieses Modul ermöglicht es Informationen über die Internetverbindung durch eine USG oder DreamMachine, wie z.B. die öffentliche IP-Adresse abzurufen.
 
 ## Inhaltsverzeichnis
 
@@ -12,7 +12,7 @@ Dieses Modul ermöglicht es Informationen über die Internetverbindung durch ein
 ## 1. Funktionsumfang
 
 * Unterstützung für UniFi CloudKey 1 (UC-CK)
-* Unterstützung für UniFi CloudKey 2 (UCK-G2) und DreamMaschine (UDM)
+* Unterstützung für UniFi CloudKey 2 (UCK-G2) und DreamMachine (UDM)
 * Abfragen der Controller erfolgt zeitgesteuert alle xx Sekunden
 * Aktuelle Datenpunkte: Externe IP-Adresse
 
@@ -34,7 +34,7 @@ __Konfigurationsseite__:
 
 **Art des Controllers**
 
-Da sich die APIs von CloudKey 1 und CloudKey2/DreamMaschine unterscheiden, kann hier der Controller gewählt werden
+Da sich die APIs von CloudKey 1 und CloudKey2/DreamMachine unterscheiden, kann hier der Controller gewählt werden
 
 **Benutzername & Kennwort**
 
@@ -46,7 +46,7 @@ Site die im Controller hinterlegt ist
 
 **IP-Adresse und Port**
 
-Bei der DreamMaschine ist der Port 443, bei einem Controller im Standard 8443. IP-Adresse des CloudKeys oder der DreamMaschine.
+Bei der DreamMachine ist der Port 443, bei einem Controller im Standard 8443. IP-Adresse des CloudKeys oder der DreamMachine.
 
 **Aktualisierungsfrequenz**
 
@@ -64,7 +64,7 @@ Das Modul gibt diverse Informationen im Debug Bereich aus.
 
 Version 0.3 (Beta) - 23-08-2021
 * Unterstützung für UniFi CloudKey 1
-* Unterstützung für UniFi CloudKey 2 und DreamMaschine
+* Unterstützung für UniFi CloudKey 2 und DreamMachine
 * Abfrage der externen IP-Adresse (WAN01)
 
 Version 0.4 (Beta) - 26-08-2021

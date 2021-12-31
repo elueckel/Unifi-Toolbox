@@ -10,11 +10,11 @@
                 },
                 {
                     "type": "Label",
-                    "label": "Please select the type of controller you are using, enter its IP Adress, Port and a user allowed to log in."
+                    "label": "Please select the type of controller you are using, enter its IP Address, Port and a user allowed to log in."
                 },
                 {
                     "type": "Label",
-                    "label": "To manage certain devices, please use their MAC adress and a clear text name, which will be used to create a variable in the object tree."
+                    "label": "To manage certain devices, please use their MAC address and a clear text name, which will be used to create a variable in the object tree."
                 },
                 {
                     "type": "Label",
@@ -40,7 +40,7 @@
             "caption": "Controller Type",
             "options": [
                 {
-                    "caption": "Dream Maschine / Pro / CloudKey V2",
+                    "caption": "DreamMachine / Pro / CloudKey V2",
                     "value": 0
                 },
                 {
@@ -56,13 +56,17 @@
         },
         {
             "type": "ValidationTextBox",
-            "name": "ServerAdress",
-            "caption": "Server Address"
+            "name": "ServerAddress",
+            "caption": "Server Address",
+            "validate": "^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"
         },
         {
             "type": "NumberSpinner",
             "name": "ServerPort",
-            "caption": "Server Port"
+            "caption": "Server Port",
+            "digits": 0,
+            "minimum": 1,
+            "maximum": 65535
         },
         {
             "type": "ValidationTextBox",
@@ -78,7 +82,9 @@
             "type": "NumberSpinner",
             "name": "Timer",
             "caption": "Update Frequency",
-            "suffix": "sec - 0 is off"
+            "suffix": "sec - 0 is off",
+            "digits": 0,
+            "minimum": 0
         },
         {
             "type": "Label",
@@ -130,7 +136,7 @@
                 {
                     "type": "Button",
                     "label": "Test Authentication",
-                    "onClick": "PM_AuthenticateAndGetData($id);"
+                    "onClick": "PM_AuthenticateAndGetData($id, '');"
                 },
                 {
                     "type": "Button",
@@ -139,6 +145,5 @@
                 }
             ]
         }
-    ],
-    "status": []
+    ]
 }
