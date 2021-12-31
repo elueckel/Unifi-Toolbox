@@ -1,17 +1,9 @@
 <?php
 
-declare(strict_types=1);
-
-if (!defined('vtBoolean')) {
-    define('vtBoolean', 0);
-    define('vtInteger', 1);
-    define('vtFloat', 2);
-    define('vtString', 3);
-    define('vtArray', 8);
-    define('vtObject', 9);
-}
+require_once __DIR__ . '/../libs/myFunctions.php';  // globale Funktionen
 
 class UniFiDeviceBlocker extends IPSModule {
+	use myFunctions;
 
 	public function Create() {
 		//Never delete this line!
@@ -45,21 +37,21 @@ class UniFiDeviceBlocker extends IPSModule {
 		$DevicesJSON = json_decode($DevicesList,true);
 		//var_dump($DevicesJSON);
 
-		if (isset($DevicesJSON)) {
+		if(isset($DevicesJSON)) {
 			foreach ($DevicesJSON as $Device) {
 				$DeviceName = $Device["varDeviceName"];
-				$DeviceNameClean = str_replace(array("-",":"," "), "", $DeviceName);
+				$DeviceNameClean = $this->removeInvalidChars($DeviceName);
 				$DeviceMacAddress = $Device["varDeviceMAC"];
-				$DeviceMacClean = str_replace(array(":"," "), "", $DeviceMacAddress);
+				$DeviceMacClean = $this->removeInvalidChars($DeviceMacAddress, true);
 
-				if (@IPS_GetObjectIDByIdent($DeviceMacClean, $this->InstanceID) == false) {
+				if(@IPS_GetObjectIDByIdent($DeviceMacClean, $this->InstanceID) == false) {
 
 					$DeviceMacCleanID = IPS_CreateVariable(0);
 					IPS_SetName($DeviceMacCleanID, $DeviceName);
 					IPS_SetIdent($DeviceMacCleanID, $DeviceMacClean);
 					IPS_SetVariableCustomProfile($DeviceMacCleanID, "~Switch");
 					IPS_SetParent($DeviceMacCleanID, $this->InstanceID);
-						 
+						
 					SetValue($DeviceMacCleanID,true);
 					IPS_Sleep(1000);
 					$this->EnableAction($DeviceMacClean);
@@ -69,7 +61,7 @@ class UniFiDeviceBlocker extends IPSModule {
 
 				foreach ($DevicesJSON as $Device) {
 					$DeviceMacAddress = $Device["varDeviceMAC"];
-					$DeviceMacClean = str_replace(array(":"," "), "", $DeviceMacAddress);
+					$DeviceMacClean = $this->removeInvalidChars($DeviceMacAddress, true);
 					$VarID = @IPS_GetObjectIDByIdent($DeviceMacClean, $this->InstanceID);
 					$this->RegisterMessage($VarID, VM_UPDATE);
 				}
@@ -98,71 +90,17 @@ class UniFiDeviceBlocker extends IPSModule {
 		$Password = $this->ReadPropertyString("Password");
 
 		//Change the Unifi API to be called here
-		if ("" == $UnifiAPI) {
+		if("" == $UnifiAPI) {
 			$Site = $this->ReadPropertyString("Site");
 			$UnifiAPI = "api/s/".$Site."/cmd/sta";
 		}
 
 		//Generic Section providing for Authenthication against a DreamMachine or Classic CloudKey
-		$ch = curl_init();
+		$Cookie = $this->getCookie($Username, $Password, $ServerAddress, $ServerPort);
 
-		if(!isset($ControllerType) || $ControllerType == 0) {
-			$SuffixURL = "/api/auth/login";
-			curl_setopt($ch, CURLOPT_POSTFIELDS, "username=".$Username."&password=".$Password);
-		}
-		elseif ($ControllerType == 1) {
-			$SuffixURL = "/api/login";
-			curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(['username' => $Username, 'password' => $Password]));
-		}				
-		curl_setopt($ch, CURLOPT_POST, TRUE);
-		curl_setopt($ch, CURLOPT_URL, "https://".$ServerAddress.":".$ServerPort.$SuffixURL);
-		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
-		curl_setopt($ch, CURLOPT_HEADER, true);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);  
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
-		$data = curl_exec($ch);
-
-		if(false === $data)
-		{
-			$this->SendDebug($this->Translate("Authentication"), $this->Translate('Error: Not reachable / No response!'),0);
-
-			// IP or Port not reachable / no response
-			$this->SetStatus(200);
-
-			return false;
-		}
-
-		$header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
-		$body        = trim(substr($data, $header_size));
-		$code        = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
-		$this->SendDebug($this->Translate("Authentication"),$this->Translate('Return-Code Provided is: ').$code,0);
-		//$this->SendDebug($this->Translate("Debug"), $data,0);
-
-		preg_match_all('|(?i)Set-Cookie: (.*);|U', substr($data, 0, $header_size), $results);
-		if (isset($results[1])) {
-			$Cookie = implode(';', $results[1]);
-			if (!empty($body)) {
-				if (200 == $code) { 
-					$this->SendDebug($this->Translate("Authentication"),$this->Translate('Login Successful'),0); 
-					$this->SendDebug($this->Translate("Authentication"),$this->Translate('Cookie Provided is: ').$Cookie,0);
-				}
-				else if (400 == $code) {
-					$this->SendDebug($this->Translate("Authentication"),$this->Translate('400 Bad Request - The server cannot or will not process the request due to an apparent client error.'),0);
-					echo $this->Translate('400 Bad Request - The server cannot or will not process the request due to an apparent client error.');
-					return false;
-				}
-				else if (401 == $code || 403 == $code) {
-					$this->SendDebug($this->Translate("Authentication"),$this->Translate('401 Unauthorized / 403 Forbidden - The request contained valid data and was understood by the server, but the server is refusing action. Missing user permission?'),0);
-					echo $this->Translate('401 Unauthorized / 403 Forbidden - The request contained valid data and was understood by the server, but the server is refusing action. Missing user permission?');
-					return false;
-				}
-			}
-		}
-
+		// get SenderID
 		$SenderID = $this->GetBuffer("SenderID");
-		if ($SenderID != "") {
+		if($SenderID != "") {
 			$SenderObjectData = IPS_GetObject($SenderID);
 			$SenderName = ($SenderObjectData["ObjectName"]);
 			$SenderObjectIdent = ($SenderObjectData["ObjectIdent"]);
@@ -172,12 +110,12 @@ class UniFiDeviceBlocker extends IPSModule {
 			$DevicesList = $this->ReadPropertyString("Devices");
 			$DevicesJSON = json_decode($DevicesList,true);
 				
-			if (isset($DevicesJSON)) {
+			if(isset($DevicesJSON)) {
 				$DeviceMacAddress = "";
 
 				foreach ($DevicesJSON as $Device) {
-					$DeviceMacClean = str_replace(array(":"," "), "", $Device["varDeviceMAC"]);
-					if ($SenderObjectIdent == $DeviceMacClean) {
+					$DeviceMacClean = $this->removeInvalidChars($Device["varDeviceMAC"], true);
+					if($SenderObjectIdent == $DeviceMacClean) {
 						$DeviceMacAddress = $Device["varDeviceMAC"];
 						$this->SendDebug($this->Translate("Device Blocker"),$this->Translate("Device to be managed: ").$Device["varDeviceName"],0);
 						break;
@@ -185,7 +123,7 @@ class UniFiDeviceBlocker extends IPSModule {
 				}
 			}
 
-			if (!isset($DeviceMacAddress) || "" == $DeviceMacAddress) {
+			if(!isset($DeviceMacAddress) || "" == $DeviceMacAddress) {
 				$this->SendDebug($this->Translate("Device Blocker"),$this->Translate("The switched variable did not have an entry in the module configuration - execution stopped"),0);
 				return false;
 			}
@@ -200,30 +138,17 @@ class UniFiDeviceBlocker extends IPSModule {
 			//////////////////////////////////////////
 				
 			//create XSRF Token
+			$X_CSRF_Token = $this->createXsrfToken($Cookie);
 
-			if (($Cookie) && strpos($Cookie, 'TOKEN') !== false) {
-				$cookie_bits = explode('=', $Cookie);
-				if (empty($cookie_bits) || !array_key_exists(1, $cookie_bits)) {
-					return;
-				}
-
-				$jwt_components = explode('.', $cookie_bits[1]);
-				if (empty($jwt_components) || !array_key_exists(1, $jwt_components)) {
-					return;
-				}
-
-				$X_CSRF_Token = 'x-csrf-token: ' . json_decode(base64_decode($jwt_components[1]))->csrfToken;
-			}
-
-			if (isset($Cookie)) {
+			if(isset($Cookie)) {
 
 				$this->SendDebug($this->Translate("Device Blocker"),$this->Translate("Module is authenticated and will try to manage device"),0);
 
-				if ($SenderStatus == 1) {
+				if($SenderStatus == 1) {
 					$Command = "unblock-sta";
 					$this->SendDebug($this->Translate("Device Blocker"),$this->Translate("Module will try to unblock device ").$SenderName.$this->Translate(" with MAC address ").$DeviceMacAddress,0);
 				} 
-				else if ($SenderStatus == 0) {
+				else if($SenderStatus == 0) {
 					$Command = "block-sta";
 					$this->SendDebug($this->Translate("Device Blocker"),$this->Translate("Module will try to block device ").$SenderName.$this->Translate(" with MAC address ").$DeviceMacAddress,0);
 				}
@@ -239,10 +164,10 @@ class UniFiDeviceBlocker extends IPSModule {
 					
 
 				$ch = curl_init();
-				if ($ControllerType == 0) {
+				if($ControllerType == 0) {
 					$MiddlePartURL = "/proxy/network/";
 				}
-				elseif ($ControllerType == 1) {
+				elseif($ControllerType == 1) {
 					$MiddlePartURL = "/";
 				}	
 				curl_setopt($ch, CURLOPT_POST, true);
@@ -261,10 +186,10 @@ class UniFiDeviceBlocker extends IPSModule {
 				$ControllerFeedbackOK =  $ControllerFeedbackComplete["meta"]["rc"];
 				$this->SendDebug($this->Translate("Device Blocker"),$this->Translate("Was operation executed: ").$ControllerFeedbackOK ,0);
 				curl_close($ch);
-				if ($ControllerFeedbackOK == "ok") {
+				if($ControllerFeedbackOK == "ok") {
 					//WFC_SendPopup(12345, "Test", "Eine nette <br> Meldung"); 
 				}
-				else if ($ControllerFeedbackOK == "error") {
+				else if($ControllerFeedbackOK == "error") {
 					//WFC_SendPopup(12345, "Test", "Eine nette <br> Meldung"); 
 				}
 										
@@ -276,15 +201,9 @@ class UniFiDeviceBlocker extends IPSModule {
 
 	}
 		
-	public function RequestAction($Ident, $Value) {
-		
-		$this->SetValue($Ident, $Value);
-		
-	}
-
 	// public function, which is blocking a device with MAC $DeviceMacAddress
 	public function block(string $DeviceMacAddress) {
-		$DeviceMacClean = str_replace(array(":"," "), "", $DeviceMacAddress);
+		$DeviceMacClean = $this->removeInvalidChars($DeviceMacAddress, true);
 		$VarID = @IPS_GetObjectIDByIdent($DeviceMacClean, $this->InstanceID);
 
 		if(false !== $VarID) {
@@ -299,7 +218,7 @@ class UniFiDeviceBlocker extends IPSModule {
 
 	// public function, which is unblocking/allowing a device with MAC $DeviceMacAddress
 	public function unblock(string $DeviceMacAddress) {
-		$DeviceMacClean = str_replace(array(":"," "), "", $DeviceMacAddress);
+		$DeviceMacClean = $this->removeInvalidChars($DeviceMacAddress, true);
 		$VarID = @IPS_GetObjectIDByIdent($DeviceMacClean, $this->InstanceID);
 
 		if(false !== $VarID) {

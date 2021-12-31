@@ -1,17 +1,9 @@
 <?php
 
-declare(strict_types=1);
-
-if (!defined('vtBoolean')) {
-    define('vtBoolean', 0);
-    define('vtInteger', 1);
-    define('vtFloat', 2);
-    define('vtString', 3);
-    define('vtArray', 8);
-    define('vtObject', 9);
-}
+require_once __DIR__ . '/../libs/myFunctions.php';  // globale Funktionen
 
 class UniFiDMInternetController extends IPSModule {
+	use myFunctions;
 
 	public function Create() {
 		//Never delete this line!
@@ -49,23 +41,8 @@ class UniFiDMInternetController extends IPSModule {
 		
 		$this->RegisterTimer("Collect Connection Data",0,"IC_GetInternetData(\$_IPS['TARGET']);");
 
-		if (IPS_VariableProfileExists("IC.TimeS") == false){
-			IPS_CreateVariableProfile("IC.TimeS", vtInteger);
-			IPS_SetVariableProfileValues("IC.TimeS", 0, 0, 1);
-			IPS_SetVariableProfileDigits("IC.TimeS", 2);
-			IPS_SetVariableProfileText("IC.TimeS", "", $this->Translate(" seconds"));
-			IPS_SetVariableProfileIcon("IC.TimeS",  "Clock");
-		}
-
-		if (IPS_VariableProfileExists("IC.TimeMS") == false){
-			IPS_CreateVariableProfile("IC.TimeMS", vtInteger);
-			IPS_SetVariableProfileValues("IC.TimeMS", 0, 0, 1);
-			IPS_SetVariableProfileDigits("IC.TimeMS", 2);
-			IPS_SetVariableProfileText("IC.TimeMS", "", $this->Translate(" milliseconds"));
-			IPS_SetVariableProfileIcon("IC.TimeMS",  "Clock");
-		}
-
-
+		createVarProfile("IC.TimeS", vtInteger, $this->Translate(" seconds"), 0, 0, 1, 2, "Clock");
+		createVarProfile("IC.TimeMS", vtInteger, $this->Translate(" milliseconds"), 0, 0, 1, 2, "Clock");
 	}
 
 	public function Destroy() {
@@ -102,7 +79,7 @@ class UniFiDMInternetController extends IPSModule {
 		$TimerMS = $this->ReadPropertyInteger("Timer") * 1000;
 		$this->SetTimerInterval("Collect Connection Data",$TimerMS);
 
-		if (0 == $TimerMS) {
+		if(0 == $TimerMS) {
 			// instance inactive
 			$this->SetStatus(104);
 		}
@@ -123,118 +100,24 @@ class UniFiDMInternetController extends IPSModule {
 		$Password = $this->ReadPropertyString("Password");
 
 		//Change the Unifi API to be called here
-		if ("" == $UnifiAPI) {
+		if("" == $UnifiAPI) {
 			$Site = $this->ReadPropertyString("Site");
 			$UnifiAPI = "api/s/".$Site."/stat/sysinfo";
 		}
 
 		//Generic Section providing for Authenthication against a DreamMachine or Classic CloudKey
-		$ch = curl_init();
+		$Cookie = $this->getCookie($Username, $Password, $ServerAddress, $ServerPort);
 
-		if(!isset($ControllerType) || $ControllerType == 0) {
-			$SuffixURL = "/api/auth/login";
-			curl_setopt($ch, CURLOPT_POSTFIELDS, "username=".$Username."&password=".$Password);
-		}
-		elseif ($ControllerType == 1) {
-			$SuffixURL = "/api/login";
-			curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(['username' => $Username, 'password' => $Password]));
-		}				
-		curl_setopt($ch, CURLOPT_POST, TRUE);
-		curl_setopt($ch, CURLOPT_URL, "https://".$ServerAddress.":".$ServerPort.$SuffixURL);
-		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
-		curl_setopt($ch, CURLOPT_HEADER, true);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);  
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
-		$data = curl_exec($ch);
-
-		if(false === $data)
-		{
-			$this->SendDebug($this->Translate("Authentication"), $this->Translate('Error: Not reachable / No response!'),0);
-
-			// IP or Port not reachable / no response
-			$this->SetStatus(200);
+		// Section below will collect and return the RawData
+		if(!isset($Cookie) || false == $Cookie)	{
 
 			return false;
 		}
+		else {
 
-		$header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
-		$body        = trim(substr($data, $header_size));
-		$code        = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
-		$this->SendDebug($this->Translate("Authentication"),$this->Translate('Return-Code Provided is: ').$code,0);
-		//$this->SendDebug($this->Translate("Debug"), $data,0);
-
-		preg_match_all('|(?i)Set-Cookie: (.*);|U', substr($data, 0, $header_size), $results);
-		if (isset($results[1])) {
-			$Cookie = implode(';', $results[1]);
-			if (!empty($body)) {
-				if (200 == $code) { 
-					$this->SendDebug($this->Translate("Authentication"),$this->Translate('Login Successful'),0); 
-					$this->SendDebug($this->Translate("Authentication"),$this->Translate('Cookie Provided is: ').$Cookie,0);
-				}
-				else if (400 == $code) {
-					$this->SendDebug($this->Translate("Authentication"),$this->Translate('400 Bad Request - The server cannot or will not process the request due to an apparent client error.'),0);
-					echo $this->Translate('400 Bad Request - The server cannot or will not process the request due to an apparent client error.');
-					return false;
-				}
-				else if (401 == $code || 403 == $code) {
-					$this->SendDebug($this->Translate("Authentication"),$this->Translate('401 Unauthorized / 403 Forbidden - The request contained valid data and was understood by the server, but the server is refusing action. Missing user permission?'),0);
-					echo $this->Translate('401 Unauthorized / 403 Forbidden - The request contained valid data and was understood by the server, but the server is refusing action. Missing user permission?');
-					return false;
-				}
-			}
+			$RawData = $this->getRawData($Cookie, $ServerAddress, $ServerPort, $UnifiAPI/*, $ControllerType*/);
+			return $RawData;
 		}
-
-		// Section below will collect and store it into a buffer
-			
-		if (isset($Cookie)) {
-
-			$ch = curl_init();
-			if (!isset($ControllerType) || $ControllerType == 0) {
-				$MiddlePartURL = "/proxy/network/";
-			}
-			elseif ($ControllerType == 1) {
-				$MiddlePartURL = "/";
-			}	
-			curl_setopt($ch, CURLOPT_URL, "https://".$ServerAddress.":".$ServerPort.$MiddlePartURL.$UnifiAPI);
-			curl_setopt($ch, CURLOPT_HTTPGET, TRUE);
-			curl_setopt($ch , CURLOPT_RETURNTRANSFER, true);
-			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); 
-			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
-			curl_setopt($ch, CURLOPT_HTTPHEADER, array("cookie: ".$Cookie));
-			curl_setopt($ch, CURLOPT_SSLVERSION, 'CURL_SSLVERSION_TLSv1'); 	    
-
-			//$this->SendDebug("Debug: ", "https://".$ServerAddress.":".$ServerPort.$MiddlePartURL.$UnifiAPI, 0);
-
-			$RawData = curl_exec($ch);
-			curl_close($ch);
-			//$JSON = json_decode($RawData,true);
-			//$this->SetBuffer("RawData",$RawData);
-			
-			if (isset($RawData) && 400 == $RawData) {
-				$this->SendDebug($this->Translate("UniFi API Call"),$this->Translate('400 Bad Request - The server cannot or will not process the request due to an apparent client error.'),0);
-				$this->SetStatus(201); // login seems to be not successful
-				return false;
-			}
-			else if (isset($RawData) && (401 == $RawData || 403 == $RawData || $RawData == "Unauthorized")) {
-				$this->SendDebug($this->Translate("UniFi API Call"),$this->Translate('401 Unauthorized / 403 Forbidden - The request contained valid data and was understood by the server, but the server is refusing action. Missing user permission?'),0);
-				$this->SetStatus(201); // login seems to be not successful
-				return false;
-			}
-			else if (isset($RawData)) {
-				$this->SendDebug($this->Translate("UniFi API Call"),$this->Translate("Successfully Called"),0); 
-				$this->SendDebug($this->Translate("UniFi API Call"),$this->Translate("Data Provided: ").$RawData,0);
-				$this->SetBuffer("RawData",$RawData);
-			}
-			else {
-				$this->SendDebug($this->Translate("UniFi API Call"),$this->Translate("API could not be called - check the login data. Do you see a Cookie?"),0); 
-				$this->SetStatus(201); // login seems to be not successful
-				return false;
-			}
-		}
-
-		return true;
 	}
 
 	public function GetInternetData() {
@@ -249,13 +132,13 @@ class UniFiDMInternetController extends IPSModule {
 			|| $this->ReadPropertyBoolean("uptime")
 			|| $this->ReadPropertyBoolean("ubnt_device_type")
 			|| $this->ReadPropertyBoolean("udm_version")
-		  ) {
+		) {
+
+			$RawData = $this->AuthenticateAndGetData("api/s/".$Site."/stat/sysinfo");
 
 			// query JSON file for internet data
-			if ($this->AuthenticateAndGetData("api/s/".$Site."/stat/sysinfo")) {
-				$RawData = $this->GetBuffer("RawData");
+			if($RawData) {
 				$JSONData = json_decode($RawData, true);
-
 
 				// get IP addresses
 				$variableArray = array(
@@ -264,11 +147,11 @@ class UniFiDMInternetController extends IPSModule {
 						);
 
 				foreach ($variableArray as $variable) {
-					if ($this->ReadPropertyBoolean($variable['ident'])) {
-						if (isset($JSONData['data'][0]["ip_addrs"][$variable['index']])) {
+					if($this->ReadPropertyBoolean($variable['ident'])) {
+						if(isset($JSONData['data'][0]["ip_addrs"][$variable['index']])) {
 							$value = $JSONData['data'][0]["ip_addrs"][$variable['index']];
-							if (isset($value)) {
-								if ($value != GetValue($this->GetIDForIdent($variable['ident']))) {
+							if(isset($value)) {
+								if($value != GetValue($this->GetIDForIdent($variable['ident']))) {
 									$this->SendDebug($this->Translate($variable['localeName']), $this->Translate("updated to ").$value, 0);
 									SetValue($this->GetIDForIdent($variable['ident']), $value);
 								} else {
@@ -295,15 +178,15 @@ class UniFiDMInternetController extends IPSModule {
 				$variableArray[] = array('ident' => "udm_version",	'localeName' => "UDM Version");
 
 				foreach ($variableArray as $variable) {
-					if ($this->ReadPropertyBoolean($variable['ident'])) {
-						if (isset($JSONData['data'][0][$variable['ident']])) {
+					if($this->ReadPropertyBoolean($variable['ident'])) {
+						if(isset($JSONData['data'][0][$variable['ident']])) {
 							$value = $JSONData['data'][0][$variable['ident']];
-							if (isset($value)) {
-								if (isset($variable['valueCorrection'])) {
+							if(isset($value)) {
+								if(isset($variable['valueCorrection'])) {
 									eval($variable['valueCorrection']);
 								}
 
-								if ($value != GetValue($this->GetIDForIdent($variable['ident']))) {
+								if($value != GetValue($this->GetIDForIdent($variable['ident']))) {
 									$this->SendDebug($this->Translate($variable['localeName']), $this->Translate("updated to ").$value, 0);
 									SetValue($this->GetIDForIdent($variable['ident']), $value);
 								} else {
@@ -315,7 +198,7 @@ class UniFiDMInternetController extends IPSModule {
 						}
 					}
 				}
-            }
+			}
 		}
 
 		if($this->ReadPropertyBoolean("gw_version")
@@ -329,8 +212,10 @@ class UniFiDMInternetController extends IPSModule {
 			|| $this->ReadPropertyBoolean("isp_name")
 			|| $this->ReadPropertyBoolean("isp_organization")
 		) {
-            if ($this->AuthenticateAndGetData("api/stat/sites")) {
-				$RawData = $this->GetBuffer("RawData");
+			$RawData = $this->AuthenticateAndGetData("api/stat/sites");
+
+			// query JSON file for internet data
+			if($RawData) {
 				$JSONData = json_decode($RawData, true);
 				// $this->SendDebug("JSONData", $JSONData, 0);
 				$healthArray = $JSONData['data'][0]['health'];
@@ -349,17 +234,17 @@ class UniFiDMInternetController extends IPSModule {
 				);
 
 				foreach ($healthArray as $health) {
-					if (isset($health['subsystem']) && 'wan' == $health['subsystem']) {
+					if(isset($health['subsystem']) && 'wan' == $health['subsystem']) {
 						foreach ($variableArray as $variable) {
-							if ($this->ReadPropertyBoolean($variable['ident'])) {
-								if (null !== eval($variable['json'])) {
+							if($this->ReadPropertyBoolean($variable['ident'])) {
+								if(null !== eval($variable['json'])) {
 									$value = eval($variable['json']);
-									if (isset($value)) {
-										if (isset($variable['valueCorrection'])) {
+									if(isset($value)) {
+										if(isset($variable['valueCorrection'])) {
 											eval($variable['valueCorrection']);
 										}
 		
-										if ($value != GetValue($this->GetIDForIdent($variable['ident']))) {
+										if($value != GetValue($this->GetIDForIdent($variable['ident']))) {
 											$this->SendDebug($this->Translate($variable['localeName']), $this->Translate("updated to ").$value, 0);
 											SetValue($this->GetIDForIdent($variable['ident']), $value);
 										} else {
