@@ -6,11 +6,11 @@
             "items": [
                 {
                     "type": "Label",
-                    "label": "This Module allows to gather information converning the internet connection like the current public IP adress in conjunction with a Dream Machine."
+                    "label": "This Module allows to gather information converning the internet connection like the current public IP address in conjunction with a Dream Machine."
                 },
                 {
                     "type": "Label",
-                    "label": "Please select the type of controller you are using, enter its IP Adress, Port and a user allowed to log in."
+                    "label": "Please select the type of controller you are using, enter its IP Address, Port and a user allowed to log in."
                 },
                 {
                     "type": "Label",
@@ -28,7 +28,7 @@
         },
         {
             "type": "Label",
-            "label": "UniFi Toolbox - Dream Maschine Internet Controller Configuration"
+            "label": "UniFi Toolbox - DreamMachine Internet Controller Configuration"
         },
         {
             "type": "ValidationTextBox",
@@ -37,7 +37,7 @@
         },
         {
             "type": "ValidationTextBox",
-            "name": "ServerAdress",
+            "name": "ServerAddress",
             "caption": "Server Address",
             "validate": "^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"
         },
@@ -71,7 +71,7 @@
             "type": "Label",
             "label": ""
         },
-        { 
+        {
             "type": "RowLayout",
             "items": [
                 {
@@ -98,7 +98,7 @@
             "type": "Label",
             "label": ""
         },
-        { 
+        {
             "type": "RowLayout",
             "items": [
                 {
@@ -125,7 +125,7 @@
             "type": "Label",
             "label": ""
         },
-        { 
+        {
             "type": "RowLayout",
             "items": [
                 {
