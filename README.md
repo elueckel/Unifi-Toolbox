@@ -4,8 +4,8 @@ Die UniFi Toolbox ist eine Sammlung von Modulen, welche verschiedene Aktionen in
 
 ## Voraussetzungen:
 * Symcon 5.5 oder höher
-* UniFi DreamMachine
-* UniFi Controller
+* UniFi DreamMachine / UniFi Controller
+* lokaler User (nicht Owner mit Mailadresse!)
 
 ## Installation:
 * Das Modul kann einfach über das Module Control oder zukünftig den Module Store geladen werden. Die URL hierzu ist: https://github.com/elueckel/Unifi-Toolbox 
