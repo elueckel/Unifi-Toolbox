@@ -124,7 +124,7 @@
                 {
                     "type": "Button",
                     "label": "Test Authentication and Blocking",
-                    "onClick": "DB_AuthenticateAndProcessRequest($id);"
+                    "onClick": "DB_AuthenticateAndProcessRequest($id, '');"
                 }
             ]
         }
