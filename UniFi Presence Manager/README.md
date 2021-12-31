@@ -20,6 +20,7 @@ Dieses Modul ermöglicht es Geräte im Netz zu überwachen, um z.B. eine Anwsenh
 ## 2. Voraussetzungen
 
 - IP-Symcon ab Version 5.5
+- lokaler User (nicht Owner mit Mailadresse!)
 
 ## 3. Software-Installation
 
