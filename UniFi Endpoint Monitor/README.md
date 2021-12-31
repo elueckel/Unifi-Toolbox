@@ -1,5 +1,5 @@
-# UniFi Internet Controller
-Dieses Modul ermöglicht es Informationen über die Internetverbindung durch eine USG oder DreamMachine, wie z.B. die öffentliche IP-Adresse abzurufen.
+# UniFi Endpoint Monitor
+Dieses Modul ermöglicht es Endgeräte im Netz zu überwachen und diverse Daten in Symcon darzustellen.
 
 ## Inhaltsverzeichnis
 
@@ -13,8 +13,9 @@ Dieses Modul ermöglicht es Informationen über die Internetverbindung durch ein
 
 * Unterstützung für UniFi CloudKey 1 (UC-CK)
 * Unterstützung für UniFi CloudKey 2 (UCK-G2) und DreamMachine (UDM)
+* Anlegen von zu überwachenden Geräten mit Name und MAC Adresse 
+* Erstellt pro Gerät eine Variable welche z.B. für die Automation oder Überwachung genutzt werden kann (Boolean)
 * Abfragen der Controller erfolgt zeitgesteuert alle xx Sekunden
-* Aktuelle Datenpunkte: Externe IP-Adresse
 
 ## 2. Voraussetzungen
 
@@ -22,12 +23,12 @@ Dieses Modul ermöglicht es Informationen über die Internetverbindung durch ein
 
 ## 3. Software-Installation
 
-* Über den Module Store das 'UniFi Internet Controller'-Modul installieren.
+* Über den Module Store das 'UniFi Presence Manager'-Modul installieren.
 * Alternativ über das Module Control folgende URL hinzufügen
 
 ## 4. Einrichten der Instanzen in IP-Symcon
 
- Unter 'Instanz hinzufügen' kann das 'UniFi Internet Controller'-Modul mithilfe des Schnellfilters gefunden werden.  
+ Unter 'Instanz hinzufügen' kann das 'UniFi Presence Manager'-Modul mithilfe des Schnellfilters gefunden werden.  
 	- Weitere Informationen zum Hinzufügen von Instanzen in der [Dokumentation der Instanzen](https://www.symcon.de/service/dokumentation/konzepte/instanzen/#Instanz_hinzufügen)
 
 __Konfigurationsseite__:
@@ -52,9 +53,25 @@ Bei der DreamMachine ist der Port 443, bei einem Controller im Standard 8443. IP
 
 Da der Controller aktiv abfragt werden muss, kann man hier eine Frequenz hinterlegen wie oft dies geschehen soll. 
 
+**MAC Adresse**
+
+Die MAC Adresse des zu überwachenden Geräts. Diese am besten aus dem Controller auslesen.
+
+**Art der Verbindung**
+
+Basierend auf der Art der Verbindung stehen unterschiedliche Informationen zur Verfügung. Die meisten werden von Geräten im WLAN generiert. 
+
+**Netzwerkdaten**
+
+Netzwerkdaten umfassen logische Daten wie IP-Adresse oder Hostname. 
+
 **Verbindungsdaten**
 
-Wenn dieser Schalter aktiviert ist, fragt das Modul den Controller in Bezug auf Verbindungsdaten ab.
+Hier werden verfügbare physische Daten bereitgestellt. Hierzu zählen bei WLAN-Geräten Informationen zu Verbindungsqualität, Zuletzt gesehen, Uptime, Kanal, Art der Technologie, SSID, Dämpfung, Signalstärke. 
+
+**Übertragungsdaten**
+
+Bei WLAN-Geräten werden hier Informationen zu übertragenen Daten und Paketen geliefert.
 
 **Debugging**
 
@@ -62,35 +79,5 @@ Das Modul gibt diverse Informationen im Debug Bereich aus.
 
 ## 5. Versionsinformation
 
-Version 0.3 (Beta) - 23-08-2021
-* Unterstützung für UniFi CloudKey 1
-* Unterstützung für UniFi CloudKey 2 und DreamMachine
-* Abfrage der externen IP-Adresse (WAN01)
-
-Version 0.4 (Beta) - 26-08-2021
-* Unterstützung für 2 WAN Adapter
-
-Version 1.0 - 09-09-2021
-* WAN1 public IP
-* WAN1 availability
-* WAN1 latency-average
-* WAN1 time-period
-* WAN2 public IP
-* WAN2 availability
-* WAN2 latency-average
-* WAN2 time-period
-* ISP Name
-* ISP Organization
-* Unifi Network Version
-* Update available
-* Update downloaded
-* Uptime
-* UBNT Device Type
-* UDM Version
-
-Version 1.1 - 25-12-2021
-* Fix - Memory Leak
-* Fix - HTTP Response Error Message
-
-Version 1.2 - 30-12-2021
-* Neu - Verbessertes Fehlerhandling vor allem bei falschen Logins
+Version 1.2 - 27-12-2021
+* Neu - Modul verfügbar

@@ -6,7 +6,7 @@
             "items": [
                 {
                     "type": "Label",
-                    "label": "This Module allows to identify if a certain device is connected to the network to e.g. provide for presence management."
+                    "label": "This Module allows to monitor Unifi equipment connected to a UniFi Network and provide data in variables."
                 },
                 {
                     "type": "Label",
@@ -14,11 +14,11 @@
                 },
                 {
                     "type": "Label",
-                    "label": "To manage certain devices, please use their MAC address and a clear text name, which will be used to create a variable in the object tree."
+                    "label": "To manage certain devices, please use their MAC address - easiest method might be to take it from the controller interface."
                 },
                 {
                     "type": "Label",
-                    "label": "The variable in the Object Tree can be used to see if a device is online or offline e.g. a mobile app, webfront or other automation."
+                    "label": "Please turn on the data points you would like to monitor and variables will be created accordingly."
                 },
                 {
                     "type": "Label",
@@ -32,7 +32,7 @@
         },
         {
             "type": "Label",
-            "label": "UniFi Toolbox - Presence Manager Configuration"
+            "label": "UniFi Toolbox - Endpoint Monitor Configuration"
         },
         {
             "type": "Select",
@@ -88,45 +88,47 @@
         },
         {
             "type": "Label",
-            "label": "The General Presence Updated variable will always be updated and can be used to trigger general updates independent of the sender."
+            "label": "Please enter the MAC Address of the device to be monitored."
+        },
+        {
+            "type": "ValidationTextBox",
+            "name": "DeviceMac",
+            "caption": "Device MAC Address",
+            "validate": "^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})|([0-9a-fA-F]{4}\\.[0-9a-fA-F]{4}\\.[0-9a-fA-F]{4})$"
+        },
+        {
+            "type": "Label",
+            "label": "Please select how the device to be monitor is connected - this will switch on/off certain variables."
+        },
+        {
+            "type": "Select",
+            "name": "DeviceType",
+            "caption": "Device Type",
+            "options": [
+                {
+                    "caption": "UDM or USG",
+                    "value": 0
+                },
+                {
+                    "caption": "Genric Device",
+                    "value": 1
+                }
+            ]
         },
         {
             "type": "CheckBox",
-            "name": "GeneralPresenceUpdatedVariable",
-            "caption": "General Presence Updated Variable"
+            "name": "DataPointBasic",
+            "caption": "Basic Data"
         },
         {
-            "type": "List",
-            "name": "Devices",
-            "caption": "Devices",
-            "rowCount": 10,
-            "add": true,
-            "delete": true,
-            "sort": {
-                "column": "varDeviceName",
-                "direction": "ascending"
-            },
-            "columns": [
-                {
-                    "label": "Devicename",
-                    "name": "varDeviceName",
-                    "width": "200px",
-                    "add": "Name",
-                    "edit": {
-                        "type": "ValidationTextBox"
-                    }
-                },
-                {
-                    "label": "MAC",
-                    "name": "varDeviceMAC",
-                    "width": "120px",
-                    "add": "00:00:00:00:00",
-                    "edit": {
-                        "type": "ValidationTextBox"
-                    }
-                }
-            ],
-            "values": []
+            "type": "CheckBox",
+            "name": "DataPointHardware",
+            "caption": "Hardware Data"
+        },
+        {
+            "type": "CheckBox",
+            "name": "DataPointSpecific",
+            "caption": "Network Data"
         }
     ],
     "actions": [
@@ -136,12 +138,12 @@
                 {
                     "type": "Button",
                     "label": "Test Authentication",
-                    "onClick": "PM_AuthenticateAndGetData($id, '');"
+                    "onClick": "DM_AuthenticateAndGetData($id, '');"
                 },
                 {
                     "type": "Button",
-                    "label": "Check Presence",
-                    "onClick": "PM_CheckPresence($id);"
+                    "label": "Get Device Data",
+                    "onClick": "DM_DeviceMonitor($id);"
                 }
             ]
         }
