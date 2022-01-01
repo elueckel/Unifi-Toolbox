@@ -110,10 +110,10 @@ class UniFiDeviceMonitor extends IPSModule
     {
         $Site = $this->ReadPropertyString("Site");
 
+        $RawData = $this->AuthenticateAndGetData("api/s/".$Site."/stat/device");
+
         // query JSON file for internet data
-        if ($this->AuthenticateAndGetData("api/s/".$Site."/stat/device")) {
-            $RawData = $this->GetBuffer("RawData");
-                
+        if (false !== $RawData) {
             if ($RawData !== "") {
                 $JSONData = json_decode($RawData, true);
                 //var_dump($JSONData);

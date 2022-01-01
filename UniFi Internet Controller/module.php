@@ -137,7 +137,7 @@ class UniFiDMInternetController extends IPSModule
             $RawData = $this->AuthenticateAndGetData("api/s/".$Site."/stat/sysinfo");
 
             // query JSON file for internet data
-            if ($RawData) {
+            if (false !== $RawData) {
                 $JSONData = json_decode($RawData, true);
 
                 // get IP addresses

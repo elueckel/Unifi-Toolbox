@@ -97,6 +97,8 @@ class UniFiPresenceManager extends IPSModule
         $Site = $this->ReadPropertyString("Site");
 
         $RawData = $this->AuthenticateAndGetData("api/s/".$Site."/stat/sta");
+
+        // query JSON file for internet data
         if (false !== $RawData) {
             if ($RawData !== "") {
                 $JSONData = json_decode($RawData, true);
