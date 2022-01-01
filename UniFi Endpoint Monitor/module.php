@@ -1,17 +1,11 @@
 <?php
 
-declare(strict_types=1);
+require_once __DIR__ . '/../libs/myFunctions.php';  // globale Funktionen
 
-if (!defined('vtBoolean')) {
-    define('vtBoolean', 0);
-    define('vtInteger', 1);
-    define('vtFloat', 2);
-    define('vtString', 3);
-    define('vtArray', 8);
-    define('vtObject', 9);
-}
 class UnifiEndpointMonitor extends IPSModule
 {
+    use myFunctions;
+
     public function Create()
     {
         //Never delete this line!
@@ -110,101 +104,15 @@ class UnifiEndpointMonitor extends IPSModule
         }
 
         //Generic Section providing for Authenthication against a DreamMachine or Classic CloudKey
-        $ch = curl_init();
+        $Cookie = $this->getCookie($Username, $Password, $ServerAddress, $ServerPort);
 
-        if (!isset($ControllerType) || $ControllerType == 0) {
-            $SuffixURL = "/api/auth/login";
-            curl_setopt($ch, CURLOPT_POSTFIELDS, "username=".$Username."&password=".$Password);
-        } elseif ($ControllerType == 1) {
-            $SuffixURL = "/api/login";
-            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(['username' => $Username, 'password' => $Password]));
-        }
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_URL, "https://".$ServerAddress.":".$ServerPort.$SuffixURL);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
-        curl_setopt($ch, CURLOPT_HEADER, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $data = curl_exec($ch);
-
-        if (false === $data) {
-            $this->SendDebug($this->Translate("Authentication"), $this->Translate('Error: Not reachable / No response!'), 0);
-
-            // IP or Port not reachable / no response
-            $this->SetStatus(200);
-
+        // Section below will collect and return the RawData
+        if (!isset($Cookie) || false == $Cookie) {
             return false;
+        } else {
+            $RawData = $this->getRawData($Cookie, $ServerAddress, $ServerPort, $UnifiAPI/*, $ControllerType*/);
+            return $RawData;
         }
-
-        $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
-        $body        = trim(substr($data, $header_size));
-        $code        = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
-        $this->SendDebug($this->Translate("Authentication"), $this->Translate('Return-Code Provided is: ').$code, 0);
-        //$this->SendDebug($this->Translate("Debug"), $data,0);
-
-        preg_match_all('|(?i)Set-Cookie: (.*);|U', substr($data, 0, $header_size), $results);
-        if (isset($results[1])) {
-            $Cookie = implode(';', $results[1]);
-            if (!empty($body)) {
-                if (200 == $code) {
-                    $this->SendDebug($this->Translate("Authentication"), $this->Translate('Login Successful'), 0);
-                    $this->SendDebug($this->Translate("Authentication"), $this->Translate('Cookie Provided is: ').$Cookie, 0);
-                } elseif (400 == $code) {
-                    $this->SendDebug($this->Translate("Authentication"), $this->Translate('400 Bad Request - The server cannot or will not process the request due to an apparent client error.'), 0);
-                    echo $this->Translate('400 Bad Request - The server cannot or will not process the request due to an apparent client error.');
-                    return false;
-                } elseif (401 == $code || 403 == $code) {
-                    $this->SendDebug($this->Translate("Authentication"), $this->Translate('401 Unauthorized / 403 Forbidden - The request contained valid data and was understood by the server, but the server is refusing action. Missing user permission?'), 0);
-                    echo $this->Translate('401 Unauthorized / 403 Forbidden - The request contained valid data and was understood by the server, but the server is refusing action. Missing user permission?');
-                    return false;
-                }
-            }
-        }
-
-        // Section below will collect and store it into a buffer
-            
-        if (isset($Cookie)) {
-            $ch = curl_init();
-            if (!isset($ControllerType) || $ControllerType == 0) {
-                $MiddlePartURL = "/proxy/network/";
-            } elseif ($ControllerType == 1) {
-                $MiddlePartURL = "/";
-            }
-            curl_setopt($ch, CURLOPT_URL, "https://".$ServerAddress.":".$ServerPort.$MiddlePartURL.$UnifiAPI."/".$DeviceMac);
-            curl_setopt($ch, CURLOPT_HTTPGET, true);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array("cookie: ".$Cookie));
-            curl_setopt($ch, CURLOPT_SSLVERSION, 'CURL_SSLVERSION_TLSv1');
-
-            $RawData = curl_exec($ch);
-            curl_close($ch);
-            //$JSON = json_decode($RawData,true);
-            //$this->SetBuffer("RawData",$RawData);
-            
-            if (isset($RawData) && 400 == $RawData) {
-                $this->SendDebug($this->Translate("UniFi API Call"), $this->Translate('400 Bad Request - The server cannot or will not process the request due to an apparent client error.'), 0);
-                $this->SetStatus(201); // login seems to be not successful
-                return false;
-            } elseif (isset($RawData) && (401 == $RawData || 403 == $RawData || $RawData == "Unauthorized")) {
-                $this->SendDebug($this->Translate("UniFi API Call"), $this->Translate('401 Unauthorized / 403 Forbidden - The request contained valid data and was understood by the server, but the server is refusing action. Missing user permission?'), 0);
-                $this->SetStatus(201); // login seems to be not successful
-                return false;
-            } elseif (isset($RawData)) {
-                $this->SendDebug($this->Translate("UniFi API Call"), $this->Translate("Successfully Called"), 0);
-                $this->SendDebug($this->Translate("UniFi API Call"), $this->Translate("Data Provided: ").$RawData, 0);
-                $this->SetBuffer("RawData", $RawData);
-            } else {
-                $this->SendDebug($this->Translate("UniFi API Call"), $this->Translate("API could not be called - check the login data. Do you see a Cookie?"), 0);
-                $this->SetStatus(201); // login seems to be not successful
-                return false;
-            }
-        }
-
-        return true;
     }
 
     public function EndpointMonitor()
