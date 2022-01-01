@@ -10,214 +10,206 @@ if (!defined('vtBoolean')) {
     define('vtArray', 8);
     define('vtObject', 9);
 }
-class UnifiEndpointMonitor extends IPSModule {
+class UnifiEndpointMonitor extends IPSModule
+{
+    public function Create()
+    {
+        //Never delete this line!
+        parent::Create();
 
-	public function Create() {
-		//Never delete this line!
-		parent::Create();
+        $this->RegisterPropertyInteger("ControllerType", 0);
+        $this->RegisterPropertyString("ServerAddress", "192.168.1.1");
+        $this->RegisterPropertyInteger("ServerPort", "443");
+        $this->RegisterPropertyString("Site", "default");
+        $this->RegisterPropertyString("UserName", "");
+        $this->RegisterPropertyString("Password", "");
+        $this->RegisterPropertyInteger("Timer", "0");
+            
+        $this->RegisterPropertyString("DeviceMac", "");
+        $this->RegisterPropertyInteger("ConnectionType", 0);
 
-		$this->RegisterPropertyInteger("ControllerType", 0);
-		$this->RegisterPropertyString("ServerAddress","192.168.1.1");
-		$this->RegisterPropertyInteger("ServerPort", "443");
-		$this->RegisterPropertyString("Site","default");
-		$this->RegisterPropertyString("UserName","");
-		$this->RegisterPropertyString("Password","");
-		$this->RegisterPropertyInteger("Timer", "0");
-			
-		$this->RegisterPropertyString("DeviceMac", "");
-		$this->RegisterPropertyInteger("ConnectionType", 0);
+        $this->RegisterPropertyBoolean("DataPointNetwork", 0);
+        $this->RegisterPropertyBoolean("DataPointConnection", 0);
+        $this->RegisterPropertyBoolean("DataPointTransfer", 0);
 
-		$this->RegisterPropertyBoolean("DataPointNetwork", 0);
-		$this->RegisterPropertyBoolean("DataPointConnection", 0);
-		$this->RegisterPropertyBoolean("DataPointTransfer", 0);
+        $this->RegisterTimer("Endpoint Monitor", 0, "EM_EndpointMonitor(\$_IPS['TARGET']);");
+    }
 
-		$this->RegisterTimer("Endpoint Monitor",0,"EM_EndpointMonitor(\$_IPS['TARGET']);");
+    public function Destroy()
+    {
+        //Never delete this line!
+        parent::Destroy();
+    }
 
-	}
+    public function ApplyChanges()
+    {
+        //Never delete this line!
+        parent::ApplyChanges();
+                        
+        //Network Data
+        $vpos = 100;
+        $this->MaintainVariable("IPAddress", $this->Translate("IP Address"), vtString, "", $vpos++, $this->ReadPropertyBoolean("DataPointNetwork") == 1);
+        $this->MaintainVariable("Hostname", $this->Translate("Hostname"), vtString, "", $vpos++, $this->ReadPropertyBoolean("DataPointNetwork") == 1);
+        //$this->MaintainVariable("Name", $this->Translate("Name"), vtString, "", $vpos++, $this->ReadPropertyBoolean("DataPointNetwork") == 1);
 
-	public function Destroy() {
-		//Never delete this line!
-		parent::Destroy();
-	}
+        //Connection Data General
+        $vpos = 200;
+        $this->MaintainVariable("Satisfaction", $this->Translate("Satisfaction"), vtInteger, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1);
+        $this->MaintainVariable("LastSeen", $this->Translate("Last Seen"), vtString, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1);
+        $this->MaintainVariable("Uptime", $this->Translate("Uptime in hours"), vtInteger, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1);
+        //Connection Data Wired
+        $vpos = 230;
+        //$this->MaintainVariable("SwitchPort", $this->Translate("Switch Port"), vtString, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1 AND $this->ReadPropertyInteger("ConnectionType") == 1);
+        //$this->MaintainVariable("SwitchMAC", $this->Translate("Switch MAC"), vtString, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1 AND $this->ReadPropertyInteger("ConnectionType") == 1);
+        //Connection Data Wireless
+        $vpos = 250;
+        $this->MaintainVariable("Accesspoint", $this->Translate("Accesspoint"), vtString, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1 and $this->ReadPropertyInteger("ConnectionType") == 0);
+        $this->MaintainVariable("Channel", $this->Translate("Channel"), vtInteger, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1 and $this->ReadPropertyInteger("ConnectionType") == 0);
+        $this->MaintainVariable("Radio", $this->Translate("Radio"), vtString, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1 and $this->ReadPropertyInteger("ConnectionType") == 0);
+        $this->MaintainVariable("ESSID", $this->Translate("ESS ID"), vtString, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1 and $this->ReadPropertyInteger("ConnectionType") == 0);
+        $this->MaintainVariable("RSSI", $this->Translate("RSSI"), vtInteger, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1 and $this->ReadPropertyInteger("ConnectionType") == 0);
+        $this->MaintainVariable("Noise", $this->Translate("Noise"), vtInteger, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1 and $this->ReadPropertyInteger("ConnectionType") == 0);
+        $this->MaintainVariable("SignalStrength", $this->Translate("Signal Strength"), vtInteger, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1 and $this->ReadPropertyInteger("ConnectionType") == 0);
 
-	public function ApplyChanges() {
-		//Never delete this line!
-		parent::ApplyChanges();
-						
-		//Network Data
-		$vpos = 100;
-		$this->MaintainVariable("IPAddress", $this->Translate("IP Address"), vtString, "", $vpos++, $this->ReadPropertyBoolean("DataPointNetwork") == 1);
-		$this->MaintainVariable("Hostname", $this->Translate("Hostname"), vtString, "", $vpos++, $this->ReadPropertyBoolean("DataPointNetwork") == 1);
-		//$this->MaintainVariable("Name", $this->Translate("Name"), vtString, "", $vpos++, $this->ReadPropertyBoolean("DataPointNetwork") == 1);
-
-		//Connection Data General
-		$vpos = 200;
-		$this->MaintainVariable("Satisfaction", $this->Translate("Satisfaction"), vtInteger, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1);
-		$this->MaintainVariable("LastSeen", $this->Translate("Last Seen"), vtString, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1);
-		$this->MaintainVariable("Uptime", $this->Translate("Uptime in hours"), vtInteger, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1);
-		//Connection Data Wired
-		$vpos = 230;
-		//$this->MaintainVariable("SwitchPort", $this->Translate("Switch Port"), vtString, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1 AND $this->ReadPropertyInteger("ConnectionType") == 1);
-		//$this->MaintainVariable("SwitchMAC", $this->Translate("Switch MAC"), vtString, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1 AND $this->ReadPropertyInteger("ConnectionType") == 1);
-		//Connection Data Wireless
-		$vpos = 250;
-		$this->MaintainVariable("Accesspoint", $this->Translate("Accesspoint"), vtString, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1 AND $this->ReadPropertyInteger("ConnectionType") == 0);
-		$this->MaintainVariable("Channel", $this->Translate("Channel"), vtInteger, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1 AND $this->ReadPropertyInteger("ConnectionType") == 0);
-		$this->MaintainVariable("Radio", $this->Translate("Radio"), vtString, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1 AND $this->ReadPropertyInteger("ConnectionType") == 0);
-		$this->MaintainVariable("ESSID", $this->Translate("ESS ID"), vtString, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1 AND $this->ReadPropertyInteger("ConnectionType") == 0);
-		$this->MaintainVariable("RSSI", $this->Translate("RSSI"), vtInteger, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1 AND $this->ReadPropertyInteger("ConnectionType") == 0);
-		$this->MaintainVariable("Noise", $this->Translate("Noise"), vtInteger, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1 AND $this->ReadPropertyInteger("ConnectionType") == 0);
-		$this->MaintainVariable("SignalStrength", $this->Translate("Signal Strength"), vtInteger, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1 AND $this->ReadPropertyInteger("ConnectionType") == 0);
-
-		//Transfer Data
-		$vpos = 300;
-		$this->MaintainVariable("TXBytes", $this->Translate("TX Megabytes"), vtInteger, "", $vpos++, $this->ReadPropertyBoolean("DataPointTransfer") == 1 AND $this->ReadPropertyInteger("ConnectionType") == 0);
-		$this->MaintainVariable("RXBytes", $this->Translate("RX Megabytes"), vtInteger, "", $vpos++, $this->ReadPropertyBoolean("DataPointTransfer") == 1 AND $this->ReadPropertyInteger("ConnectionType") == 0);
-		$this->MaintainVariable("TXPackets", $this->Translate("TX Packets"), vtInteger, "", $vpos++, $this->ReadPropertyBoolean("DataPointTransfer") == 1 AND $this->ReadPropertyInteger("ConnectionType") == 0);
-		$this->MaintainVariable("RXPackets", $this->Translate("RX Packets"), vtInteger, "", $vpos++, $this->ReadPropertyBoolean("DataPointTransfer") == 1 AND $this->ReadPropertyInteger("ConnectionType") == 0);
-
-
-		$TimerMS = $this->ReadPropertyInteger("Timer") * 1000;
-		$this->SetTimerInterval("Endpoint Monitor",$TimerMS);
-
-		if (0 == $TimerMS) {
-			// instance inactive
-			$this->SetStatus(104);
-		}
-		else {
-			// instance active
-			$this->SetStatus(102);
-		}
-
-	}
+        //Transfer Data
+        $vpos = 300;
+        $this->MaintainVariable("TXBytes", $this->Translate("TX Megabytes"), vtInteger, "", $vpos++, $this->ReadPropertyBoolean("DataPointTransfer") == 1 and $this->ReadPropertyInteger("ConnectionType") == 0);
+        $this->MaintainVariable("RXBytes", $this->Translate("RX Megabytes"), vtInteger, "", $vpos++, $this->ReadPropertyBoolean("DataPointTransfer") == 1 and $this->ReadPropertyInteger("ConnectionType") == 0);
+        $this->MaintainVariable("TXPackets", $this->Translate("TX Packets"), vtInteger, "", $vpos++, $this->ReadPropertyBoolean("DataPointTransfer") == 1 and $this->ReadPropertyInteger("ConnectionType") == 0);
+        $this->MaintainVariable("RXPackets", $this->Translate("RX Packets"), vtInteger, "", $vpos++, $this->ReadPropertyBoolean("DataPointTransfer") == 1 and $this->ReadPropertyInteger("ConnectionType") == 0);
 
 
-	public function AuthenticateAndGetData(string $UnifiAPI = "") {
-			
-		$ControllerType = $this->ReadPropertyInteger("ControllerType");
-		$ServerAddress = $this->ReadPropertyString("ServerAddress");
-		$ServerPort = $this->ReadPropertyInteger("ServerPort");
-		$Username = $this->ReadPropertyString("UserName");
-		$Password = $this->ReadPropertyString("Password");
-		$Site = $this->ReadPropertyString("Site");
+        $TimerMS = $this->ReadPropertyInteger("Timer") * 1000;
+        $this->SetTimerInterval("Endpoint Monitor", $TimerMS);
 
-		$DeviceMac = strtolower($this->ReadPropertyString("DeviceMac"));
+        if (0 == $TimerMS) {
+            // instance inactive
+            $this->SetStatus(104);
+        } else {
+            // instance active
+            $this->SetStatus(102);
+        }
+    }
 
-		//Change the Unifi API to be called here
-		if ("" == $UnifiAPI) {
-			$Site = $this->ReadPropertyString("Site");
-			$UnifiAPI = "api/s/".$Site."/stat/sta";
-		}
 
-		//Generic Section providing for Authenthication against a DreamMachine or Classic CloudKey
-		$ch = curl_init();
+    public function AuthenticateAndGetData(string $UnifiAPI = "")
+    {
+        $ControllerType = $this->ReadPropertyInteger("ControllerType");
+        $ServerAddress = $this->ReadPropertyString("ServerAddress");
+        $ServerPort = $this->ReadPropertyInteger("ServerPort");
+        $Username = $this->ReadPropertyString("UserName");
+        $Password = $this->ReadPropertyString("Password");
+        $Site = $this->ReadPropertyString("Site");
 
-		if(!isset($ControllerType) || $ControllerType == 0) {
-			$SuffixURL = "/api/auth/login";
-			curl_setopt($ch, CURLOPT_POSTFIELDS, "username=".$Username."&password=".$Password);
-		}
-		elseif ($ControllerType == 1) {
-			$SuffixURL = "/api/login";
-			curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(['username' => $Username, 'password' => $Password]));
-		}				
-		curl_setopt($ch, CURLOPT_POST, TRUE);
-		curl_setopt($ch, CURLOPT_URL, "https://".$ServerAddress.":".$ServerPort.$SuffixURL);
-		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
-		curl_setopt($ch, CURLOPT_HEADER, true);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);  
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
-		$data = curl_exec($ch);
+        $DeviceMac = strtolower($this->ReadPropertyString("DeviceMac"));
 
-		if(false === $data)
-		{
-			$this->SendDebug($this->Translate("Authentication"), $this->Translate('Error: Not reachable / No response!'),0);
+        //Change the Unifi API to be called here
+        if ("" == $UnifiAPI) {
+            $Site = $this->ReadPropertyString("Site");
+            $UnifiAPI = "api/s/".$Site."/stat/sta";
+        }
 
-			// IP or Port not reachable / no response
-			$this->SetStatus(200);
+        //Generic Section providing for Authenthication against a DreamMachine or Classic CloudKey
+        $ch = curl_init();
 
-			return false;
-		}
+        if (!isset($ControllerType) || $ControllerType == 0) {
+            $SuffixURL = "/api/auth/login";
+            curl_setopt($ch, CURLOPT_POSTFIELDS, "username=".$Username."&password=".$Password);
+        } elseif ($ControllerType == 1) {
+            $SuffixURL = "/api/login";
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(['username' => $Username, 'password' => $Password]));
+        }
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_URL, "https://".$ServerAddress.":".$ServerPort.$SuffixURL);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
+        curl_setopt($ch, CURLOPT_HEADER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $data = curl_exec($ch);
 
-		$header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
-		$body        = trim(substr($data, $header_size));
-		$code        = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        if (false === $data) {
+            $this->SendDebug($this->Translate("Authentication"), $this->Translate('Error: Not reachable / No response!'), 0);
 
-		$this->SendDebug($this->Translate("Authentication"),$this->Translate('Return-Code Provided is: ').$code,0);
-		//$this->SendDebug($this->Translate("Debug"), $data,0);
+            // IP or Port not reachable / no response
+            $this->SetStatus(200);
 
-		preg_match_all('|(?i)Set-Cookie: (.*);|U', substr($data, 0, $header_size), $results);
-		if (isset($results[1])) {
-			$Cookie = implode(';', $results[1]);
-			if (!empty($body)) {
-				if (200 == $code) { 
-					$this->SendDebug($this->Translate("Authentication"),$this->Translate('Login Successful'),0); 
-					$this->SendDebug($this->Translate("Authentication"),$this->Translate('Cookie Provided is: ').$Cookie,0);
-				}
-				else if (400 == $code) {
-					$this->SendDebug($this->Translate("Authentication"),$this->Translate('400 Bad Request - The server cannot or will not process the request due to an apparent client error.'),0);
-					echo $this->Translate('400 Bad Request - The server cannot or will not process the request due to an apparent client error.');
-					return false;
-				}
-				else if (401 == $code || 403 == $code) {
-					$this->SendDebug($this->Translate("Authentication"),$this->Translate('401 Unauthorized / 403 Forbidden - The request contained valid data and was understood by the server, but the server is refusing action. Missing user permission?'),0);
-					echo $this->Translate('401 Unauthorized / 403 Forbidden - The request contained valid data and was understood by the server, but the server is refusing action. Missing user permission?');
-					return false;
-				}
-			}
-		}
+            return false;
+        }
 
-		// Section below will collect and store it into a buffer
-			
-		if (isset($Cookie)) {
+        $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+        $body        = trim(substr($data, $header_size));
+        $code        = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-			$ch = curl_init();
-			if (!isset($ControllerType) || $ControllerType == 0) {
-				$MiddlePartURL = "/proxy/network/";
-			}
-			elseif ($ControllerType == 1) {
-				$MiddlePartURL = "/";
-			}	
-			curl_setopt($ch, CURLOPT_URL, "https://".$ServerAddress.":".$ServerPort.$MiddlePartURL.$UnifiAPI."/".$DeviceMac);
-			curl_setopt($ch, CURLOPT_HTTPGET, TRUE);
-			curl_setopt($ch , CURLOPT_RETURNTRANSFER, true);
-			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); 
-			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
-			curl_setopt($ch, CURLOPT_HTTPHEADER, array("cookie: ".$Cookie));
-			curl_setopt($ch, CURLOPT_SSLVERSION, 'CURL_SSLVERSION_TLSv1'); 	    
+        $this->SendDebug($this->Translate("Authentication"), $this->Translate('Return-Code Provided is: ').$code, 0);
+        //$this->SendDebug($this->Translate("Debug"), $data,0);
 
-			$RawData = curl_exec($ch);
-			curl_close($ch);
-			//$JSON = json_decode($RawData,true);
-			//$this->SetBuffer("RawData",$RawData);
-			
-			if (isset($RawData) && 400 == $RawData) {
-				$this->SendDebug($this->Translate("UniFi API Call"),$this->Translate('400 Bad Request - The server cannot or will not process the request due to an apparent client error.'),0);
-				$this->SetStatus(201); // login seems to be not successful
-				return false;
-			}
-			else if (isset($RawData) && (401 == $RawData || 403 == $RawData || $RawData == "Unauthorized")) {
-				$this->SendDebug($this->Translate("UniFi API Call"),$this->Translate('401 Unauthorized / 403 Forbidden - The request contained valid data and was understood by the server, but the server is refusing action. Missing user permission?'),0);
-				$this->SetStatus(201); // login seems to be not successful
-				return false;
-			}
-			else if (isset($RawData)) {
-				$this->SendDebug($this->Translate("UniFi API Call"),$this->Translate("Successfully Called"),0); 
-				$this->SendDebug($this->Translate("UniFi API Call"),$this->Translate("Data Provided: ").$RawData,0);
-				$this->SetBuffer("RawData",$RawData);
-			}
-			else {
-				$this->SendDebug($this->Translate("UniFi API Call"),$this->Translate("API could not be called - check the login data. Do you see a Cookie?"),0); 
-				$this->SetStatus(201); // login seems to be not successful
-				return false;
-			}
-		}
+        preg_match_all('|(?i)Set-Cookie: (.*);|U', substr($data, 0, $header_size), $results);
+        if (isset($results[1])) {
+            $Cookie = implode(';', $results[1]);
+            if (!empty($body)) {
+                if (200 == $code) {
+                    $this->SendDebug($this->Translate("Authentication"), $this->Translate('Login Successful'), 0);
+                    $this->SendDebug($this->Translate("Authentication"), $this->Translate('Cookie Provided is: ').$Cookie, 0);
+                } elseif (400 == $code) {
+                    $this->SendDebug($this->Translate("Authentication"), $this->Translate('400 Bad Request - The server cannot or will not process the request due to an apparent client error.'), 0);
+                    echo $this->Translate('400 Bad Request - The server cannot or will not process the request due to an apparent client error.');
+                    return false;
+                } elseif (401 == $code || 403 == $code) {
+                    $this->SendDebug($this->Translate("Authentication"), $this->Translate('401 Unauthorized / 403 Forbidden - The request contained valid data and was understood by the server, but the server is refusing action. Missing user permission?'), 0);
+                    echo $this->Translate('401 Unauthorized / 403 Forbidden - The request contained valid data and was understood by the server, but the server is refusing action. Missing user permission?');
+                    return false;
+                }
+            }
+        }
 
-		return true;
-	}
+        // Section below will collect and store it into a buffer
+            
+        if (isset($Cookie)) {
+            $ch = curl_init();
+            if (!isset($ControllerType) || $ControllerType == 0) {
+                $MiddlePartURL = "/proxy/network/";
+            } elseif ($ControllerType == 1) {
+                $MiddlePartURL = "/";
+            }
+            curl_setopt($ch, CURLOPT_URL, "https://".$ServerAddress.":".$ServerPort.$MiddlePartURL.$UnifiAPI."/".$DeviceMac);
+            curl_setopt($ch, CURLOPT_HTTPGET, true);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array("cookie: ".$Cookie));
+            curl_setopt($ch, CURLOPT_SSLVERSION, 'CURL_SSLVERSION_TLSv1');
 
-	public function EndpointMonitor() {
-		$Site = $this->ReadPropertyString("Site");
+            $RawData = curl_exec($ch);
+            curl_close($ch);
+            //$JSON = json_decode($RawData,true);
+            //$this->SetBuffer("RawData",$RawData);
+            
+            if (isset($RawData) && 400 == $RawData) {
+                $this->SendDebug($this->Translate("UniFi API Call"), $this->Translate('400 Bad Request - The server cannot or will not process the request due to an apparent client error.'), 0);
+                $this->SetStatus(201); // login seems to be not successful
+                return false;
+            } elseif (isset($RawData) && (401 == $RawData || 403 == $RawData || $RawData == "Unauthorized")) {
+                $this->SendDebug($this->Translate("UniFi API Call"), $this->Translate('401 Unauthorized / 403 Forbidden - The request contained valid data and was understood by the server, but the server is refusing action. Missing user permission?'), 0);
+                $this->SetStatus(201); // login seems to be not successful
+                return false;
+            } elseif (isset($RawData)) {
+                $this->SendDebug($this->Translate("UniFi API Call"), $this->Translate("Successfully Called"), 0);
+                $this->SendDebug($this->Translate("UniFi API Call"), $this->Translate("Data Provided: ").$RawData, 0);
+                $this->SetBuffer("RawData", $RawData);
+            } else {
+                $this->SendDebug($this->Translate("UniFi API Call"), $this->Translate("API could not be called - check the login data. Do you see a Cookie?"), 0);
+                $this->SetStatus(201); // login seems to be not successful
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public function EndpointMonitor()
+    {
+        $Site = $this->ReadPropertyString("Site");
 
         if ($this->AuthenticateAndGetData("api/s/".$Site."/stat/sta")) {
             $RawData = $this->GetBuffer("RawData");
@@ -241,8 +233,8 @@ class UnifiEndpointMonitor extends IPSModule {
                     SetValue($this->GetIDForIdent("Hostname"), $Hostname);
                     $this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Network Data Hostname ").$Hostname, 0);
                     //$Name = $JSONData["data"][0]["name"];
-					//SetValue($this->GetIDForIdent("Name"),$Name);
-					//$this->SendDebug($this->Translate("Endpoint Monitor"),$this->Translate("Network Data Name ").$Name,0);
+                    //SetValue($this->GetIDForIdent("Name"),$Name);
+                    //$this->SendDebug($this->Translate("Endpoint Monitor"),$this->Translate("Network Data Name ").$Name,0);
                 }
                 if ($this->ReadPropertyBoolean("DataPointConnection") == 1) {
                     $Satisfaction = $JSONData["data"][0]["satisfaction"];
