@@ -122,19 +122,31 @@ class UniFiDMInternetController extends IPSModule
 
     public function GetInternetData()
     {
+        //$ControllerType = $this->ReadPropertyInteger("ControllerType");
+        $ServerAddress = $this->ReadPropertyString("ServerAddress");
+        $ServerPort = $this->ReadPropertyInteger("ServerPort");
+        $Username = $this->ReadPropertyString("UserName");
+        $Password = $this->ReadPropertyString("Password");
         $Site = $this->ReadPropertyString("Site");
 
-        if ($this->ReadPropertyBoolean("WAN1IP")
-            || $this->ReadPropertyBoolean("WAN2IP")
-            || $this->ReadPropertyBoolean("version")
-            || $this->ReadPropertyBoolean("previous_version")
-            || $this->ReadPropertyBoolean("update_available")
-            || $this->ReadPropertyBoolean("update_downloaded")
-            || $this->ReadPropertyBoolean("uptime")
-            || $this->ReadPropertyBoolean("ubnt_device_type")
-            || $this->ReadPropertyBoolean("udm_version")
+        //Generic Section providing for Authenthication against a DreamMachine or Classic CloudKey
+        $Cookie = $this->getCookie($Username, $Password, $ServerAddress, $ServerPort);
+
+        if (isset($Cookie) && false !== $Cookie
+            && ($this->ReadPropertyBoolean("WAN1IP")
+                || $this->ReadPropertyBoolean("WAN2IP")
+                || $this->ReadPropertyBoolean("version")
+                || $this->ReadPropertyBoolean("previous_version")
+                || $this->ReadPropertyBoolean("update_available")
+                || $this->ReadPropertyBoolean("update_downloaded")
+                || $this->ReadPropertyBoolean("uptime")
+                || $this->ReadPropertyBoolean("ubnt_device_type")
+                || $this->ReadPropertyBoolean("udm_version")
+            )
         ) {
-            $RawData = $this->AuthenticateAndGetData("api/s/".$Site."/stat/sysinfo");
+            // Section below will collect and return the RawData
+            $UnifiAPI = "api/s/".$Site."/stat/sysinfo";
+            $RawData = $this->getRawData($Cookie, $ServerAddress, $ServerPort, $UnifiAPI/*, $ControllerType*/);
 
             // query JSON file for internet data
             if (false !== $RawData) {
@@ -201,18 +213,22 @@ class UniFiDMInternetController extends IPSModule
             }
         }
 
-        if ($this->ReadPropertyBoolean("gw_version")
-            || $this->ReadPropertyBoolean("wan_ip")
-            || $this->ReadPropertyBoolean("WAN1availability")
-            || $this->ReadPropertyBoolean("WAN1latency_average")
-            || $this->ReadPropertyBoolean("WAN1time_period")
-            || $this->ReadPropertyBoolean("WAN2availability")
-            || $this->ReadPropertyBoolean("WAN2latency_average")
-            || $this->ReadPropertyBoolean("WAN2time_period")
-            || $this->ReadPropertyBoolean("isp_name")
-            || $this->ReadPropertyBoolean("isp_organization")
+        if (isset($Cookie) && false !== $Cookie
+            && ($this->ReadPropertyBoolean("gw_version")
+                || $this->ReadPropertyBoolean("wan_ip")
+                || $this->ReadPropertyBoolean("WAN1availability")
+                || $this->ReadPropertyBoolean("WAN1latency_average")
+                || $this->ReadPropertyBoolean("WAN1time_period")
+                || $this->ReadPropertyBoolean("WAN2availability")
+                || $this->ReadPropertyBoolean("WAN2latency_average")
+                || $this->ReadPropertyBoolean("WAN2time_period")
+                || $this->ReadPropertyBoolean("isp_name")
+                || $this->ReadPropertyBoolean("isp_organization")
+            )
         ) {
-            $RawData = $this->AuthenticateAndGetData("api/stat/sites");
+            // Section below will collect and return the RawData
+            $UnifiAPI = "api/stat/sites";
+            $RawData = $this->getRawData($Cookie, $ServerAddress, $ServerPort, $UnifiAPI/*, $ControllerType*/);
 
             // query JSON file for internet data
             if ($RawData) {
