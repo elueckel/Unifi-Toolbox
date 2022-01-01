@@ -43,8 +43,8 @@ class UniFiDMInternetController extends IPSModule
         
         $this->RegisterTimer("Collect Connection Data", 0, "IC_GetInternetData(\$_IPS['TARGET']);");
 
-        createVarProfile("IC.TimeS", vtInteger, $this->Translate(" seconds"), 0, 0, 1, 2, "Clock");
-        createVarProfile("IC.TimeMS", vtInteger, $this->Translate(" milliseconds"), 0, 0, 1, 2, "Clock");
+        $this->createVarProfile("IC.TimeS", vtInteger, $this->Translate(" seconds"), 0, 0, 1, 2, "Clock");
+        $this->createVarProfile("IC.TimeMS", vtInteger, $this->Translate(" milliseconds"), 0, 0, 1, 2, "Clock");
     }
 
     public function Destroy()
