@@ -20,6 +20,7 @@ Dieses Modul ermöglicht es Unifi Geräte im Netz zu überwachen und u.a. Verbin
 ## 2. Voraussetzungen
 
 - IP-Symcon ab Version 5.5
+- lokaler User (nicht Owner mit Mailadresse!)
 
 ## 3. Software-Installation
 

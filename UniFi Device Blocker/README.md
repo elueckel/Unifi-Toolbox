@@ -22,7 +22,7 @@ Dieses Modul ermöglicht es Geräte im Netz zu blockieren, um z.B. den Zugang de
 ## 2. Voraussetzungen
 
 - IP-Symcon ab Version 5.5
-- Unifi Benutzer mit Owner oder Super-Admin Rechten (Limited-Admin Rechte sind nicht ausreichend!)
+- Unifi Benutzer mit Owner (nicht mit Mailadresse!) oder Super-Admin Rechten (Limited-Admin Rechte sind nicht ausreichend!)
 
 ## 3. Software-Installation
 

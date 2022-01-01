@@ -19,6 +19,7 @@ Dieses Modul ermöglicht es Informationen über die Internetverbindung durch ein
 ## 2. Voraussetzungen
 
 - IP-Symcon ab Version 5.5
+- lokaler User (nicht Owner mit Mailadresse!)
 
 ## 3. Software-Installation
 
