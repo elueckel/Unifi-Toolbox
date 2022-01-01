@@ -238,9 +238,11 @@ class UniFiDeviceMonitor extends IPSModule
                     $Uptime = $JSONData["data"][0]["uptime"];
                     SetValue($this->GetIDForIdent("Uptime"), Round($Uptime/3600, 0));
                     $this->SendDebug($this->Translate("Device Monitor"), $this->Translate("Connection Data Uptime in hours ").Round($Uptime/3600, 0), 0);
-                    $Name = $JSONData["data"][0]["name"];
-                    SetValue($this->GetIDForIdent("Name"), $Name);
-                    $this->SendDebug($this->Translate("Device Monitor"), $this->Translate("Devicename ").$Name, 0);
+                    if (isset($JSONData["data"][0]["name"])) {
+                        $Name = $JSONData["data"][0]["name"];
+                        SetValue($this->GetIDForIdent("Name"), $Name);
+                        $this->SendDebug($this->Translate("Device Monitor"), $this->Translate("Devicename ").$Name, 0);
+                    }
                 }
                 if ($this->ReadPropertyBoolean("DataPointHardware") == 1) {
                     $CPULoad = $JSONData["data"][0]["system-stats"]["cpu"];
