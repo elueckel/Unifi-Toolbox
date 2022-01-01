@@ -82,3 +82,6 @@ Das Modul gibt diverse Informationen im Debug Bereich aus.
 
 Version 1.2 - 27-12-2021
 * Neu - Modul verfügbar
+
+Version 1.3 - 01-01-2022
+* Fix - Geräte die nicht mit dem Netzwerk verbunden sind erzeugen keine Fehler mehr
