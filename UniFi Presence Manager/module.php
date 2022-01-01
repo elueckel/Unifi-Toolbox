@@ -96,9 +96,8 @@ class UniFiPresenceManager extends IPSModule
     {
         $Site = $this->ReadPropertyString("Site");
 
-        if ($this->AuthenticateAndGetData("api/s/".$Site."/stat/sta")) {
-            $RawData = $this->GetBuffer("RawData");
-            
+        $RawData = $this->AuthenticateAndGetData("api/s/".$Site."/stat/sta");
+        if (false !== $RawData) {
             if ($RawData !== "") {
                 $JSONData = json_decode($RawData, true);
                 $ActiveDevices = $JSONData;
