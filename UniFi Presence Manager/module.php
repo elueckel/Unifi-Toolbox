@@ -30,7 +30,7 @@ class UniFiPresenceManager extends IPSModule
 
 		$this->RegisterPropertyString("Devices", "");
 
-		$this->RegisterTimer("Check Presence", 0, "PM_CheckPresence(\$_IPS['TARGET']);");
+		$this->RegisterTimer("Check Presence", 0, MODUL_PREFIX."_CheckPresence(\$_IPS['TARGET']);");
 	}
 
 	public function Destroy()
