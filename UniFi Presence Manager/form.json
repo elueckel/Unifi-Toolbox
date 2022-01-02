@@ -136,12 +136,12 @@
                 {
                     "type": "Button",
                     "label": "Test Authentication",
-                    "onClick": "PM_AuthenticateAndGetData($id, '');"
+                    "onClick": "UPM_AuthenticateAndGetData($id, '');"
                 },
                 {
                     "type": "Button",
                     "label": "Check Presence",
-                    "onClick": "PM_CheckPresence($id);"
+                    "onClick": "UPM_CheckPresence($id);"
                 }
             ]
         }
