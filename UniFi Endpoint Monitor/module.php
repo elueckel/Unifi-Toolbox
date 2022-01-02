@@ -153,7 +153,8 @@ class UnifiEndpointMonitor extends IPSModule
 					if ($Connected == false) 
 					{
 						//after a device gets reconnected, wait for 5 seconds until the controller has rebuilt the data set 
-						IPS_Sleep(5000);
+						$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Device was disconnected and is now connected again. Module waits for Controller to collect data."), 0);
+						IPS_Sleep(10000);
 						SetValue($this->GetIDForIdent("Connected"), true);
 						$RawData = $this->AuthenticateAndGetData("api/s/".$Site."/stat/sta"."/".$DeviceMac);
 						$JSONData = json_decode($RawData, true);
