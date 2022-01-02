@@ -2,41 +2,45 @@
 
 declare(strict_types=1);
 
-if (!defined('vtBoolean')) {
-    define('vtBoolean', 0);
-    define('vtInteger', 1);
-    define('vtFloat', 2);
-    define('vtString', 3);
-    define('vtArray', 8);
-    define('vtObject', 9);
+require_once __DIR__.'/../libs/myFunctions.php';  // globale Funktionen
+
+// Modul Prefix
+if (!defined('MODUL_PREFIX'))
+{
+	define("MODUL_PREFIX", "UPM");
 }
 
-class UniFiPresenceManager extends IPSModule {
-	public function Create() {
+class UniFiPresenceManager extends IPSModule
+{
+	use myFunctions;
+
+	public function Create()
+	{
 		//Never delete this line!
 		parent::Create();
 
 		$this->RegisterPropertyInteger("ControllerType", 0);
-		$this->RegisterPropertyString("ServerAddress","192.168.1.1");
+		$this->RegisterPropertyString("ServerAddress", "192.168.1.1");
 		$this->RegisterPropertyInteger("ServerPort", "443");
-		$this->RegisterPropertyString("Site","default");
-		$this->RegisterPropertyString("UserName","");
-		$this->RegisterPropertyString("Password","");
+		$this->RegisterPropertyString("Site", "default");
+		$this->RegisterPropertyString("UserName", "");
+		$this->RegisterPropertyString("Password", "");
 		$this->RegisterPropertyInteger("Timer", "0");
-		$this->RegisterPropertyBoolean("GeneralPresenceUpdatedVariable","0");
+		$this->RegisterPropertyBoolean("GeneralPresenceUpdatedVariable", "0");
 
 		$this->RegisterPropertyString("Devices", "");
 
-		$this->RegisterTimer("Check Presence",0,"PM_CheckPresence(\$_IPS['TARGET']);");
-
+		$this->RegisterTimer("Check Presence", 0, MODUL_PREFIX."_CheckPresence(\$_IPS['TARGET']);");
 	}
 
-	public function Destroy() {
+	public function Destroy()
+	{
 		//Never delete this line!
 		parent::Destroy();
 	}
 
-	public function ApplyChanges() {
+	public function ApplyChanges()
+	{
 		//Never delete this line!
 		parent::ApplyChanges();
 
@@ -44,36 +48,39 @@ class UniFiPresenceManager extends IPSModule {
 
 		//Create Devices mentioned in configuration
 		$DevicesList = $this->ReadPropertyString("Devices");
-		$DevicesJSON = json_decode($DevicesList,true);
+		$DevicesJSON = json_decode($DevicesList, true);
 		//var_dump($DevicesJSON);
 
-		if (isset($DevicesJSON)) {
-			foreach ($DevicesJSON as $Device) {
+		if (isset($DevicesJSON))
+		{
+			foreach ($DevicesJSON as $Device)
+			{
 				$DeviceName = $Device["varDeviceName"];
-				$DeviceMac = str_replace(array("-",":"," "), "", $Device["varDeviceMAC"]);
-				$this->MaintainVariable($DeviceMac, $DeviceName, vtBoolean, "~Presence", $vpos++, isset($DevicesJSON));	
+				$DeviceMac = $this->removeInvalidChars($Device["varDeviceMAC"], true);
+				$this->MaintainVariable($DeviceMac, $DeviceName, vtBoolean, "~Presence", $vpos++, isset($DevicesJSON));
 			}
 		}
 
 		$this->MaintainVariable("GeneralPresenceUpdatedVariable", $this->Translate("Presence Updated"), vtBoolean, "~Switch", 10, $this->ReadPropertyBoolean("GeneralPresenceUpdatedVariable") == 1);
 
 		$TimerMS = $this->ReadPropertyInteger("Timer") * 1000;
-		$this->SetTimerInterval("Check Presence",$TimerMS);
+		$this->SetTimerInterval("Check Presence", $TimerMS);
 
-		if (0 == $TimerMS) {
+		if (0 == $TimerMS)
+		{
 			// instance inactive
 			$this->SetStatus(104);
 		}
-		else {
+		else
+		{
 			// instance active
 			$this->SetStatus(102);
 		}
-
 	}
 
 
-	public function AuthenticateAndGetData(string $UnifiAPI = "") {
-		
+	public function AuthenticateAndGetData(string $UnifiAPI = "")
+	{
 		$ControllerType = $this->ReadPropertyInteger("ControllerType");
 		$ServerAddress = $this->ReadPropertyString("ServerAddress");
 		$ServerPort = $this->ReadPropertyInteger("ServerPort");
@@ -81,169 +88,91 @@ class UniFiPresenceManager extends IPSModule {
 		$Password = $this->ReadPropertyString("Password");
 
 		//Change the Unifi API to be called here
-		if ("" == $UnifiAPI) {
+		if ("" == $UnifiAPI)
+		{
 			$Site = $this->ReadPropertyString("Site");
 			$UnifiAPI = "api/s/".$Site."/stat/sysinfo";
 		}
 
 		//Generic Section providing for Authenthication against a DreamMachine or Classic CloudKey
-		$ch = curl_init();
+		$Cookie = $this->getCookie($Username, $Password, $ServerAddress, $ServerPort);
 
-		if(!isset($ControllerType) || $ControllerType == 0) {
-			$SuffixURL = "/api/auth/login";
-			curl_setopt($ch, CURLOPT_POSTFIELDS, "username=".$Username."&password=".$Password);
-		}
-		elseif ($ControllerType == 1) {
-			$SuffixURL = "/api/login";
-			curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(['username' => $Username, 'password' => $Password]));
-		}				
-		curl_setopt($ch, CURLOPT_POST, TRUE);
-		curl_setopt($ch, CURLOPT_URL, "https://".$ServerAddress.":".$ServerPort.$SuffixURL);
-		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
-		curl_setopt($ch, CURLOPT_HEADER, true);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
-		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);  
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
-		$data = curl_exec($ch);
-
-		if(false === $data)
+		// Section below will collect and return the RawData
+		if (!isset($Cookie) || false == $Cookie)
 		{
-			$this->SendDebug($this->Translate("Authentication"), $this->Translate('Error: Not reachable / No response!'),0);
-
-			// IP or Port not reachable / no response
-			$this->SetStatus(200);
-
 			return false;
 		}
-
-		$header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
-		$body        = trim(substr($data, $header_size));
-		$code        = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
-		$this->SendDebug($this->Translate("Authentication"),$this->Translate('Return-Code Provided is: ').$code,0);
-		//$this->SendDebug($this->Translate("Debug"), $data,0);
-
-		preg_match_all('|(?i)Set-Cookie: (.*);|U', substr($data, 0, $header_size), $results);
-		if (isset($results[1])) {
-			$Cookie = implode(';', $results[1]);
-			if (!empty($body)) {
-				if (200 == $code) { 
-					$this->SendDebug($this->Translate("Authentication"),$this->Translate('Login Successful'),0); 
-					$this->SendDebug($this->Translate("Authentication"),$this->Translate('Cookie Provided is: ').$Cookie,0);
-				}
-				else if (400 == $code) {
-					$this->SendDebug($this->Translate("Authentication"),$this->Translate('400 Bad Request - The server cannot or will not process the request due to an apparent client error.'),0);
-					echo $this->Translate('400 Bad Request - The server cannot or will not process the request due to an apparent client error.');
-					return false;
-				}
-				else if (401 == $code || 403 == $code) {
-					$this->SendDebug($this->Translate("Authentication"),$this->Translate('401 Unauthorized / 403 Forbidden - The request contained valid data and was understood by the server, but the server is refusing action. Missing user permission?'),0);
-					echo $this->Translate('401 Unauthorized / 403 Forbidden - The request contained valid data and was understood by the server, but the server is refusing action. Missing user permission?');
-					return false;
-				}
-			}
+		else
+		{
+			$RawData = $this->getRawData($Cookie, $ServerAddress, $ServerPort, $UnifiAPI/*, $ControllerType*/);
+			return $RawData;
 		}
-
-		// Section below will collect and store it into a buffer
-			
-		if (isset($Cookie)) {
-
-			$ch = curl_init();
-			if (!isset($ControllerType) || $ControllerType == 0) {
-				$MiddlePartURL = "/proxy/network/";
-			}
-			elseif ($ControllerType == 1) {
-				$MiddlePartURL = "/";
-			}	
-			curl_setopt($ch, CURLOPT_URL, "https://".$ServerAddress.":".$ServerPort.$MiddlePartURL.$UnifiAPI);
-			curl_setopt($ch, CURLOPT_HTTPGET, TRUE);
-			curl_setopt($ch , CURLOPT_RETURNTRANSFER, true);
-			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); 
-			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
-			curl_setopt($ch, CURLOPT_HTTPHEADER, array("cookie: ".$Cookie));
-			curl_setopt($ch, CURLOPT_SSLVERSION, 'CURL_SSLVERSION_TLSv1'); 	    
-
-			//$this->SendDebug("Debug: ", "https://".$ServerAddress.":".$ServerPort.$MiddlePartURL.$UnifiAPI, 0);
-
-			$RawData = curl_exec($ch);
-			curl_close($ch);
-			//$JSON = json_decode($RawData,true);
-			//$this->SetBuffer("RawData",$RawData);
-			
-			if (isset($RawData) && 400 == $RawData) {
-				$this->SendDebug($this->Translate("UniFi API Call"),$this->Translate('400 Bad Request - The server cannot or will not process the request due to an apparent client error.'),0);
-				$this->SetStatus(201); // login seems to be not successful
-				return false;
-			}
-			else if (isset($RawData) && (401 == $RawData || 403 == $RawData || $RawData == "Unauthorized")) {
-				$this->SendDebug($this->Translate("UniFi API Call"),$this->Translate('401 Unauthorized / 403 Forbidden - The request contained valid data and was understood by the server, but the server is refusing action. Missing user permission?'),0);
-				$this->SetStatus(201); // login seems to be not successful
-				return false;
-			}
-			else if (isset($RawData)) {
-				$this->SendDebug($this->Translate("UniFi API Call"),$this->Translate("Successfully Called"),0); 
-				$this->SendDebug($this->Translate("UniFi API Call"),$this->Translate("Data Provided: ").$RawData,0);
-				$this->SetBuffer("RawData",$RawData);
-			}
-			else {
-				$this->SendDebug($this->Translate("UniFi API Call"),$this->Translate("API could not be called - check the login data. Do you see a Cookie?"),0); 
-				$this->SetStatus(201); // login seems to be not successful
-				return false;
-			}
-		}
-
-		return true;
 	}
 
-	public function CheckPresence() {
+	public function CheckPresence()
+	{
 		$Site = $this->ReadPropertyString("Site");
 
-        if ($this->AuthenticateAndGetData("api/s/".$Site."/stat/sta")) {
-            $RawData = $this->GetBuffer("RawData");
-            
-            if ($RawData !== "") {
-                $JSONData = json_decode($RawData, true);
-                $ActiveDevices = $JSONData;
+		$RawData = $this->AuthenticateAndGetData("api/s/".$Site."/stat/sta");
 
-                //Load devices from config form
-                $DevicesList = $this->ReadPropertyString("Devices");
-                $DevicesJSON = json_decode($DevicesList, true);
+		// query JSON file for internet data
+		if (false !== $RawData)
+		{
+			if ($RawData !== "")
+			{
+				$JSONData = json_decode($RawData, true);
+				$ActiveDevices = $JSONData;
 
-                foreach ($DevicesJSON as $Device) {
-                    //Build a clean array out of the devices mentioned in the config form with : or -
-                    $DeviceMac = str_replace(array("-",":"," "), "", strtolower($Device["varDeviceMAC"]));
+				//Load devices from config form
+				$DevicesList = $this->ReadPropertyString("Devices");
+				$DevicesJSON = json_decode($DevicesList, true);
 
-                    //Itterate through all device and check if one of them matches the list in the config form.
-                    foreach ($ActiveDevices["data"] as $Index=>$Device) {
-                        $DeviceMacClean = strtolower(str_replace(array("-",":"), "", strtolower($Device["mac"])));
+				foreach ($DevicesJSON as $Device)
+				{
+					//Build a clean array out of the devices mentioned in the config form with : or -
+					$DeviceMac = $this->removeInvalidChars($Device["varDeviceMAC"], true);
 
-                        $OldPresenceValue = GetValue($this->GetIDForIdent($DeviceMac));
-                        if ($DeviceMac == $DeviceMacClean) {
-                            if ($OldPresenceValue == 0) { //check if new value is different and only than trigger a replacement
-                                SetValue($this->GetIDForIdent($DeviceMac), 1);
-                                if ($this->ReadPropertyBoolean("GeneralPresenceUpdatedVariable") == 1) {
-                                    SetValue($this->GetIDForIdent("GeneralPresenceUpdatedVariable"), 1);
-                                }
-                                $this->SendDebug($this->Translate("Presence Manager"), $this->Translate("Device ACTIVE with MAC: ".$DeviceMac), 0);
-                            }
-                            break;
-                        } else {
-                            if ($Index === array_key_last($ActiveDevices["data"])) {
-                                if ($OldPresenceValue == 1) {
-                                    SetValue($this->GetIDForIdent($DeviceMac), 0);
-                                    if ($this->ReadPropertyBoolean("GeneralPresenceUpdatedVariable") == 1) {
-                                        SetValue($this->GetIDForIdent("GeneralPresenceUpdatedVariable"), 1);
-                                    }
-                                    $this->SendDebug($this->Translate("Presence Manager"), $this->Translate("Device NOT active with MAC: ".$DeviceMac), 0);
-                                }
-                            }
-                        }
-                    }
+					//Itterate through all device and check if one of them matches the list in the config form.
+					foreach ($ActiveDevices["data"] as $Index => $Device)
+					{
+						$DeviceMacClean = $this->removeInvalidChars($Device["mac"], true);
+
+						$OldPresenceValue = GetValue($this->GetIDForIdent($DeviceMac));
+						if ($DeviceMac == $DeviceMacClean)
+						{
+							if ($OldPresenceValue == 0)
+							{ //check if new value is different and only than trigger a replacement
+								SetValue($this->GetIDForIdent($DeviceMac), 1);
+								if ($this->ReadPropertyBoolean("GeneralPresenceUpdatedVariable") == 1)
+								{
+									SetValue($this->GetIDForIdent("GeneralPresenceUpdatedVariable"), 1);
+								}
+								$this->SendDebug($this->Translate("Presence Manager"), $this->Translate("Device ACTIVE with MAC: ".$DeviceMac), 0);
+							}
+							break;
+						}
+						else
+						{
+							if ($Index === array_key_last($ActiveDevices["data"]))
+							{
+								if ($OldPresenceValue == 1)
+								{
+									SetValue($this->GetIDForIdent($DeviceMac), 0);
+									if ($this->ReadPropertyBoolean("GeneralPresenceUpdatedVariable") == 1)
+									{
+										SetValue($this->GetIDForIdent("GeneralPresenceUpdatedVariable"), 1);
+									}
+									$this->SendDebug($this->Translate("Presence Manager"), $this->Translate("Device NOT active with MAC: ".$DeviceMac), 0);
+								}
+							}
+						}
+					}
 				}
-			} else {
-                $this->SendDebug($this->Translate("Presence Manager"), $this->Translate("There does not seem to be any configuration - no data is available from the UniFi"), 0);
+			}
+			else
+			{
+				$this->SendDebug($this->Translate("Presence Manager"), $this->Translate("There does not seem to be any configuration - no data is available from the UniFi"), 0);
 			}
 		}
 	}
-
 }

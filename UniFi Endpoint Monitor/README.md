@@ -20,6 +20,7 @@ Dieses Modul ermöglicht es Endgeräte im Netz zu überwachen und diverse Daten 
 ## 2. Voraussetzungen
 
 - IP-Symcon ab Version 5.5
+- lokaler User (nicht Owner mit Mailadresse!)
 
 ## 3. Software-Installation
 
@@ -81,3 +82,6 @@ Das Modul gibt diverse Informationen im Debug Bereich aus.
 
 Version 1.2 - 27-12-2021
 * Neu - Modul verfügbar
+
+Version 1.3 - 01-01-2022
+* Fix - Geräte die nicht mit dem Netzwerk verbunden sind erzeugen keine Fehler mehr

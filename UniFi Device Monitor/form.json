@@ -138,12 +138,12 @@
                 {
                     "type": "Button",
                     "label": "Test Authentication",
-                    "onClick": "DM_AuthenticateAndGetData($id, '');"
+                    "onClick": "UDM_AuthenticateAndGetData($id, '');"
                 },
                 {
                     "type": "Button",
                     "label": "Get Device Data",
-                    "onClick": "DM_DeviceMonitor($id);"
+                    "onClick": "UDM_DeviceMonitor($id);"
                 }
             ]
         }

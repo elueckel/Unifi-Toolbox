@@ -193,12 +193,12 @@
                 {
                     "type": "Button",
                     "label": "Test Authentication",
-                    "onClick": "IC_AuthenticateAndGetData($id, '');"
+                    "onClick": "UIC_AuthenticateAndGetData($id, '');"
                 },
                 {
                     "type": "Button",
                     "label": "Get Internet Data",
-                    "onClick": "IC_GetInternetData($id);"
+                    "onClick": "UIC_GetInternetData($id);"
                 }
             ]
         }
