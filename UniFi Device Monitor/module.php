@@ -35,7 +35,7 @@ class UniFiDeviceMonitor extends IPSModule
 		$this->RegisterPropertyBoolean("DataPointSpecific", 0);
 
 
-		$this->RegisterTimer("Device Monitor", 0, "UDM_DeviceMonitor(\$_IPS['TARGET']);");
+		$this->RegisterTimer("Device Monitor", 0, MODUL_PREFIX."_DeviceMonitor(\$_IPS['TARGET']);");
 	}
 
 	public function Destroy()

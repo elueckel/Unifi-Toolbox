@@ -34,7 +34,7 @@ class UnifiEndpointMonitor extends IPSModule
 		$this->RegisterPropertyBoolean("DataPointConnection", 0);
 		$this->RegisterPropertyBoolean("DataPointTransfer", 0);
 
-		$this->RegisterTimer("Endpoint Monitor", 0, "UEM_EndpointMonitor(\$_IPS['TARGET']);");
+		$this->RegisterTimer("Endpoint Monitor", 0, MODUL_PREFIX."_EndpointMonitor(\$_IPS['TARGET']);");
 	}
 
 	public function Destroy()
