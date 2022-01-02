@@ -48,6 +48,8 @@ class UnifiEndpointMonitor extends IPSModule
 		//Never delete this line!
 		parent::ApplyChanges();
 
+		$this->RegisterVariableBoolean('Connected', $this->Translate('Connected'));
+
 		//Network Data
 		$vpos = 100;
 		$this->MaintainVariable("IPAddress", $this->Translate("IP Address"), vtString, "", $vpos++, $this->ReadPropertyBoolean("DataPointNetwork") == 1);
@@ -146,6 +148,17 @@ class UnifiEndpointMonitor extends IPSModule
 
 				if ($DeviceAvailable == "ok")
 				{
+					$Connected = GetValue($this->GetIDForIdent("Connected"));
+
+					if ($Connected == false) 
+					{
+						//after a device gets reconnected, wait for 5 seconds until the controller has rebuilt the data set 
+						IPS_Sleep(5000);
+						SetValue($this->GetIDForIdent("Connected"), true);
+						$RawData = $this->AuthenticateAndGetData("api/s/".$Site."/stat/sta"."/".$DeviceMac);
+						$JSONData = json_decode($RawData, true);
+					}
+
 					$ConnectionMethod = $JSONData["data"][0]["is_wired"];
 
 					if ($ConnectionMethod == true && $this->ReadPropertyInteger("ConnectionType") == 0)
@@ -222,9 +235,10 @@ class UnifiEndpointMonitor extends IPSModule
 						$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Transfer Data RXPackets ").$RXPackets, 0);
 					}
 				}
-				elseif ($DeviceAvailable == "error")
+				else if ($DeviceAvailable == "error")
 				{
 					$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Device to be monitored is not available / Disconnected"), 0);
+					SetValue($this->GetIDForIdent("Connected"), false);
 				}
 			}
 			else
