@@ -105,14 +105,13 @@ class UnifiEndpointMonitor extends IPSModule
 		$Username = $this->ReadPropertyString("UserName");
 		$Password = $this->ReadPropertyString("Password");
 		$Site = $this->ReadPropertyString("Site");
-
 		$DeviceMac = strtolower($this->ReadPropertyString("DeviceMac"));
 
 		//Change the Unifi API to be called here
 		if ("" == $UnifiAPI)
 		{
 			$Site = $this->ReadPropertyString("Site");
-			$UnifiAPI = "api/s/".$Site."/stat/sta";
+			$UnifiAPI = "api/s/".$Site."/stat/sta"."/".$DeviceMac;
 		}
 
 		//Generic Section providing for Authenthication against a DreamMachine or Classic CloudKey
@@ -125,7 +124,7 @@ class UnifiEndpointMonitor extends IPSModule
 		}
 		else
 		{
-			$RawData = $this->getRawData($Cookie, $ServerAddress, $ServerPort, $UnifiAPI."/".$DeviceMac/*, $ControllerType*/);
+			$RawData = $this->getRawData($Cookie, $ServerAddress, $ServerPort, $UnifiAPI/*, $ControllerType*/);
 			return $RawData;
 		}
 	}
@@ -133,8 +132,9 @@ class UnifiEndpointMonitor extends IPSModule
 	public function EndpointMonitor()
 	{
 		$Site = $this->ReadPropertyString("Site");
+		$DeviceMac = strtolower($this->ReadPropertyString("DeviceMac"));
 
-		$RawData = $this->AuthenticateAndGetData("api/s/".$Site."/stat/sta");
+		$RawData = $this->AuthenticateAndGetData("api/s/".$Site."/stat/sta"."/".$DeviceMac);
 
 		// query JSON file for internet data
 		if (false !== $RawData)
