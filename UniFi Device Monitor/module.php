@@ -103,7 +103,7 @@ class UniFiDeviceMonitor extends IPSModule
 		if ("" == $UnifiAPI)
 		{
 			$Site = $this->ReadPropertyString("Site");
-			$UnifiAPI = "api/s/".$Site."/stat/device";
+			$UnifiAPI = "api/s/".$Site."/stat/device"."/".$DeviceMac;
 		}
 
 		//Generic Section providing for Authenthication against a DreamMachine or Classic CloudKey
