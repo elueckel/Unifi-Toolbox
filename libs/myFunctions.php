@@ -65,17 +65,20 @@ trait myFunctions
 				{
 					$this->SendDebug($this->Translate("Authentication"), $this->Translate('Login Successful'), 0);
 					$this->SendDebug($this->Translate("Authentication"), $this->Translate('Cookie Provided is: ').$Cookie, 0);
+					$this->SetStatus(102); // login successful
 				}
 				elseif (400 == $code)
 				{
 					$this->SendDebug($this->Translate("Authentication"), $this->Translate('400 Bad Request - The server cannot or will not process the request due to an apparent client error.'), 0);
 					echo $this->Translate('400 Bad Request - The server cannot or will not process the request due to an apparent client error.');
+					$this->SetStatus(201); // login seems to be not successful
 					return false;
 				}
 				elseif (401 == $code || 403 == $code)
 				{
 					$this->SendDebug($this->Translate("Authentication"), $this->Translate('401 Unauthorized / 403 Forbidden - The request contained valid data and was understood by the server, but the server is refusing action. Missing user permission?'), 0);
 					echo $this->Translate('401 Unauthorized / 403 Forbidden - The request contained valid data and was understood by the server, but the server is refusing action. Missing user permission?');
+					$this->SetStatus(201); // login seems to be not successful
 					return false;
 				}
 			}
@@ -125,6 +128,7 @@ trait myFunctions
 		{
 			$this->SendDebug($this->Translate("UniFi API Call"), $this->Translate("Successfully Called"), 0);
 			$this->SendDebug($this->Translate("UniFi API Call"), $this->Translate("Data Provided: ").$RawData, 0);
+			$this->SetStatus(102); // login successful
 			return $RawData;
 		}
 		else
