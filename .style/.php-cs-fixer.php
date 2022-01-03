@@ -1,5 +1,6 @@
 <?php
-return PhpCsFixer\Config::create()
+$config = new PhpCsFixer\Config();
+return $config
     ->setRules([
         'align_multiline_comment' => [
             'comment_type' => 'all_multiline'
