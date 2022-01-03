@@ -83,6 +83,13 @@ trait myFunctions
 				}
 			}
 		}
+		else
+		{
+			$this->SendDebug($this->Translate("Authentication"), $this->Translate('No cookie found'), 0);
+			echo $this->Translate('No cookie found');
+			$this->SetStatus(201); // login seems to be not successful
+			return false;
+		}
 
 		return $Cookie;
 	}
