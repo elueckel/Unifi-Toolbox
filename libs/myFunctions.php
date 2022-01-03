@@ -14,12 +14,12 @@ if (!defined('vtBoolean'))
 
 trait myFunctions
 {
-	private function getCookie($Username, $Password, $ServerAddress, $ServerPort)
+	private function getCookie($Username, $Password, $ServerAddress, $ServerPort, $ControllerType=0)
 	{
 		//Generic Section providing for Authenthication against a DreamMachine or Classic CloudKey
 		$ch = curl_init();
 
-		if (!isset($ControllerType) || $ControllerType == 0)
+		if ($ControllerType == 0)
 		{
 			$SuffixURL = "/api/auth/login";
 			curl_setopt($ch, CURLOPT_POSTFIELDS, "username=".$Username."&password=".$Password);
