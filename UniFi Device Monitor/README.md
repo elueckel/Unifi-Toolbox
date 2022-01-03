@@ -86,3 +86,6 @@ Das Modul gibt diverse Informationen im Debug Bereich aus.
 
 Version 1.2 - 28-12-2021
 * Neu - Modul verfügbar
+
+Version 1.3 - 03-01-2022
+* Neu - Unifi API Zugriff in eigene Funktion ausgelagert (bessere Wartbarkeit)
