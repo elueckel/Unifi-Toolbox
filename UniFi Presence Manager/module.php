@@ -104,7 +104,7 @@ class UniFiPresenceManager extends IPSModule
 		}
 		else
 		{
-			$RawData = $this->getRawData($Cookie, $ServerAddress, $ServerPort, $UnifiAPI/*, $ControllerType*/);
+			$RawData = $this->getRawData($Cookie, $ServerAddress, $ServerPort, $UnifiAPI, $ControllerType);
 			return $RawData;
 		}
 	}
