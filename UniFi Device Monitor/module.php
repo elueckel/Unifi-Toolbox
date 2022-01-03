@@ -107,7 +107,7 @@ class UniFiDeviceMonitor extends IPSModule
 		}
 
 		//Generic Section providing for Authenthication against a DreamMachine or Classic CloudKey
-		$Cookie = $this->getCookie($Username, $Password, $ServerAddress, $ServerPort);
+		$Cookie = $this->getCookie($Username, $Password, $ServerAddress, $ServerPort, $ControllerType);
 
 		// Section below will collect and return the RawData
 		if (!isset($Cookie) || false == $Cookie)
