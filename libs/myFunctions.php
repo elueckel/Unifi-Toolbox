@@ -40,7 +40,7 @@ trait myFunctions
 
 		if (false === $data)
 		{
-			$this->SendDebug($this->Translate("Authentication"), $this->Translate('Error: Not reachable / No response!'), 0);
+			$this->SendDebug($this->Translate("Authentication"), $this->Translate('Error 404: Not reachable / No response!'), 0);
 
 			// IP or Port not reachable / no response
 			$this->SetStatus(200);
