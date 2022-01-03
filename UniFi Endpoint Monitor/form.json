@@ -142,12 +142,12 @@
                 {
                     "type": "Button",
                     "label": "Test Authentication",
-                    "onClick": "EM_AuthenticateAndGetData($id, '');"
+                    "onClick": "UEM_AuthenticateAndGetData($id, '');"
                 },
                 {
                     "type": "Button",
                     "label": "Get Device Data",
-                    "onClick": "EM_EndpointMonitor($id);"
+                    "onClick": "UEM_EndpointMonitor($id);"
                 }
             ]
         }

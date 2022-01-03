@@ -17,6 +17,7 @@
             "Password": "Passwort",
             "Update Frequency": "Aktualisierungsfrequenz",
             "sec - 0 is off": "Sek - 0 ist Aus",
+            "Connected": "Verbunden",
             "Please enter the MAC Address of the device to be monitored.": "MAC Adresse die überwacht werden soll.",
             "Device MAC Address": "Geräte MAC Adresse",
             "Please select how the device to be monitor is connected - this will switch on/off certain variables.": "Bitte wählen wie das zu überwachende Gerät verbunden ist - dies bestimmt die möglichen Variablen.",
