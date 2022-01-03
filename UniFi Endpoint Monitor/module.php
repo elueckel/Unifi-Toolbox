@@ -168,9 +168,9 @@ class UnifiEndpointMonitor extends IPSModule
 				{
 					$Connected = GetValue($this->GetIDForIdent("Connected"));
 
-					if ($Connected == false) 
+					if ($Connected == false)
 					{
-						//after a device gets reconnected, wait until the controller has rebuilt the data set 
+						//after a device gets reconnected, wait until the controller has rebuilt the data set
 						$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Device was disconnected and is now connected again. Module waits for Controller to collect data."), 0);
 						IPS_Sleep(10000);
 						SetValue($this->GetIDForIdent("Connected"), true);
@@ -195,18 +195,18 @@ class UnifiEndpointMonitor extends IPSModule
 						$IPAddress = $JSONData["data"][0]["ip"];
 						SetValue($this->GetIDForIdent("IPAddress"), $IPAddress);
 						$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Network Data IP ").$IPAddress, 0);
-						
-						if("" != $JSONData["data"][0]["hostname"])
+
+						if ("" != $JSONData["data"][0]["hostname"])
 						{
 							$Hostname = $JSONData["data"][0]["hostname"];
 						}
-						else if("" != $JSONData["data"][0]["name"])
+						elseif ("" != $JSONData["data"][0]["name"])
 						{
 							$Hostname = $JSONData["data"][0]["name"];
 						}
 						else
 						{
-							$Hostname = "";	
+							$Hostname = "";
 						}
 						SetValue($this->GetIDForIdent("Hostname"), $Hostname);
 						$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Network Data Hostname ").$Hostname, 0);
@@ -266,7 +266,7 @@ class UnifiEndpointMonitor extends IPSModule
 						$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Transfer Data RXPackets ").$RXPackets, 0);
 					}
 				}
-				else if ($DeviceAvailable == "error")
+				elseif ($DeviceAvailable == "error")
 				{
 					$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Device to be monitored is not available / Disconnected"), 0);
 					SetValue($this->GetIDForIdent("Connected"), false);

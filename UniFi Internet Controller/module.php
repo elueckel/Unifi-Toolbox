@@ -148,7 +148,8 @@ class UniFiDMInternetController extends IPSModule
 		$Cookie = $this->getCookie($Username, $Password, $ServerAddress, $ServerPort);
 
 		if (isset($Cookie) && false !== $Cookie
-			&& ($this->ReadPropertyBoolean("WAN1IP")
+			&& (
+				$this->ReadPropertyBoolean("WAN1IP")
 				|| $this->ReadPropertyBoolean("WAN2IP")
 				|| $this->ReadPropertyBoolean("version")
 				|| $this->ReadPropertyBoolean("previous_version")
@@ -249,7 +250,8 @@ class UniFiDMInternetController extends IPSModule
 		}
 
 		if (isset($Cookie) && false !== $Cookie
-			&& ($this->ReadPropertyBoolean("gw_version")
+			&& (
+				$this->ReadPropertyBoolean("gw_version")
 				|| $this->ReadPropertyBoolean("wan_ip")
 				|| $this->ReadPropertyBoolean("WAN1availability")
 				|| $this->ReadPropertyBoolean("WAN1latency_average")
