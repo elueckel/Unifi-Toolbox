@@ -126,17 +126,35 @@ class UnifiEndpointMonitor extends IPSModule
 		}
 		else
 		{
-			$RawData = $this->getRawData($Cookie, $ServerAddress, $ServerPort, $UnifiAPI/*, $ControllerType*/);
+			$RawData = $this->getRawData($Cookie, $ServerAddress, $ServerPort, $UnifiAPI, $ControllerType);
 			return $RawData;
 		}
 	}
 
 	public function EndpointMonitor()
 	{
+		$ControllerType = $this->ReadPropertyInteger("ControllerType");
+		$ServerAddress = $this->ReadPropertyString("ServerAddress");
+		$ServerPort = $this->ReadPropertyInteger("ServerPort");
+		$Username = $this->ReadPropertyString("UserName");
+		$Password = $this->ReadPropertyString("Password");
 		$Site = $this->ReadPropertyString("Site");
 		$DeviceMac = strtolower($this->ReadPropertyString("DeviceMac"));
 
-		$RawData = $this->AuthenticateAndGetData("api/s/".$Site."/stat/sta"."/".$DeviceMac);
+		$UnifiAPI = "api/s/".$Site."/stat/sta"."/".$DeviceMac;
+
+		//Generic Section providing for Authenthication against a DreamMachine or Classic CloudKey
+		$Cookie = $this->getCookie($Username, $Password, $ServerAddress, $ServerPort);
+
+		// Section below will collect and return the RawData
+		if (!isset($Cookie) || false == $Cookie)
+		{
+			return false;
+		}
+		else
+		{
+			$RawData = $this->getRawData($Cookie, $ServerAddress, $ServerPort, $UnifiAPI, $ControllerType);
+		}
 
 		// query JSON file for internet data
 		if (false !== $RawData)
@@ -150,13 +168,13 @@ class UnifiEndpointMonitor extends IPSModule
 				{
 					$Connected = GetValue($this->GetIDForIdent("Connected"));
 
-					if ($Connected == false) 
+					if ($Connected == false)
 					{
-						//after a device gets reconnected, wait for 5 seconds until the controller has rebuilt the data set 
+						//after a device gets reconnected, wait until the controller has rebuilt the data set
 						$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Device was disconnected and is now connected again. Module waits for Controller to collect data."), 0);
 						IPS_Sleep(10000);
 						SetValue($this->GetIDForIdent("Connected"), true);
-						$RawData = $this->AuthenticateAndGetData("api/s/".$Site."/stat/sta"."/".$DeviceMac);
+						$RawData = $this->getRawData($Cookie, $ServerAddress, $ServerPort, $UnifiAPI, $ControllerType);
 						$JSONData = json_decode($RawData, true);
 					}
 
@@ -177,7 +195,19 @@ class UnifiEndpointMonitor extends IPSModule
 						$IPAddress = $JSONData["data"][0]["ip"];
 						SetValue($this->GetIDForIdent("IPAddress"), $IPAddress);
 						$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Network Data IP ").$IPAddress, 0);
-						$Hostname = $JSONData["data"][0]["hostname"];
+
+						if ("" != $JSONData["data"][0]["hostname"])
+						{
+							$Hostname = $JSONData["data"][0]["hostname"];
+						}
+						elseif ("" != $JSONData["data"][0]["name"])
+						{
+							$Hostname = $JSONData["data"][0]["name"];
+						}
+						else
+						{
+							$Hostname = "";
+						}
 						SetValue($this->GetIDForIdent("Hostname"), $Hostname);
 						$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Network Data Hostname ").$Hostname, 0);
 						//$Name = $JSONData["data"][0]["name"];
@@ -236,7 +266,7 @@ class UnifiEndpointMonitor extends IPSModule
 						$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Transfer Data RXPackets ").$RXPackets, 0);
 					}
 				}
-				else if ($DeviceAvailable == "error")
+				elseif ($DeviceAvailable == "error")
 				{
 					$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Device to be monitored is not available / Disconnected"), 0);
 					SetValue($this->GetIDForIdent("Connected"), false);

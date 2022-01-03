@@ -176,7 +176,7 @@ class UniFiDeviceBlocker extends IPSModule
 
 				$CommandToController = json_encode(array(
 					"cmd" => $Command,
-					"mac" => $DeviceMacAddress
+					"mac" => $DeviceMacAddress,
 
 				), JSON_UNESCAPED_SLASHES);
 				//var_dump($CommandToController);

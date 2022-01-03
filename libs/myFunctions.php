@@ -53,7 +53,7 @@ trait myFunctions
 		$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
 		$this->SendDebug($this->Translate("Authentication"), $this->Translate('Return-Code Provided is: ').$code, 0);
-		//$this->SendDebug($this->Translate("Debug"), $data,0);
+		//$this->SendDebug("Debug-Data", $data, 0);
 
 		preg_match_all('|(?i)Set-Cookie: (.*);|U', substr($data, 0, $header_size), $results);
 		if (isset($results[1]))
@@ -103,12 +103,11 @@ trait myFunctions
 		curl_setopt($ch, CURLOPT_HTTPHEADER, array("cookie: ".$Cookie));
 		curl_setopt($ch, CURLOPT_SSLVERSION, 'CURL_SSLVERSION_TLSv1');
 
-		//$this->SendDebug("Debug: ", "https://".$ServerAddress.":".$ServerPort.$MiddlePartURL.$UnifiAPI, 0);
+		//$this->SendDebug("Debug-URL", "https://".$ServerAddress.":".$ServerPort.$MiddlePartURL.$UnifiAPI, 0);
 
 		$RawData = curl_exec($ch);
 		curl_close($ch);
-		//$JSON = json_decode($RawData,true);
-		//$this->SetBuffer("RawData",$RawData);
+		//$this->SendDebug("Debug-RawData", $RawData, 0);
 
 		if (isset($RawData) && 400 == $RawData)
 		{

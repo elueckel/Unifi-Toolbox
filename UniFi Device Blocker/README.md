@@ -110,3 +110,6 @@ Version 1.1 - 25-12-2021
 Version 1.2 - 30-12-2021
 * Neu - Verbessertes Fehlerhandling vor allem bei falschen Logins
 * Neu - Block kann jetzt als Funktion aufgerufen werden
+
+Version 1.3 - 03-01-2022
+* Neu - Unifi API Zugriff in eigene Funktion ausgelagert (bessere Wartbarkeit)
