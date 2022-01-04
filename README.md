@@ -1,3 +1,9 @@
+![Code](https://img.shields.io/badge/Code-PHP-blue.svg)
+[![Version](https://img.shields.io/badge/Symcon-PHPModul-red.svg)](https://www.symcon.de/service/dokumentation/entwicklerbereich/sdk-tools/sdk-php/)
+[![Version](https://img.shields.io/badge/Symcon%20Version-5.5%20%3C-green.svg)](https://www.symcon.de/service/dokumentation/installation/migrationen/)
+[![GitHub Stars](https://img.shields.io/github/stars/elueckel/Unifi-Toolbox.svg?logo=github)](https://github.com/elueckel/Unifi-Toolbox/stargazers)
+[![GitHub Release](https://img.shields.io/github/v/release/elueckel/Unifi-Toolbox.svg?logo=github)](https://github.com/elueckel/Unifi-Toolbox/releases)
+
 # UniFi Toolbox
 
 Die UniFi Toolbox ist eine Sammlung von Modulen, welche verschiedene Aktionen in Verbindung mit einem UniFi Netzwerk Controller unterstützen. 
