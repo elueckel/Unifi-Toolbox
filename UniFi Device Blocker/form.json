@@ -128,7 +128,7 @@
                 },
                 {
                     "type": "Button",
-                    "label": "check Site name",
+                    "label": "Check site name",
                     "onClick": "UDB_checkSiteName($id, '');"
                 }
             ]

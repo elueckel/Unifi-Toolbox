@@ -23,7 +23,10 @@
             "Devicename": "Gerätename",
             "MAC": "MAC",
             "Test Authentication": "Teste Anmeldung am Controller",
-            "Check Presence": "Prüfe Anwesenheit"
+            "Check Presence": "Prüfe Anwesenheit",
+            "Check site name": "Name der Site prüfen",
+            "' found. --> Configuration is correct!": "' gefunden. --> Konfiguration ist richtig",
+            "' not found! --> available site-names: ": "' nicht gefunden! --> verfügbare Namen für Sites sind: "
         }
     }
 }

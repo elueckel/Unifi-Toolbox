@@ -48,7 +48,9 @@
             "Channel": "Kanal",
             "Radio": "Funktechnologie",
             "Noise": "Störung",
-            "Signal Strength": "Signal Stärke"
+            "Signal Strength": "Signal Stärke",
+            "Check site name": "Name der Site prüfen",
+            "' found. --> Configuration is correct!": "' gefunden. --> Konfiguration ist richtig"
         }
     }
 }
