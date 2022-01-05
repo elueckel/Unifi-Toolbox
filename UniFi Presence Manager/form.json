@@ -93,7 +93,7 @@
         {
             "type": "CheckBox",
             "name": "GeneralPresenceUpdatedVariable",
-            "caption": "General Presence Updated Variable"
+            "caption": "Variable General Presence Update"
         },
         {
             "type": "List",
