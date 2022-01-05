@@ -93,7 +93,7 @@
         {
             "type": "CheckBox",
             "name": "GeneralPresenceUpdatedVariable",
-            "caption": "General Presence Updated Variable"
+            "caption": "Variable General Presence Update"
         },
         {
             "type": "List",
@@ -142,6 +142,11 @@
                     "type": "Button",
                     "label": "Check Presence",
                     "onClick": "UPM_CheckPresence($id);"
+                },
+                {
+                    "type": "Button",
+                    "label": "Check site name",
+                    "onClick": "UPM_checkSiteName($id, '');"
                 }
             ]
         }

@@ -107,7 +107,7 @@ class UniFiDeviceMonitor extends IPSModule
 		}
 
 		//Generic Section providing for Authenthication against a DreamMachine or Classic CloudKey
-		$Cookie = $this->getCookie($Username, $Password, $ServerAddress, $ServerPort);
+		$Cookie = $this->getCookie($Username, $Password, $ServerAddress, $ServerPort, $ControllerType);
 
 		// Section below will collect and return the RawData
 		if (!isset($Cookie) || false == $Cookie)
@@ -212,5 +212,18 @@ class UniFiDeviceMonitor extends IPSModule
 				$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("There does not seem to be any configuration - no data is available from the UniFi"), 0);
 			}
 		}
+	}
+
+	// public function, which is checking the site-name
+	public function checkSiteName()
+	{
+		$ControllerType = $this->ReadPropertyInteger("ControllerType");
+		$ServerAddress = $this->ReadPropertyString("ServerAddress");
+		$ServerPort = $this->ReadPropertyInteger("ServerPort");
+		$Username = $this->ReadPropertyString("UserName");
+		$Password = $this->ReadPropertyString("Password");
+		$Site = $this->ReadPropertyString("Site");
+
+		return $this->getSiteName($Site, $Username, $Password, $ServerAddress, $ServerPort, $ControllerType);
 	}
 }

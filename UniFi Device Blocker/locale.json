@@ -21,7 +21,10 @@
             "Devices": "Geräte",
             "Devicename": "Gerätename",
             "MAC": "MAC",
-            "Test Authentication and Blocking": "Teste Anmeldung und Sperre"
+            "Test Authentication and Blocking": "Teste Anmeldung und Sperre",
+            "Check site name": "Name der Site prüfen",
+            "' found. --> Configuration is correct!": "' gefunden. --> Konfiguration ist richtig",
+            "' not found! --> available site-names: ": "' nicht gefunden! --> verfügbare Namen für Sites sind: "
         }
     }
 }

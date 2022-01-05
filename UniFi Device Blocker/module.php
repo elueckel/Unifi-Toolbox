@@ -7,10 +7,10 @@ require_once __DIR__.'/../libs/myFunctions.php';  // globale Funktionen
 // Modul Prefix
 if (!defined('MODUL_PREFIX'))
 {
-	define("MODUL_PREFIX", "UDB");
+	define("MODUL_PREFIX", "UEB");
 }
 
-class UniFiDeviceBlocker extends IPSModule
+class UniFiEndpointBlocker extends IPSModule
 {
 	use myFunctions;
 
@@ -108,7 +108,7 @@ class UniFiDeviceBlocker extends IPSModule
 		}
 
 		//Generic Section providing for Authenthication against a DreamMachine or Classic CloudKey
-		$Cookie = $this->getCookie($Username, $Password, $ServerAddress, $ServerPort);
+		$Cookie = $this->getCookie($Username, $Password, $ServerAddress, $ServerPort, $ControllerType);
 
 		// get SenderID
 		$SenderID = $this->GetBuffer("SenderID");
@@ -221,6 +221,13 @@ class UniFiDeviceBlocker extends IPSModule
 		return true;
 	}
 
+	// required for changing variable values in GUI
+	public function RequestAction($Ident, $Value) {
+
+		$this->SetValue($Ident, $Value);
+
+	}
+
 	// public function, which is blocking a device with MAC $DeviceMacAddress
 	public function block(string $DeviceMacAddress)
 	{
@@ -255,5 +262,18 @@ class UniFiDeviceBlocker extends IPSModule
 			$this->SendDebug($this->Translate("Device Blocker"), "Error: unblock(".$DeviceMacAddress.")", 0);
 			return false;
 		}
+	}
+
+	// public function, which is checking the site-name
+	public function checkSiteName()
+	{
+		$ControllerType = $this->ReadPropertyInteger("ControllerType");
+		$ServerAddress = $this->ReadPropertyString("ServerAddress");
+		$ServerPort = $this->ReadPropertyInteger("ServerPort");
+		$Username = $this->ReadPropertyString("UserName");
+		$Password = $this->ReadPropertyString("Password");
+		$Site = $this->ReadPropertyString("Site");
+
+		return $this->getSiteName($Site, $Username, $Password, $ServerAddress, $ServerPort, $ControllerType);
 	}
 }

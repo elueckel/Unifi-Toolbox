@@ -32,7 +32,7 @@
         },
         {
             "type": "Label",
-            "label": "UniFi Toolbox - Device Blocker Configuration"
+            "label": "UniFi Toolbox - Endpoint Blocker Configuration"
         },
         {
             "type": "Select",
@@ -125,6 +125,11 @@
                     "type": "Button",
                     "label": "Test Authentication and Blocking",
                     "onClick": "UDB_AuthenticateAndProcessRequest($id, '');"
+                },
+                {
+                    "type": "Button",
+                    "label": "Check site name",
+                    "onClick": "UDB_checkSiteName($id, '');"
                 }
             ]
         }

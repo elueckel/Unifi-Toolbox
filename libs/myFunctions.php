@@ -14,12 +14,12 @@ if (!defined('vtBoolean'))
 
 trait myFunctions
 {
-	private function getCookie($Username, $Password, $ServerAddress, $ServerPort)
+	private function getCookie($Username, $Password, $ServerAddress, $ServerPort, $ControllerType=0)
 	{
 		//Generic Section providing for Authenthication against a DreamMachine or Classic CloudKey
 		$ch = curl_init();
 
-		if (!isset($ControllerType) || $ControllerType == 0)
+		if ($ControllerType == 0)
 		{
 			$SuffixURL = "/api/auth/login";
 			curl_setopt($ch, CURLOPT_POSTFIELDS, "username=".$Username."&password=".$Password);
@@ -40,7 +40,7 @@ trait myFunctions
 
 		if (false === $data)
 		{
-			$this->SendDebug($this->Translate("Authentication"), $this->Translate('Error: Not reachable / No response!'), 0);
+			$this->SendDebug($this->Translate("Authentication"), $this->Translate('Error 404: Not reachable / No response!'), 0);
 
 			// IP or Port not reachable / no response
 			$this->SetStatus(200);
@@ -65,20 +65,30 @@ trait myFunctions
 				{
 					$this->SendDebug($this->Translate("Authentication"), $this->Translate('Login Successful'), 0);
 					$this->SendDebug($this->Translate("Authentication"), $this->Translate('Cookie Provided is: ').$Cookie, 0);
+					$this->SetStatus(102); // login successful
 				}
 				elseif (400 == $code)
 				{
 					$this->SendDebug($this->Translate("Authentication"), $this->Translate('400 Bad Request - The server cannot or will not process the request due to an apparent client error.'), 0);
 					echo $this->Translate('400 Bad Request - The server cannot or will not process the request due to an apparent client error.');
+					$this->SetStatus(201); // login seems to be not successful
 					return false;
 				}
 				elseif (401 == $code || 403 == $code)
 				{
 					$this->SendDebug($this->Translate("Authentication"), $this->Translate('401 Unauthorized / 403 Forbidden - The request contained valid data and was understood by the server, but the server is refusing action. Missing user permission?'), 0);
 					echo $this->Translate('401 Unauthorized / 403 Forbidden - The request contained valid data and was understood by the server, but the server is refusing action. Missing user permission?');
+					$this->SetStatus(201); // login seems to be not successful
 					return false;
 				}
 			}
+		}
+		else
+		{
+			$this->SendDebug($this->Translate("Authentication"), $this->Translate('No cookie found'), 0);
+			echo $this->Translate('No cookie found');
+			$this->SetStatus(201); // login seems to be not successful
+			return false;
 		}
 
 		return $Cookie;
@@ -125,6 +135,7 @@ trait myFunctions
 		{
 			$this->SendDebug($this->Translate("UniFi API Call"), $this->Translate("Successfully Called"), 0);
 			$this->SendDebug($this->Translate("UniFi API Call"), $this->Translate("Data Provided: ").$RawData, 0);
+			$this->SetStatus(102); // login successful
 			return $RawData;
 		}
 		else
@@ -160,6 +171,53 @@ trait myFunctions
 		{
 			return "";
 		}
+	}
+
+	private function getSiteName($Site, $Username, $Password, $ServerAddress, $ServerPort, $ControllerType = 0)
+	{
+		$UnifiAPI = "api/self/sites";
+
+		$Cookie = $this->getCookie($Username, $Password, $ServerAddress, $ServerPort, $ControllerType);
+		$RawData = $this->getRawData($Cookie, $ServerAddress, $ServerPort, $UnifiAPI, $ControllerType);
+
+		// query JSON file for internet data
+		if (false !== $RawData)
+		{
+			if ($RawData !== "")
+			{
+				$JSONData = json_decode($RawData, true);
+
+				$sitesArray = $JSONData['data'];
+				$sitesFound = array();
+
+				foreach($sitesArray AS $siteValue)
+				{
+					if($Site == $siteValue['name'])
+					{
+						$this->SendDebug("checkSiteName()", $this->Translate("Site '").$Site.$this->Translate("' found. --> Configuration is correct!"), 0);
+						echo $this->Translate("Site '").$Site.$this->Translate("' found. --> Configuration is correct!");
+						return true;
+					}
+					else
+					{
+						$sitesFound[] = $siteValue['name'];
+					}
+				}
+
+				$this->SendDebug("checkSiteName()", $this->Translate("Error: Site '").$Site.$this->Translate("' not found! --> available site-names: ").implode(", ", $sitesFound), 0);
+				echo $this->Translate("Error: Site '").$Site.$this->Translate("' not found! --> available site-names: ").implode(", ", $sitesFound);
+			}
+			else
+			{
+				$this->SendDebug("checkSiteName()", $this->Translate("There does not seem to be any configuration - no data is available from the UniFi"), 0);
+			}
+		}
+		else
+		{
+			// debug output already done in getRawData()
+		}
+
+		return false;
 	}
 
 	private function createVarProfile($ProfilName, $ProfileType, $Suffix = '', $MinValue = 0, $MaxValue = 0, $StepSize = 0, $Digits = 0, $Icon = 0, $Associations = '')
