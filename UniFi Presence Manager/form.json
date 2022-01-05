@@ -142,6 +142,11 @@
                     "type": "Button",
                     "label": "Check Presence",
                     "onClick": "UPM_CheckPresence($id);"
+                },
+                {
+                    "type": "Button",
+                    "label": "check Site name",
+                    "onClick": "UPM_checkSiteName($id, '');"
                 }
             ]
         }

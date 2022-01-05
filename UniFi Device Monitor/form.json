@@ -144,6 +144,11 @@
                     "type": "Button",
                     "label": "Get Device Data",
                     "onClick": "UDM_DeviceMonitor($id);"
+                },
+                {
+                    "type": "Button",
+                    "label": "check Site name",
+                    "onClick": "UDM_checkSiteName($id, '');"
                 }
             ]
         }

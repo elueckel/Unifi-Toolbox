@@ -199,6 +199,11 @@
                     "type": "Button",
                     "label": "Get Internet Data",
                     "onClick": "UIC_GetInternetData($id);"
+                },
+                {
+                    "type": "Button",
+                    "label": "check Site name",
+                    "onClick": "UIC_checkSiteName($id, '');"
                 }
             ]
         }

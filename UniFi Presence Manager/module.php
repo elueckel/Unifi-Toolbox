@@ -175,4 +175,17 @@ class UniFiPresenceManager extends IPSModule
 			}
 		}
 	}
+
+	// public function, which is checking the site-name
+	public function checkSiteName()
+	{
+		$ControllerType = $this->ReadPropertyInteger("ControllerType");
+		$ServerAddress = $this->ReadPropertyString("ServerAddress");
+		$ServerPort = $this->ReadPropertyInteger("ServerPort");
+		$Username = $this->ReadPropertyString("UserName");
+		$Password = $this->ReadPropertyString("Password");
+		$Site = $this->ReadPropertyString("Site");
+
+		return $this->getSiteName($Site, $Username, $Password, $ServerAddress, $ServerPort, $ControllerType);
+	}
 }

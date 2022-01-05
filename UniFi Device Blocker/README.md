@@ -50,7 +50,7 @@ Site-Name der im Controller hinterlegt ist (Standard: "default").
 
 ACHTUNG: Nicht mit Site-Description verwechseln, welche bspw. in der Controller GUI geändert werden kann!
 
-Kann ermittelt werden mit: https://<< IP >>:<< PORT >>/proxy/network/api/self/sites bzw. https://<< IP >>:<< PORT >>/api/self/sites
+Der Site-Name kann überprüft werden mit einem Klick auf "check Site Name".
 
 **IP-Adresse und Port**
 

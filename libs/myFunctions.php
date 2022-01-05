@@ -173,6 +173,53 @@ trait myFunctions
 		}
 	}
 
+	private function getSiteName($Site, $Username, $Password, $ServerAddress, $ServerPort, $ControllerType = 0)
+	{
+		$UnifiAPI = "api/self/sites";
+
+		$Cookie = $this->getCookie($Username, $Password, $ServerAddress, $ServerPort, $ControllerType);
+		$RawData = $this->getRawData($Cookie, $ServerAddress, $ServerPort, $UnifiAPI, $ControllerType);
+
+		// query JSON file for internet data
+		if (false !== $RawData)
+		{
+			if ($RawData !== "")
+			{
+				$JSONData = json_decode($RawData, true);
+
+				$sitesArray = $JSONData['data'];
+				$sitesFound = array();
+
+				foreach($sitesArray AS $siteValue)
+				{
+					if($Site == $siteValue['name'])
+					{
+						$this->SendDebug("checkSiteName()", "Site '".$Site."' found. --> Configuration is correct!", 0);
+						echo "Site '".$Site."' found. --> Configuration is correct!";
+						return true;
+					}
+					else
+					{
+						$sitesFound[] = $siteValue['name'];
+					}
+				}
+
+				$this->SendDebug("checkSiteName()", "Error: Site '".$Site."' not found! --> available site-names: ".implode(", ", $sitesFound), 0);
+				echo "Error: Site '".$Site."' not found! --> available site-names: ".implode(", ", $sitesFound);
+			}
+			else
+			{
+				$this->SendDebug("checkSiteName()", $this->Translate("There does not seem to be any configuration - no data is available from the UniFi"), 0);
+			}
+		}
+		else
+		{
+			// debug output already done in getRawData()
+		}
+
+		return false;
+	}
+
 	private function createVarProfile($ProfilName, $ProfileType, $Suffix = '', $MinValue = 0, $MaxValue = 0, $StepSize = 0, $Digits = 0, $Icon = 0, $Associations = '')
 	{
 		if (!IPS_VariableProfileExists($ProfilName))

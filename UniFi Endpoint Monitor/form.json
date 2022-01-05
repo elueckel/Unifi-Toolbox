@@ -148,6 +148,11 @@
                     "type": "Button",
                     "label": "Get Device Data",
                     "onClick": "UEM_EndpointMonitor($id);"
+                },
+                {
+                    "type": "Button",
+                    "label": "check Site name",
+                    "onClick": "UEM_checkSiteName($id, '');"
                 }
             ]
         }
