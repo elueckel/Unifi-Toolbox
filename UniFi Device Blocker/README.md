@@ -46,7 +46,11 @@ Account mit dem sich das Modul mit dem Controller verbindet
 
 **Site**
 
-Site die im Controller hinterlegt ist 
+Site-Name der im Controller hinterlegt ist (Standard: "default").
+
+ACHTUNG: Nicht mit Site-Description verwechseln, welche bspw. in der Controller GUI geändert werden kann!
+
+Kann ermittelt werden mit: https://<< IP >>:<< PORT >>/proxy/network/api/self/sites bzw. https://<< IP >>:<< PORT >>/api/self/sites
 
 **IP-Adresse und Port**
 
