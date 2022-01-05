@@ -1,5 +1,5 @@
-# UniFi Device Blocker
-Dieses Modul ermöglicht es Geräte im Netz zu blockieren, um z.B. den Zugang der Kinder zu Internet nach 20 Uhr zu blockieren.
+# UniFi Endpoint Blocker
+Dieses Modul ermöglicht es Endgeräte im Netz zu blockieren, um z.B. den Zugang der Kinder zu Internet nach 20 Uhr zu blockieren.
 
 ## Inhaltsverzeichnis
 
@@ -26,12 +26,12 @@ Dieses Modul ermöglicht es Geräte im Netz zu blockieren, um z.B. den Zugang de
 
 ## 3. Software-Installation
 
-* Über den Module Store das 'UniFi Device Blocker'-Modul installieren.
+* Über den Module Store das 'UniFi Endpoint Blocker'-Modul installieren.
 * Alternativ über das Module Control folgende URL hinzufügen
 
 ## 4. Einrichten der Instanzen in IP-Symcon
 
- Unter 'Instanz hinzufügen' kann das 'UniFi Presence Manager'-Modul mithilfe des Schnellfilters gefunden werden.  
+ Unter 'Instanz hinzufügen' kann das 'UniFi Endpoint Blocker'-Modul mithilfe des Schnellfilters gefunden werden.  
 	- Weitere Informationen zum Hinzufügen von Instanzen in der [Dokumentation der Instanzen](https://www.symcon.de/service/dokumentation/konzepte/instanzen/#Instanz_hinzufügen)
 
 __Konfigurationsseite__:
@@ -73,19 +73,19 @@ Das Modul gibt diverse Informationen im Debug Bereich aus.
 ### 5. PHP-Befehlsreferenz
 
 #### Empfehlung
-Sofern nur eine Instanz des Unifi Device Blockers im Einsatz ist, sollte die $InstanzID wie folgt dynamisch ermittelt werden und nicht statisch gesetzt werden, da somit ein Löschen und Neuinstallieren der Unifi Device Blocker Instanz keine Auswirkung auf andere Skripte hat:
+Sofern nur eine Instanz des UniFi Endpoint Blocker im Einsatz ist, sollte die $InstanzID wie folgt dynamisch ermittelt werden und nicht statisch gesetzt werden, da somit ein Löschen und Neuinstallieren der Unifi Device Blocker Instanz keine Auswirkung auf andere Skripte hat:
 
 `$InstanzID = IPS_GetInstanceListByModuleID("{FC3E71F1-BF95-D45D-0676-BA3D10D02CB8}")[0];`
 
 
 #### Funktionen
 
-`bool UDB_block(int $InstanzID, string $DeviceMacAddress)`
+`bool UEB_block(int $InstanzID, string $DeviceMacAddress)`
 
 Blockiert das Gerät mit der MAC Adresse $DeviceMacAddress, welche in der DeviceBlocker Instanz $InstanzID konfiguriert wurde.
-Gibt false zurück, wenn Gerät in DeviceBlocker Instanz nicht gefunden wurde, ansonsten true.
+Gibt false zurück, wenn Gerät in EndpointBlocker Instanz nicht gefunden wurde, ansonsten true.
 
-`bool UDB_unblock(int $InstanzID, string $DeviceMacAddress)`
+`bool UEB_unblock(int $InstanzID, string $DeviceMacAddress)`
 
 Erlaubt das Gerät mit der MAC Adresse $DeviceMacAddress, welche in der DeviceBlocker Instanz $InstanzID konfiguriert wurde.
 Gibt false zurück, wenn Gerät in DeviceBlocker Instanz nicht gefunden wurde, ansonsten true.
@@ -117,3 +117,4 @@ Version 1.2 - 30-12-2021
 
 Version 1.3 - 03-01-2022
 * Neu - Unifi API Zugriff in eigene Funktion ausgelagert (bessere Wartbarkeit)
+* Neu Device Blocker heisst jetzt Endpoint Blocker

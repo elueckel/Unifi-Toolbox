@@ -32,7 +32,7 @@
         },
         {
             "type": "Label",
-            "label": "UniFi Toolbox - Device Blocker Configuration"
+            "label": "UniFi Toolbox - Endpoint Blocker Configuration"
         },
         {
             "type": "Select",

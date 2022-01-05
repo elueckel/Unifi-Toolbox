@@ -7,10 +7,10 @@ require_once __DIR__.'/../libs/myFunctions.php';  // globale Funktionen
 // Modul Prefix
 if (!defined('MODUL_PREFIX'))
 {
-	define("MODUL_PREFIX", "UDB");
+	define("MODUL_PREFIX", "UEB");
 }
 
-class UniFiDeviceBlocker extends IPSModule
+class UniFiEndpointBlocker extends IPSModule
 {
 	use myFunctions;
 
