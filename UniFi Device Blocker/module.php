@@ -221,6 +221,13 @@ class UniFiDeviceBlocker extends IPSModule
 		return true;
 	}
 
+	// required for changing variable values in GUI
+	public function RequestAction($Ident, $Value) {
+
+		$this->SetValue($Ident, $Value);
+
+	}
+
 	// public function, which is blocking a device with MAC $DeviceMacAddress
 	public function block(string $DeviceMacAddress)
 	{
