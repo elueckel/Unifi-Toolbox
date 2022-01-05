@@ -22,7 +22,7 @@ class UnifiEndpointMonitor extends IPSModule
 		$this->RegisterPropertyInteger("ControllerType", 0);
 		$this->RegisterPropertyString("ServerAddress", "192.168.1.1");
 		$this->RegisterPropertyInteger("ServerPort", "443");
-		$this->RegisterPropertyString("Site", "Default");
+		$this->RegisterPropertyString("Site", "default");
 		$this->RegisterPropertyString("UserName", "");
 		$this->RegisterPropertyString("Password", "");
 		$this->RegisterPropertyInteger("Timer", "0");
