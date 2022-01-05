@@ -194,8 +194,8 @@ trait myFunctions
 				{
 					if($Site == $siteValue['name'])
 					{
-						$this->SendDebug("checkSiteName()", "Site '".$Site."' found. --> Configuration is correct!", 0);
-						echo "Site '".$Site."' found. --> Configuration is correct!";
+						$this->SendDebug("checkSiteName()", $this->Translate("Site '").$Site.$this->Translate("' found. --> Configuration is correct!"), 0);
+						echo $this->Translate("Site '").$Site.$this->Translate("' found. --> Configuration is correct!");
 						return true;
 					}
 					else
@@ -204,8 +204,8 @@ trait myFunctions
 					}
 				}
 
-				$this->SendDebug("checkSiteName()", "Error: Site '".$Site."' not found! --> available site-names: ".implode(", ", $sitesFound), 0);
-				echo "Error: Site '".$Site."' not found! --> available site-names: ".implode(", ", $sitesFound);
+				$this->SendDebug("checkSiteName()", $this->Translate("Error: Site '").$Site.$this->Translate("' not found! --> available site-names: ").implode(", ", $sitesFound), 0);
+				echo $this->Translate("Error: Site '").$Site.$this->Translate("' not found! --> available site-names: ").implode(", ", $sitesFound);
 			}
 			else
 			{
