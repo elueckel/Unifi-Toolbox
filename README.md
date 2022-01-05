@@ -26,7 +26,20 @@ Die UniFi Toolbox ist eine Sammlung von Modulen, welche verschiedene Aktionen in
 
 ## 2. Installation
 
-* Das Modul kann einfach über das Module Control oder zukünftig den Module Store geladen werden. Die URL hierzu ist: https://github.com/elueckel/Unifi-Toolbox 
+#### Variante 1 (empfohlen): Modulverwaltung (Module Control)
+
+Über das in der IP Symcon Console (unter Core Instances/Kerninstanzen) enthaltene Modulverwaltung (Module Control) die URL `https://github.com/elueckel/Unifi-Toolbox` manuell hinzufügen.
+
+Anschließend steht das Modul zur Verfügung und eine Unifi-Toolbox Modul Instanz kann hinzugefügt werden.
+
+Anmerkung: Per Klick auf das Zahnradsymbol kann in der Modulverwaltung ganz einfach für Tests zwischen "main" (stabile und getestete Versionen) und "beta" (enthält neuste Funktionen, welche teils getest und ggf. fehlerbehaftet sind) hin- und hergewechselt werden.
+
+
+#### Variante 2: Module Store
+
+Über den in der IP Symcon Console integrierten Module Store das 'Unifi-Toolbox'-Modul installieren.
+
+Anschließend steht das Modul zur Verfügung und eine Unifi-Toolbox Modul Instanz kann hinzugefügt werden.
 
 
 ## 3. Komponenten des Moduls
