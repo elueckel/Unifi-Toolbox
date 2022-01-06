@@ -73,7 +73,7 @@ Das Modul gibt diverse Informationen im Debug Bereich aus.
 ### 5. PHP-Befehlsreferenz
 
 #### Empfehlung
-Sofern nur eine Instanz des UniFi Endpoint Blocker im Einsatz ist, sollte die $InstanzID wie folgt dynamisch ermittelt werden und nicht statisch gesetzt werden, da somit ein Löschen und Neuinstallieren der Unifi Device Blocker Instanz keine Auswirkung auf andere Skripte hat:
+Sofern nur eine Instanz des UniFi Endpoint Blocker im Einsatz ist, sollte die $InstanzID wie folgt dynamisch ermittelt werden und nicht statisch gesetzt werden, da somit ein Löschen und Neuinstallieren der Unifi Endpoint Blocker Instanz keine Auswirkung auf andere Skripte hat:
 
 `$InstanzID = IPS_GetInstanceListByModuleID("{FC3E71F1-BF95-D45D-0676-BA3D10D02CB8}")[0];`
 
@@ -82,13 +82,13 @@ Sofern nur eine Instanz des UniFi Endpoint Blocker im Einsatz ist, sollte die $I
 
 `bool UEB_block(int $InstanzID, string $DeviceMacAddress)`
 
-Blockiert das Gerät mit der MAC Adresse $DeviceMacAddress, welche in der DeviceBlocker Instanz $InstanzID konfiguriert wurde.
-Gibt false zurück, wenn Gerät in EndpointBlocker Instanz nicht gefunden wurde, ansonsten true.
+Blockiert das Gerät mit der MAC Adresse $DeviceMacAddress, welche in der Endpoint Blocker Instanz $InstanzID konfiguriert wurde.
+Gibt false zurück, wenn Gerät in Endpoint Blocker Instanz nicht gefunden wurde, ansonsten true.
 
 `bool UEB_unblock(int $InstanzID, string $DeviceMacAddress)`
 
-Erlaubt das Gerät mit der MAC Adresse $DeviceMacAddress, welche in der DeviceBlocker Instanz $InstanzID konfiguriert wurde.
-Gibt false zurück, wenn Gerät in DeviceBlocker Instanz nicht gefunden wurde, ansonsten true.
+Erlaubt das Gerät mit der MAC Adresse $DeviceMacAddress, welche in der Endpoint Blocker Instanz $InstanzID konfiguriert wurde.
+Gibt false zurück, wenn Gerät in Endpoint Blocker Instanz nicht gefunden wurde, ansonsten true.
 
 
 ## 6. Versionsinformation

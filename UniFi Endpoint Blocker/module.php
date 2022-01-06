@@ -59,11 +59,8 @@ class UniFiEndpointBlocker extends IPSModule
 
 				if (@IPS_GetObjectIDByIdent($DeviceMacClean, $this->InstanceID) == false)
 				{
-					$DeviceMacCleanID = IPS_CreateVariable(0);
-					IPS_SetName($DeviceMacCleanID, $DeviceName);
-					IPS_SetIdent($DeviceMacCleanID, $DeviceMacClean);
-					IPS_SetVariableCustomProfile($DeviceMacCleanID, "~Switch");
-					IPS_SetParent($DeviceMacCleanID, $this->InstanceID);
+					$this->RegisterVariableBoolean($DeviceMacClean, $DeviceName, "~Switch");
+					$DeviceMacCleanID = @IPS_GetObjectIDByIdent($DeviceMacClean, $this->InstanceID);
 
 					SetValue($DeviceMacCleanID, true);
 					IPS_Sleep(1000);
@@ -133,7 +130,7 @@ class UniFiEndpointBlocker extends IPSModule
 					if ($SenderObjectIdent == $DeviceMacClean)
 					{
 						$DeviceMacAddress = $Device["varDeviceMAC"];
-						$this->SendDebug($this->Translate("Device Blocker"), $this->Translate("Device to be managed: ").$Device["varDeviceName"], 0);
+						$this->SendDebug($this->Translate("Endpoint Blocker"), $this->Translate("Device to be managed: ").$Device["varDeviceName"], 0);
 						break;
 					}
 				}
@@ -141,12 +138,12 @@ class UniFiEndpointBlocker extends IPSModule
 
 			if (!isset($DeviceMacAddress) || "" == $DeviceMacAddress)
 			{
-				$this->SendDebug($this->Translate("Device Blocker"), $this->Translate("The switched variable did not have an entry in the module configuration - execution stopped"), 0);
+				$this->SendDebug($this->Translate("Endpoint Blocker"), $this->Translate("The switched variable did not have an entry in the module configuration - execution stopped"), 0);
 				return false;
 			}
 
 
-			$this->SendDebug($this->Translate("Device Blocker"), $Cookie, 0);
+			$this->SendDebug($this->Translate("Endpoint Blocker"), $Cookie, 0);
 
 			//////////////////////////////////////////
 			//Change the Unifi API to be called here
@@ -159,17 +156,17 @@ class UniFiEndpointBlocker extends IPSModule
 
 			if (isset($Cookie))
 			{
-				$this->SendDebug($this->Translate("Device Blocker"), $this->Translate("Module is authenticated and will try to manage device"), 0);
+				$this->SendDebug($this->Translate("Endpoint Blocker"), $this->Translate("Module is authenticated and will try to manage device"), 0);
 
 				if ($SenderStatus == 1)
 				{
 					$Command = "unblock-sta";
-					$this->SendDebug($this->Translate("Device Blocker"), $this->Translate("Module will try to unblock device ").$SenderName.$this->Translate(" with MAC address ").$DeviceMacAddress, 0);
+					$this->SendDebug($this->Translate("Endpoint Blocker"), $this->Translate("Module will try to unblock device ").$SenderName.$this->Translate(" with MAC address ").$DeviceMacAddress, 0);
 				}
 				elseif ($SenderStatus == 0)
 				{
 					$Command = "block-sta";
-					$this->SendDebug($this->Translate("Device Blocker"), $this->Translate("Module will try to block device ").$SenderName.$this->Translate(" with MAC address ").$DeviceMacAddress, 0);
+					$this->SendDebug($this->Translate("Endpoint Blocker"), $this->Translate("Module will try to block device ").$SenderName.$this->Translate(" with MAC address ").$DeviceMacAddress, 0);
 				}
 
 				//$CommandToController = json_encode(array($Command => $DeviceMacAddress));
@@ -201,11 +198,11 @@ class UniFiEndpointBlocker extends IPSModule
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 				$RawData = curl_exec($ch);
 				$HTTP_Code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-				$this->SendDebug($this->Translate("Device Blocker"), $this->Translate("Feedback from UniFi Controller: ").$RawData." / HTTP Message ".$HTTP_Code, 0);
+				$this->SendDebug($this->Translate("Endpoint Blocker"), $this->Translate("Feedback from UniFi Controller: ").$RawData." / HTTP Message ".$HTTP_Code, 0);
 
 				$ControllerFeedbackComplete = json_decode($RawData, true);
 				$ControllerFeedbackOK = $ControllerFeedbackComplete["meta"]["rc"];
-				$this->SendDebug($this->Translate("Device Blocker"), $this->Translate("Was operation executed: ").$ControllerFeedbackOK, 0);
+				$this->SendDebug($this->Translate("Endpoint Blocker"), $this->Translate("Was operation executed: ").$ControllerFeedbackOK, 0);
 				curl_close($ch);
 				if ($ControllerFeedbackOK == "ok")
 				{
@@ -241,7 +238,7 @@ class UniFiEndpointBlocker extends IPSModule
 		}
 		else
 		{
-			$this->SendDebug($this->Translate("Device Blocker"), "Error: block(".$DeviceMacAddress.")", 0);
+			$this->SendDebug($this->Translate("Endpoint Blocker"), "Error: block(".$DeviceMacAddress.")", 0);
 			return false;
 		}
 	}
@@ -259,7 +256,7 @@ class UniFiEndpointBlocker extends IPSModule
 		}
 		else
 		{
-			$this->SendDebug($this->Translate("Device Blocker"), "Error: unblock(".$DeviceMacAddress.")", 0);
+			$this->SendDebug($this->Translate("Endpoint Blocker"), "Error: unblock(".$DeviceMacAddress.")", 0);
 			return false;
 		}
 	}
