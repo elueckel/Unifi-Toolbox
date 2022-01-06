@@ -59,11 +59,8 @@ class UniFiEndpointBlocker extends IPSModule
 
 				if (@IPS_GetObjectIDByIdent($DeviceMacClean, $this->InstanceID) == false)
 				{
-					$DeviceMacCleanID = IPS_CreateVariable(0);
-					IPS_SetName($DeviceMacCleanID, $DeviceName);
-					IPS_SetIdent($DeviceMacCleanID, $DeviceMacClean);
-					IPS_SetVariableCustomProfile($DeviceMacCleanID, "~Switch");
-					IPS_SetParent($DeviceMacCleanID, $this->InstanceID);
+					$this->RegisterVariableBoolean ($DeviceMacClean, $DeviceName, "~Switch");
+					$DeviceMacCleanID = @IPS_GetObjectIDByIdent($DeviceMacClean, $this->InstanceID);
 
 					SetValue($DeviceMacCleanID, true);
 					IPS_Sleep(1000);
