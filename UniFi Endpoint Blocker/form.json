@@ -124,12 +124,12 @@
                 {
                     "type": "Button",
                     "label": "Test Authentication and Blocking",
-                    "onClick": "UDB_AuthenticateAndProcessRequest($id, '');"
+                    "onClick": "UEB_AuthenticateAndProcessRequest($id, '');"
                 },
                 {
                     "type": "Button",
                     "label": "Check site name",
-                    "onClick": "UDB_checkSiteName($id, '');"
+                    "onClick": "UEB_checkSiteName($id, '');"
                 }
             ]
         }
