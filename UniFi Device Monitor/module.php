@@ -129,12 +129,12 @@ class UniFiDeviceMonitor extends IPSModule
 		$RawData = $this->AuthenticateAndGetData("api/s/".$Site."/stat/device"."/".$DeviceMac);
 
 		// query JSON file for internet data
-		if (false !== $RawData)
+		if (false !== $RawData && $RawData !== "")
 		{
-			if ($RawData !== "")
+			$JSONData = json_decode($RawData, true);
+
+			if (isset($JSONData["data"][0]["model"]))
 			{
-				$JSONData = json_decode($RawData, true);
-				//var_dump($JSONData);
 				$DeviceModel = $JSONData["data"][0]["model"];
 				$UnfiInternetDeviceArray = array("UDM", "UGW4", "UGW3", "UDMPRO");
 
