@@ -10,10 +10,15 @@ class ValidationTest extends TestCaseSymconValidation
 	}
 	public function testValidateDNSSDControl(): void
 	{
-		$this->validateModule(__DIR__.'/../UniFi Device Monitor');
-		$this->validateModule(__DIR__.'/../UniFi Endpoint Blocker');
-		$this->validateModule(__DIR__.'/../UniFi Endpoint Monitor');
-		$this->validateModule(__DIR__.'/../UniFi Internet Controller');
-		$this->validateModule(__DIR__.'/../UniFi Presence Manager');
+		$dirs = array_filter(glob(__DIR__.'/../*'), 'is_dir');
+
+		foreach ($dirs as $dir)
+		{
+			if (file_exists($dir."/module.php"))
+			{
+				echo "\nvalidateModule(): ".$dir;
+				$this->validateModule($dir);
+			}
+		}
 	}
 }
