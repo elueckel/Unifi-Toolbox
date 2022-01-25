@@ -42,7 +42,7 @@ class UnifiInternetControllerTest extends TestCase
 	public function testNoArchiveAvailable()
 	{
 		// defaul values von modul instance
-//		$ControllerType = 0;
+		$ControllerType = 0;
 		$Site = "default";
 		$ServerAddress = "192.168.1.1";
 		$ServerPort = "443";
@@ -50,6 +50,8 @@ class UnifiInternetControllerTest extends TestCase
 		$Password = "testpass";
 		$Timer = 0;
 		// devices
+
+		Unifi_setControllerType($ControllerType);
 
 		// Modul erstellen
 		$myModuleId = IPS_CreateInstance($this->moduleInstanceID);
