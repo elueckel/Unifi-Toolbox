@@ -41,6 +41,9 @@ class UnifiEndpointBlockerTest extends TestCase
 
 	public function testNoArchiveAvailable()
 	{
+		/*
+			TESTS WITH CONTROLLER TYPE = 0
+		 */
 		// defaul values von modul instance
 		$ControllerType = 0;
 		$Site = "default";
@@ -49,6 +52,8 @@ class UnifiEndpointBlockerTest extends TestCase
 		$UserName = "testuser";
 		$Password = "testpass";
 		// devices
+
+		Unifi_setControllerType($ControllerType);
 
 		// Modul erstellen
 		$myModuleId = IPS_CreateInstance($this->moduleInstanceID);
@@ -80,7 +85,7 @@ class UnifiEndpointBlockerTest extends TestCase
 			check: module status = 200
 		 */
 		$tdId++;
-		IPS_SetProperty($myModuleId, 'ControllerType', 1);
+		IPS_SetProperty($myModuleId, 'ControllerType', ($ControllerType + 1) % 2);
 		IPS_ApplyChanges($myModuleId);
 
 		$checkSiteName = UEB_checkSiteName($myModuleId);
@@ -136,6 +141,122 @@ class UnifiEndpointBlockerTest extends TestCase
 		IPS_ApplyChanges($myModuleId);
 
 		/* TC6:
+			action: set wrong Password
+			check: module status = 201
+		 */
+		$tdId++;
+		IPS_SetProperty($myModuleId, 'Password', "wrong_password");
+		IPS_ApplyChanges($myModuleId);
+
+		$checkSiteName = UEB_checkSiteName($myModuleId);
+		$this->assertEquals(false, $checkSiteName, "TC".$tdId.": checkSiteName() return value");
+		$this->assertEquals(201, IPS_GetInstance($myModuleId)['InstanceStatus'], "TC".$tdId.": Module GetStatus() return value");
+
+		IPS_SetProperty($myModuleId, 'Password', $Password);
+		IPS_ApplyChanges($myModuleId);
+
+
+		/*
+			TESTS WITH CONTROLLER TYPE = 1
+		 */
+		// defaul values von modul instance
+		$ControllerType = 1;
+		$Site = "default";
+		$ServerAddress = "192.168.1.1";
+		$ServerPort = "443";
+		$UserName = "testuser";
+		$Password = "testpass";
+		// devices
+
+		Unifi_setControllerType($ControllerType);
+
+		// Modul erstellen
+		$myModuleId = IPS_CreateInstance($this->moduleInstanceID);
+
+		// Moduleigenschaften setzen
+		IPS_SetProperty($myModuleId, 'ControllerType', $ControllerType);
+		IPS_SetProperty($myModuleId, 'ServerAddress', $ServerAddress);
+		IPS_SetProperty($myModuleId, 'ServerPort', $ServerPort);
+		IPS_SetProperty($myModuleId, 'UserName', $UserName);
+		IPS_SetProperty($myModuleId, 'Password', $Password);
+		IPS_ApplyChanges($myModuleId);
+
+		/* TC21:
+			action: create module
+			check: no instances created + module status = 104  + action + module status = 102
+		 */
+		$tdId = 21;
+		$this->assertEquals(0, count(IPS_GetChildrenIDs($myModuleId)), "TC".$tdId.": initialCreation: no childs created");
+
+		// instance active, because there is no timer
+		$this->assertEquals(102, IPS_GetInstance($myModuleId)['InstanceStatus'], "TC".$tdId.": Module GetStatus() return value");
+		$checkSiteName = UEB_checkSiteName($myModuleId);
+		$this->assertEquals(true, $checkSiteName, "TC".$tdId.": checkSiteName() return value");
+		// action --> instance active
+		$this->assertEquals(102, IPS_GetInstance($myModuleId)['InstanceStatus'], "TC".$tdId.": Module GetStatus() return value");
+
+		/* TC22:
+			action: set wrong ControllerType
+			check: module status = 200
+		 */
+		$tdId++;
+		IPS_SetProperty($myModuleId, 'ControllerType', ($ControllerType + 1) % 2);
+		IPS_ApplyChanges($myModuleId);
+
+		$checkSiteName = UEB_checkSiteName($myModuleId);
+		$this->assertEquals(false, $checkSiteName, "TC".$tdId.": checkSiteName() return value");
+		// expected module status code: $this->assertEquals(200, IPS_GetInstance($myModuleId)['InstanceStatus'], "TC".$tdId.": Module GetStatus() return value");
+		$this->assertEquals(201, IPS_GetInstance($myModuleId)['InstanceStatus'], "TC".$tdId.": Module GetStatus() return value");
+
+		IPS_SetProperty($myModuleId, 'ControllerType', $ControllerType);
+		IPS_ApplyChanges($myModuleId);
+
+		/* TC23:
+			action: set wrong IP
+			check: module status = 200
+		 */
+		$tdId++;
+		IPS_SetProperty($myModuleId, 'ServerAddress', "192.168.55.55");
+		IPS_ApplyChanges($myModuleId);
+
+		$checkSiteName = UEB_checkSiteName($myModuleId);
+		$this->assertEquals(false, $checkSiteName, "TC".$tdId.": checkSiteName() return value");
+		$this->assertEquals(200, IPS_GetInstance($myModuleId)['InstanceStatus'], "TC".$tdId.": Module GetStatus() return value");
+
+		IPS_SetProperty($myModuleId, 'ServerAddress', $ServerAddress);
+		IPS_ApplyChanges($myModuleId);
+
+		/* TC24:
+			action: set wrong Port
+			check: module status = 200
+		 */
+		$tdId++;
+		IPS_SetProperty($myModuleId, 'ServerPort', "5555");
+		IPS_ApplyChanges($myModuleId);
+
+		$checkSiteName = UEB_checkSiteName($myModuleId);
+		$this->assertEquals(false, $checkSiteName, "TC".$tdId.": checkSiteName() return value");
+		$this->assertEquals(200, IPS_GetInstance($myModuleId)['InstanceStatus'], "TC".$tdId.": Module GetStatus() return value");
+
+		IPS_SetProperty($myModuleId, 'ServerPort', $ServerPort);
+		IPS_ApplyChanges($myModuleId);
+
+		/* TC25:
+			action: set wrong User
+			check: module status = 201
+		 */
+		$tdId++;
+		IPS_SetProperty($myModuleId, 'UserName', "wrong_user");
+		IPS_ApplyChanges($myModuleId);
+
+		$checkSiteName = UEB_checkSiteName($myModuleId);
+		$this->assertEquals(false, $checkSiteName, "TC".$tdId.": checkSiteName() return value");
+		$this->assertEquals(201, IPS_GetInstance($myModuleId)['InstanceStatus'], "TC".$tdId.": Module GetStatus() return value");
+
+		IPS_SetProperty($myModuleId, 'UserName', $UserName);
+		IPS_ApplyChanges($myModuleId);
+
+		/* TC26:
 			action: set wrong Password
 			check: module status = 201
 		 */
