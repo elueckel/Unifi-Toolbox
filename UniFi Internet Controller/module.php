@@ -48,6 +48,9 @@ class UniFiDMInternetController extends IPSModule
 		$this->RegisterPropertyBoolean("WAN2availability", 0);
 		$this->RegisterPropertyBoolean("WAN2latency_average", 0);
 		$this->RegisterPropertyBoolean("WAN2time_period", 0);
+		$this->RegisterPropertyBoolean("xput_up", 0);
+		$this->RegisterPropertyBoolean("xput_down", 0);
+		$this->RegisterPropertyBoolean("speedtest_lastrun", 0);
 
 		$this->RegisterTimer("Collect Connection Data", 0, MODUL_PREFIX."_GetInternetData(\$_IPS['TARGET']);");
 
@@ -67,6 +70,7 @@ class UniFiDMInternetController extends IPSModule
 		parent::ApplyChanges();
 
 		$vpos = 100;
+		// subsystem wan
 		$this->MaintainVariable("wan_ip", $this->Translate("WAN IP active"), vtString, "", $vpos++, $this->ReadPropertyBoolean("wan_ip"));
 		$this->MaintainVariable("WAN1IP", $this->Translate("WAN1 External IP Address"), vtString, "", $vpos++, $this->ReadPropertyBoolean("WAN1IP"));
 		$this->MaintainVariable("WAN1availability", $this->Translate("WAN1 availability"), vtInteger, "~Intensity.100", $vpos++, $this->ReadPropertyBoolean("WAN1availability"));
@@ -83,6 +87,11 @@ class UniFiDMInternetController extends IPSModule
 		$this->MaintainVariable("update_available", $this->Translate("Update available"), vtBoolean, "", $vpos++, $this->ReadPropertyBoolean("update_available"));
 		$this->MaintainVariable("update_downloaded", $this->Translate("Update downloaded"), vtBoolean, "", $vpos++, $this->ReadPropertyBoolean("update_downloaded"));
 		$this->MaintainVariable("uptime", $this->Translate("Uptime"), vtInteger, "~UnixTimestamp", $vpos++, $this->ReadPropertyBoolean("uptime"));
+
+		// subsystem www
+		$this->MaintainVariable("xput_up", $this->Translate("Speed Upload"), vtFloat, "", $vpos++, $this->ReadPropertyBoolean("xput_up"));
+		$this->MaintainVariable("xput_down", $this->Translate("Speed Download"), vtFloat, "", $vpos++, $this->ReadPropertyBoolean("xput_down"));
+		$this->MaintainVariable("speedtest_lastrun", $this->Translate("Speed Lastrun"), vtInteger, "~UnixTimestamp", $vpos++, $this->ReadPropertyBoolean("speedtest_lastrun"));
 
 		$this->MaintainVariable("ubnt_device_type", $this->Translate("UBNT Device Type"), vtString, "", $vpos++, $this->ReadPropertyBoolean("ubnt_device_type"));
 		$this->MaintainVariable("udm_version", $this->Translate("UDM Version"), vtString, "", $vpos++, $this->ReadPropertyBoolean("udm_version"));
@@ -285,11 +294,14 @@ class UniFiDMInternetController extends IPSModule
 					array('ident' => "WAN2time_period", 'json' => "return (isset(\$health['uptime_stats']['WAN2']['time_period']) ? \$health['uptime_stats']['WAN2']['time_period'] : null);", 'localeName' => "WAN2 time_period"),
 					array('ident' => "isp_name", 'json' => "return (isset(\$health['isp_name']) ? \$health['isp_name'] : null);", 'localeName' => "ISP Name"),
 					array('ident' => "isp_organization", 'json' => "return (isset(\$health['isp_organization']) ? \$health['isp_organization'] : null);", 'localeName' => "ISP Organization"),
+					array('ident' => "xput_up", 'json' => "return (isset(\$health['xput_up']) ? \$health['xput_up'] : null);", 'localeName' => "Speed Upload"),
+					array('ident' => "xput_down", 'json' => "return (isset(\$health['xput_down']) ? \$health['xput_down'] : null);", 'localeName' => "Speed Download"),
+					array('ident' => "speedtest_lastrun", 'json' => "return (isset(\$health['speedtest_lastrun']) ? \$health['speedtest_lastrun'] : null);", 'localeName' => "Speed Lastrun"),
 				);
 
 				foreach ($healthArray as $health)
 				{
-					if (isset($health['subsystem']) && 'wan' == $health['subsystem'])
+					if (isset($health['subsystem']) && ('wan' == $health['subsystem'] ||'www' == $health['subsystem']))
 					{
 						foreach ($variableArray as $variable)
 						{

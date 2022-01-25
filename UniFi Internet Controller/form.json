@@ -130,6 +130,30 @@
             "items": [
                 {
                     "type": "CheckBox",
+                    "name": "xput_up",
+                    "caption": "Speed Upload"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "xput_down",
+                    "caption": "Speed Download"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "speedtest_lastrun",
+                    "caption": "Speed Lastrun"
+                }
+            ]
+        },
+        {
+            "type": "Label",
+            "label": ""
+        },
+        {
+            "type": "RowLayout",
+            "items": [
+                {
+                    "type": "CheckBox",
                     "name": "version",
                     "caption": "Unifi Network Version"
                 },{
