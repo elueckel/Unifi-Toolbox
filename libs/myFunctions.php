@@ -162,13 +162,13 @@ trait myFunctions
 			$this->SetStatus(200); // IP, Port or ControllerType wrong
 			return false;
 		}
-		elseif (isset($RawData) && false !== strpos($RawData, 'api.err.NoSiteContext'))
+		elseif (isset($RawData) && false !== $RawData && false !== strpos($RawData, 'api.err.NoSiteContext'))
 		{
 			$this->SendDebug($this->Translate("UniFi API Call"), $this->Translate('NoSiteContext - It seems, that the configured Site is wrong.'), 0);
 			$this->SetStatus(202); // NoSiteContext --> Site falsch
 			return $RawData;
 		}
-		elseif (isset($RawData) && false === strpos($RawData, '"rc":"error"'))
+		elseif (isset($RawData) && false !== $RawData && false === strpos($RawData, '"rc":"error"'))
 		{
 			$this->SendDebug($this->Translate("UniFi API Call"), $this->Translate("Successfully Called"), 0);
 			$this->SendDebug($this->Translate("UniFi API Call"), $this->Translate("Data Provided: ").$RawData, 0);
