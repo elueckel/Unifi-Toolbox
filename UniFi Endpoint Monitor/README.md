@@ -90,3 +90,6 @@ Version 1.2 - 27-12-2021
 Version 1.3 - 03-01-2022
 * Neu - Unifi API Zugriff in eigene Funktion ausgelagert (bessere Wartbarkeit)
 * Fix - Geräte die nicht mit dem Netzwerk verbunden sind erzeugen keine Fehler mehr
+
+Version 1.31 - 01-10-2022
+* Fix - Wenn die Verbindungsqualität nicht gesendet wird, sollte der Wert ignoriert werden

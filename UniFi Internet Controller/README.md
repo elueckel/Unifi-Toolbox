@@ -103,5 +103,5 @@ Version 1.2 - 30-12-2021
 Version 1.3 - 03-01-2022
 * Neu - Unifi API Zugriff in eigene Funktion ausgelagert (bessere Wartbarkeit)
 
-Version 1.4 - 25-01-2022
+Version 1.31 - 25-01-2022
 * Neu - Anzeige gemessener Up und Download Speed für die WAN Verbidnung

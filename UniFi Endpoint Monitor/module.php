@@ -216,8 +216,10 @@ class UnifiEndpointMonitor extends IPSModule
 					}
 					if ($this->ReadPropertyBoolean("DataPointConnection") == 1)
 					{
-						$Satisfaction = $JSONData["data"][0]["satisfaction"];
-						SetValue($this->GetIDForIdent("Satisfaction"), $Satisfaction);
+						if (isset($JSONData["data"][0]["satisfaction"])) {
+							$Satisfaction = isset($JSONData["data"][0]["satisfaction"]);
+							SetValue($this->GetIDForIdent("Satisfaction"), $Satisfaction);
+						}
 						$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connection Data Satisfaction ").$Satisfaction, 0);
 						$SLastSeen = $JSONData["data"][0]["last_seen"];
 						SetValue($this->GetIDForIdent("LastSeen"), gmdate("Y-m-d H:i:s", $SLastSeen));
