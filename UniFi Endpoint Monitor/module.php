@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 require_once __DIR__.'/../libs/myFunctions.php';  // globale Funktionen
+include_once __DIR__.'/../libs/timetest.php';
 
 // Modul Prefix
 if (!defined('MODUL_PREFIX'))
@@ -13,6 +14,7 @@ if (!defined('MODUL_PREFIX'))
 class UnifiEndpointMonitor extends IPSModule
 {
 	use myFunctions;
+    use TestTime;
 
 	public function Create()
 	{
