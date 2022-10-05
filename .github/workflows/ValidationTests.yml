@@ -16,6 +16,6 @@ jobs:
     - name: Install latest PHPUnit
       run: wget https://phar.phpunit.de/phpunit.phar
 
-    - name: Run Tests
+    #- name: Run Tests
       # run: phpdbg -c /home/runner/work/Unifi-Toolbox/Unifi-Toolbox/tests/UnifiControllerStub/php.ini -nqrr phpunit.phar tests
 
