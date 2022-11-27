@@ -61,11 +61,11 @@ class UniFiPoEControl extends IPSModule
 					if (@IPS_GetObjectIDByIdent($DeviceMacClean, $this->InstanceID) == false)
 					{
 						$this->RegisterVariableBoolean($DeviceMacClean . $i, $DeviceName . " Port: " . $i, "~Switch");
-						$DeviceMacCleanID = @IPS_GetObjectIDByIdent($DeviceMacClean, $this->InstanceID);
+						$DeviceMacCleanID = @IPS_GetObjectIDByIdent($DeviceMacClean .$i, $this->InstanceID);
 	
 						SetValue($DeviceMacCleanID, false);
 						IPS_Sleep(1000);
-						$this->EnableAction($DeviceMacClean);
+						$this->EnableAction($DeviceMacClean . $i);
 						$this->RegisterMessage($DeviceMacCleanID, VM_UPDATE);
 					}
 					foreach ($DevicesJSON as $Device)
