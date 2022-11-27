@@ -1,0 +1,12 @@
+{
+    "id": "{A7283429-2FB5-90E9-2F8C-27BD7BA54432}",
+    "name": "UniFi PoE Control",
+    "type": 3,
+    "vendor": "UniFi",
+    "aliases": [],
+    "parentRequirements": [],
+    "childRequirements": [],
+    "implemented": [],
+    "prefix": "UPC",
+    "url": ""
+}
