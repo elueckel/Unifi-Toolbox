@@ -216,6 +216,8 @@ class UniFiPoEControl extends IPSModule
 				curl_close($ch);
 				if ($ControllerFeedbackOK == "ok")
 				{
+					// reset variable
+					SetValue($SenderID, false);
 					//WFC_SendPopup(12345, "Test", "Eine nette <br> Meldung");
 				}
 				elseif ($ControllerFeedbackOK == "error")
