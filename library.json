@@ -1,12 +1,12 @@
 {
-    "id": "{47092B69-3C52-D3C6-8DE4-896EDDAE9936}",
-    "name": "UniFi Toolbox",
-    "author": "Enno Lückel",
-    "url": "https://github.com/elueckel/Unifi-Toolbox",
+    "id": "{061F140F-3BA6-BCAE-A655-6D8BA2C8E227}",
+    "name": "UniFi PoE Control",
+    "author": "Enno Lückel / Thilo Ackermann",
+    "url": "",
     "compatibility": {
         "version": "5.5"
     },
-    "version": "1.3",
+    "version": "1.0",
     "build": 0,
     "date": 0
 }
