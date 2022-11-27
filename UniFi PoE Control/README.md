@@ -1,5 +1,5 @@
 # UniFi Endpoint Blocker
-Dieses Modul ermöglicht es Endgeräte im Netz zu blockieren, um z.B. den Zugang der Kinder zu Internet nach 20 Uhr zu blockieren.
+Dieses Modul ermöglicht es einzelne PoE Ports von UniFi Switch neu zustarten.
 
 ## Inhaltsverzeichnis
 
@@ -26,13 +26,13 @@ Dieses Modul ermöglicht es Endgeräte im Netz zu blockieren, um z.B. den Zugang
 
 ## 3. Software-Installation
 
-* Über den Module Store das 'UniFi Endpoint Blocker'-Modul installieren.
+* Über den Module Store das 'UniFi PoE Control'-Modul installieren.
 * Alternativ über das Module Control folgende URL hinzufügen
 
 ## 4. Einrichten der Instanzen in IP-Symcon
 
- Unter 'Instanz hinzufügen' kann das 'UniFi Endpoint Blocker'-Modul mithilfe des Schnellfilters gefunden werden.  
-	- Weitere Informationen zum Hinzufügen von Instanzen in der [Dokumentation der Instanzen](https://www.symcon.de/service/dokumentation/konzepte/instanzen/#Instanz_hinzufügen)
+Unter 'Instanz hinzufügen' kann das 'UniFi PoE Control'-Modul mit Hilfe des Schnellfilters gefunden werden.  
+Weitere Informationen zum Hinzufügen von Instanzen in der [Dokumentation der Instanzen](https://www.symcon.de/service/dokumentation/konzepte/instanzen/#Instanz_hinzufügen)
 
 __Konfigurationsseite__:
 
@@ -71,32 +71,6 @@ Das Modul selbst löscht keine Variablen, sollte sich ein Name ändern, dann wir
 Das Modul gibt diverse Informationen im Debug Bereich aus. 
 
 ## 5. Versionsinformation
-
-Version 0.3 (Beta) - 23-08-2021
-* Unterstützung für UniFi CloudKey 1
-* Unterstützung für UniFi CloudKey 2 und DreamMachine
-* Anlegen von zu überwachenden Geräten mit Name und MAC Adresse 
-* Erstellt pro Gerät eine Variable welche z.B. für die Automation oder Überwachung genutzt werden kann (Boolean)
-* Abfragen der Controller erfolgt zeitgesteuert alle xx Sekunden
-
-Version 0.31 (Beta) - 27-08-2021
-* Fix bei der Logik zum blocken
-
-Version 1.0 - 09-09-2021
-* keine weiteren Änderungen
-
-Version 1.1 - 25-12-2021
-* Fix - Memory Leak
-* Fix - HTTP Response Error Message
-* Variablen Management umgestellt - es Ident wird jetzt die MAC verwendet
-
-Version 1.2 - 30-12-2021
-* Neu - Verbessertes Fehlerhandling vor allem bei falschen Logins
-* Neu - Block kann jetzt als Funktion aufgerufen werden
-
-Version 1.3 - 03-01-2022
-* Neu - Unifi API Zugriff in eigene Funktion ausgelagert (bessere Wartbarkeit)
-* Neu Device Blocker heisst jetzt Endpoint Blocker
 
 Version 1.4 - 27.11-2022
 * Neues Module: PoE Control zum neustarten von PoE-Geräten über Power-Cycle des Switch-Ports
