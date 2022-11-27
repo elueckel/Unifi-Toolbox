@@ -170,7 +170,7 @@ class UniFiPoEControl extends IPSModule
 				if ($SenderStatus == 1)
 				{
 					$Command = "power-cycle";
-					$this->SendDebug($this->Translate("PoE Control"), $this->Translate("PoW Switchport will be cycled ").$SenderName.$this->Translate(" with MAC address ").$DeviceMacAddress, 0);
+					$this->SendDebug($this->Translate("PoE Control"), $this->Translate("PoE Switchport will be cycled ").$SenderName.$this->Translate(" with MAC address ").$DeviceMacAddress, 0);
 				}
 				elseif ($SenderStatus == 0)
 				{
@@ -206,9 +206,6 @@ class UniFiPoEControl extends IPSModule
 				curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
 				curl_setopt($ch, CURLOPT_SSLVERSION, 'CURL_SSLVERSION_TLSv1');
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-				$this->SendDebug($this->Translate("PoE Control"), "Request URL: ". "https://".$ServerAddress.":".$ServerPort.$MiddlePartURL.$UnifiAPI, 0);
-				$this->SendDebug($this->Translate("PoE Control"), "Content: ". $CommandToController, 0);
 
 				$RawData = curl_exec($ch);
 				$HTTP_Code = curl_getinfo($ch, CURLINFO_HTTP_CODE);

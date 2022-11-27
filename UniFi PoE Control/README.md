@@ -16,7 +16,7 @@ Dieses Modul ermöglicht es Endgeräte im Netz zu blockieren, um z.B. den Zugang
 * Unterstützung für UniFi CloudKey 1 (UC-CK)
 * Unterstützung für UniFi CloudKey 2 (UCK-G2) und DreamMachine (UDM)
 * Anlegen von zu überwachenden Geräten mit Name und MAC Adresse 
-* Erstellt pro Gerät eine Variable welche z.B. für die Automation oder Überwachung genutzt werden kann (Boolean)
+* Erstellt pro Switch-Port eine Variable welche für den Powercycle des PoE-Ports genutzt werden kann (Boolean)
 * Das Modul reagiert auf die Änderung einer Variable
 
 ## 2. Voraussetzungen
@@ -62,36 +62,15 @@ Da der Controller aktiv abfragt werden muss, kann man hier eine Frequenz hinterl
 
 **Geräte**
 
-Geräte die Überwacht werden sollen, werden einfach mit einem Namen und einer MAC Addresse in der Tabelle hinterlegt. 
-Das Modul erstellt dann eine Boolean-Variable mit Switch-Profil, welche in weiter Prozesse eingebunden werden kann um ein Gerät zu blocken (=false) oder eine blockade aufzulösen (=true).
+Switches deren Ports ge-cycled werden sollen, werden einfach mit einem Namen und einer MAC Addresse in der Tabelle hinterlegt. Zusätzlich ist die Angabe der Anzahl der Ports erforderlich.
+Das Modul erstellt dann eine Boolean-Variable mit Switch-Profil pro Switch-Port, welche in weiter Prozesse eingebunden werden kann um ein Gerät neuzustarten (=true). Nach erfolgtem Power Cycle wird die Variable wieder auf false zurückgesetzt.
 Das Modul selbst löscht keine Variablen, sollte sich ein Name ändern, dann wird eine neue erstellt und die alte im Objektbaum belassen.
 
 **Debugging**
 
 Das Modul gibt diverse Informationen im Debug Bereich aus. 
 
-### 5. PHP-Befehlsreferenz
-
-#### Empfehlung
-Sofern nur eine Instanz des UniFi Endpoint Blocker im Einsatz ist, sollte die $InstanzID wie folgt dynamisch ermittelt werden und nicht statisch gesetzt werden, da somit ein Löschen und Neuinstallieren der Unifi Endpoint Blocker Instanz keine Auswirkung auf andere Skripte hat:
-
-`$InstanzID = IPS_GetInstanceListByModuleID("{FC3E71F1-BF95-D45D-0676-BA3D10D02CB8}")[0];`
-
-
-#### Funktionen
-
-`bool UEB_block(int $InstanzID, string $DeviceMacAddress)`
-
-Blockiert das Gerät mit der MAC Adresse $DeviceMacAddress, welche in der Endpoint Blocker Instanz $InstanzID konfiguriert wurde.
-Gibt false zurück, wenn Gerät in Endpoint Blocker Instanz nicht gefunden wurde, ansonsten true.
-
-`bool UEB_unblock(int $InstanzID, string $DeviceMacAddress)`
-
-Erlaubt das Gerät mit der MAC Adresse $DeviceMacAddress, welche in der Endpoint Blocker Instanz $InstanzID konfiguriert wurde.
-Gibt false zurück, wenn Gerät in Endpoint Blocker Instanz nicht gefunden wurde, ansonsten true.
-
-
-## 6. Versionsinformation
+## 5. Versionsinformation
 
 Version 0.3 (Beta) - 23-08-2021
 * Unterstützung für UniFi CloudKey 1
@@ -118,3 +97,6 @@ Version 1.2 - 30-12-2021
 Version 1.3 - 03-01-2022
 * Neu - Unifi API Zugriff in eigene Funktion ausgelagert (bessere Wartbarkeit)
 * Neu Device Blocker heisst jetzt Endpoint Blocker
+
+Version 1.4 - 27.11-2022
+* Neues Module: PoE Control zum neustarten von PoE-Geräten über Power-Cycle des Switch-Ports

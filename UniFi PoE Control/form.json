@@ -6,7 +6,7 @@
             "items": [
                 {
                     "type": "Label",
-                    "label": "This Module allows to block devices from accessing the network - e.g. block internet access of children post 20:00."
+                    "label": "This Module allows to power cycle PoE switch ports."
                 },
                 {
                     "type": "Label",
@@ -14,11 +14,11 @@
                 },
                 {
                     "type": "Label",
-                    "label": "To manage devices, please use their MAC address and a clear text name, which will be used to create a variable in the object tree."
+                    "label": "To manage devices, please use their MAC address, no. of ports and a clear text name, which will be used to create variables in the object tree."
                 },
                 {
                     "type": "Label",
-                    "label": "This variable can than be turn on or off resulting in a block or unblock e.g. via the mobile app, webfront or other automation."
+                    "label": "This variable can be used to power-cycle switch ports e.g. via the mobile app, webfront or other automation."
                 },
                 {
                     "type": "Label",
@@ -132,13 +132,13 @@
             "items": [
                 {
                     "type": "Button",
-                    "label": "Test Authentication and Blocking",
-                    "onClick": "UEB_AuthenticateAndProcessRequest($id, '');"
+                    "label": "Test Authentication and Cycle",
+                    "onClick": "UPC_AuthenticateAndProcessRequest($id, '');"
                 },
                 {
                     "type": "Button",
                     "label": "Check site name",
-                    "onClick": "UEB_checkSiteName($id, '');"
+                    "onClick": "UPC_checkSiteName($id, '');"
                 }
             ]
         }
