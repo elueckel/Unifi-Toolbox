@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 require_once __DIR__.'/../libs/myFunctions.php';  // globale Funktionen
+include_once __DIR__.'/../libs/timetest.php';
 
 // Modul Prefix
 if (!defined('MODUL_PREFIX'))
@@ -13,6 +14,7 @@ if (!defined('MODUL_PREFIX'))
 class UnifiEndpointMonitor extends IPSModule
 {
 	use myFunctions;
+    use TestTime;
 
 	public function Create()
 	{
@@ -216,8 +218,10 @@ class UnifiEndpointMonitor extends IPSModule
 					}
 					if ($this->ReadPropertyBoolean("DataPointConnection") == 1)
 					{
-						$Satisfaction = $JSONData["data"][0]["satisfaction"];
-						SetValue($this->GetIDForIdent("Satisfaction"), $Satisfaction);
+						if (isset($JSONData["data"][0]["satisfaction"])) {
+							$Satisfaction = isset($JSONData["data"][0]["satisfaction"]);
+							SetValue($this->GetIDForIdent("Satisfaction"), $Satisfaction);
+						}
 						$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connection Data Satisfaction ").$Satisfaction, 0);
 						$SLastSeen = $JSONData["data"][0]["last_seen"];
 						SetValue($this->GetIDForIdent("LastSeen"), gmdate("Y-m-d H:i:s", $SLastSeen));

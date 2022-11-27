@@ -52,8 +52,8 @@ Folgende Module beinhaltet das UniFi Toolbox Repository:
 - __UniFi Internet Controller__ ([Dokumentation](UniFi%20Internet%20Controller))  
 	Der Internet Controller ermöglich die Erfassung von Informationen zur Internetverbindung, wenn eine USG oder DreamMachine eingesetzt wird.
 	
-- __UniFi Device Blocker__ ([Dokumentation](UniFi%20Device%20Blocker))  
-	Mit dem Device Blocker können Geräte anhand ihrer MAC Adresse vom Zugang auf das Netzwerk geblockt werden, z.B. um die Nutzung von Geräten im Kinderzimmer nach 20 Uhr zu sperren und am Morgen wieder zu aktivieren.
+- __UniFi Endpoint Blocker__ ([Dokumentation](UniFi%20Endpoint%20Blocker))  
+	Mit dem Endpoint Blocker können Geräte anhand ihrer MAC Adresse vom Zugang auf das Netzwerk geblockt werden, z.B. um die Nutzung von Geräten im Kinderzimmer nach 20 Uhr zu sperren und am Morgen wieder zu aktivieren.
 
 - __UniFi Device Monitor__ ([Dokumentation](UniFi%20Device%20Monitor))  
 	Mit dem Device Monitor können Geräte von UniFi überwacht werden - es stehen bei Firewalls (UDM/USG) Daten zur Internetverbindung zur Verfügung, bei generischen Geräten Daten zum Status und Hardware.

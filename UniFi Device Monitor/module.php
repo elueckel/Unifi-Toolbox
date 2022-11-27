@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 require_once __DIR__.'/../libs/myFunctions.php';  // globale Funktionen
+include_once __DIR__.'/../libs/timetest.php';
 
 // Modul Prefix
 if (!defined('MODUL_PREFIX'))
@@ -13,6 +14,7 @@ if (!defined('MODUL_PREFIX'))
 class UniFiDeviceMonitor extends IPSModule
 {
 	use myFunctions;
+    use TestTime;
 
 	public function Create()
 	{
@@ -129,12 +131,12 @@ class UniFiDeviceMonitor extends IPSModule
 		$RawData = $this->AuthenticateAndGetData("api/s/".$Site."/stat/device"."/".$DeviceMac);
 
 		// query JSON file for internet data
-		if (false !== $RawData)
+		if (false !== $RawData && $RawData !== "")
 		{
-			if ($RawData !== "")
+			$JSONData = json_decode($RawData, true);
+
+			if (isset($JSONData["data"][0]["model"]))
 			{
-				$JSONData = json_decode($RawData, true);
-				//var_dump($JSONData);
 				$DeviceModel = $JSONData["data"][0]["model"];
 				$UnfiInternetDeviceArray = array("UDM", "UGW4", "UGW3", "UDMPRO");
 

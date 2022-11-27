@@ -43,7 +43,8 @@
             "RX Packets": "RX Pakete",
             "Check site name": "Name der Site prüfen",
             "' found. --> Configuration is correct!": "' gefunden. --> Konfiguration ist richtig",
-            "' not found! --> available site-names: ": "' nicht gefunden! --> verfügbare Namen für Sites sind: "
+            "' not found! --> available site-names: ": "' nicht gefunden! --> verfügbare Namen für Sites sind: ",
+            "NoSiteContext - It seems, that the configured Site is wrong.": "NoSiteContext - Es scheint, dass die konfigurierte Site falsch ist."
         }
     }
 }

@@ -14,10 +14,14 @@ if (!defined('vtBoolean'))
 
 trait myFunctions
 {
-	private function getCookie($Username, $Password, $ServerAddress, $ServerPort, $ControllerType=0)
+	private function getCookie($Username, $Password, $ServerAddress, $ServerPort, $ControllerType = 0)
 	{
 		//Generic Section providing for Authenthication against a DreamMachine or Classic CloudKey
 		$ch = curl_init();
+		if (defined('DEBUG') && DEBUG)
+		{
+			echo "\nCURLOPT_POSTFIELDS: ".CURLOPT_POSTFIELDS;
+		}
 
 		if ($ControllerType == 0)
 		{
@@ -37,6 +41,11 @@ trait myFunctions
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		$data = curl_exec($ch);
+		if (defined('DEBUG') && DEBUG)
+		{
+			echo "\ngetCookie() URL: "."https://".$ServerAddress.":".$ServerPort.$SuffixURL;
+			echo "\ngetCookie() data: ".$data;
+		}
 
 		if (false === $data)
 		{
@@ -49,11 +58,18 @@ trait myFunctions
 		}
 
 		$header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+		if (defined('DEBUG') && DEBUG)
+		{
+			echo "\ngetCookie() CURLINFO_HEADER_SIZE: ".$header_size;
+		}
 		$body = trim(substr($data, $header_size));
 		$code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		if (defined('DEBUG') && DEBUG)
+		{
+			echo "\ngetCookie() CURLINFO_HTTP_CODE: ".$code;
+		}
 
 		$this->SendDebug($this->Translate("Authentication"), $this->Translate('Return-Code Provided is: ').$code, 0);
-		//$this->SendDebug("Debug-Data", $data, 0);
 
 		preg_match_all('|(?i)Set-Cookie: (.*);|U', substr($data, 0, $header_size), $results);
 		if (isset($results[1]))
@@ -90,7 +106,10 @@ trait myFunctions
 			$this->SetStatus(201); // login seems to be not successful
 			return false;
 		}
-
+		if (defined('DEBUG') && DEBUG)
+		{
+			echo "\ngetCookie()=".$Cookie;
+		}
 		return $Cookie;
 	}
 
@@ -113,11 +132,17 @@ trait myFunctions
 		curl_setopt($ch, CURLOPT_HTTPHEADER, array("cookie: ".$Cookie));
 		curl_setopt($ch, CURLOPT_SSLVERSION, 'CURL_SSLVERSION_TLSv1');
 
-		//$this->SendDebug("Debug-URL", "https://".$ServerAddress.":".$ServerPort.$MiddlePartURL.$UnifiAPI, 0);
+		if (defined('DEBUG') && DEBUG)
+		{
+			echo "\ngetRawData() URL: "."https://".$ServerAddress.":".$ServerPort.$MiddlePartURL.$UnifiAPI;
+		}
 
 		$RawData = curl_exec($ch);
 		curl_close($ch);
-		//$this->SendDebug("Debug-RawData", $RawData, 0);
+		if (defined('DEBUG') && DEBUG)
+		{
+			echo "\ngetRawData() RawData: ".$RawData;
+		}
 
 		if (isset($RawData) && 400 == $RawData)
 		{
@@ -131,7 +156,19 @@ trait myFunctions
 			$this->SetStatus(201); // login seems to be not successful
 			return false;
 		}
-		elseif (isset($RawData))
+		elseif (isset($RawData) && 404 == $RawData)
+		{
+			$this->SendDebug($this->Translate("UniFi API Call"), $this->Translate('404 Not Found - Please check your IP, Port and ControllerType'), 0);
+			$this->SetStatus(200); // IP, Port or ControllerType wrong
+			return false;
+		}
+		elseif (isset($RawData) && false !== $RawData && false !== strpos($RawData, 'api.err.NoSiteContext'))
+		{
+			$this->SendDebug($this->Translate("UniFi API Call"), $this->Translate('NoSiteContext - It seems, that the configured Site is wrong.'), 0);
+			$this->SetStatus(202); // NoSiteContext --> Site falsch
+			return $RawData;
+		}
+		elseif (isset($RawData) && false !== $RawData && false === strpos($RawData, '"rc":"error"'))
 		{
 			$this->SendDebug($this->Translate("UniFi API Call"), $this->Translate("Successfully Called"), 0);
 			$this->SendDebug($this->Translate("UniFi API Call"), $this->Translate("Data Provided: ").$RawData, 0);
@@ -178,43 +215,53 @@ trait myFunctions
 		$UnifiAPI = "api/self/sites";
 
 		$Cookie = $this->getCookie($Username, $Password, $ServerAddress, $ServerPort, $ControllerType);
-		$RawData = $this->getRawData($Cookie, $ServerAddress, $ServerPort, $UnifiAPI, $ControllerType);
-
-		// query JSON file for internet data
-		if (false !== $RawData)
+		if (isset($Cookie) && false !== $Cookie)
 		{
-			if ($RawData !== "")
+			$RawData = $this->getRawData($Cookie, $ServerAddress, $ServerPort, $UnifiAPI, $ControllerType);
+			if (defined('DEBUG') && DEBUG)
 			{
-				$JSONData = json_decode($RawData, true);
+				echo "\nRawData: ".$RawData."\n";
+			}
 
-				$sitesArray = $JSONData['data'];
-				$sitesFound = array();
-
-				foreach($sitesArray AS $siteValue)
+			// query JSON file for internet data
+			if (false !== $RawData)
+			{
+				if ($RawData !== "")
 				{
-					if($Site == $siteValue['name'])
+					$JSONData = json_decode($RawData, true);
+
+					if (is_array($JSONData) && isset($JSONData['data']))
 					{
-						$this->SendDebug("checkSiteName()", $this->Translate("Site '").$Site.$this->Translate("' found. --> Configuration is correct!"), 0);
-						echo $this->Translate("Site '").$Site.$this->Translate("' found. --> Configuration is correct!");
-						return true;
-					}
-					else
-					{
-						$sitesFound[] = $siteValue['name'];
+						$sitesArray = $JSONData['data'];
+						$sitesFound = array();
+
+						foreach ($sitesArray as $siteValue)
+						{
+							if ($Site == $siteValue['name'])
+							{
+								$this->SendDebug("checkSiteName()", $this->Translate("Site '").$Site.$this->Translate("' found. --> Configuration is correct!"), 0);
+								echo $this->Translate("Site '").$Site.$this->Translate("' found. --> Configuration is correct!");
+								return true;
+							}
+							else
+							{
+								$sitesFound[] = $siteValue['name'];
+							}
+						}
+
+						$this->SendDebug("checkSiteName()", $this->Translate("Error: Site '").$Site.$this->Translate("' not found! --> available site-names: ").implode(", ", $sitesFound), 0);
+						echo $this->Translate("Error: Site '").$Site.$this->Translate("' not found! --> available site-names: ").implode(", ", $sitesFound);
 					}
 				}
-
-				$this->SendDebug("checkSiteName()", $this->Translate("Error: Site '").$Site.$this->Translate("' not found! --> available site-names: ").implode(", ", $sitesFound), 0);
-				echo $this->Translate("Error: Site '").$Site.$this->Translate("' not found! --> available site-names: ").implode(", ", $sitesFound);
+				else
+				{
+					$this->SendDebug("checkSiteName()", $this->Translate("There does not seem to be any configuration - no data is available from the UniFi"), 0);
+				}
 			}
 			else
 			{
-				$this->SendDebug("checkSiteName()", $this->Translate("There does not seem to be any configuration - no data is available from the UniFi"), 0);
+				// debug output already done in getRawData()
 			}
-		}
-		else
-		{
-			// debug output already done in getRawData()
 		}
 
 		return false;
