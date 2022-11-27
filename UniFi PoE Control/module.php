@@ -117,6 +117,7 @@ class UniFiPoEControl extends IPSModule
 			$SenderName = ($SenderObjectData["ObjectName"]);
 			$SenderObjectIdent = ($SenderObjectData["ObjectIdent"]);
 			$SenderStatus = GetValue($SenderID);
+			$portIndex = -1;
 
 			//Get MAC Address from Config form
 			$DevicesList = $this->ReadPropertyString("Devices");
@@ -126,15 +127,21 @@ class UniFiPoEControl extends IPSModule
 			{
 				$DeviceMacAddress = "";
 
+
 				foreach ($DevicesJSON as $Device)
 				{
-					$DeviceMacClean = $this->removeInvalidChars($Device["varDeviceMAC"], true);
-					if ($SenderObjectIdent == $DeviceMacClean)
-					{
-						$DeviceMacAddress = $Device["varDeviceMAC"];
-						$this->SendDebug($this->Translate("PoE Control"), $this->Translate("Device to be managed: ").$Device["varDeviceName"], 0);
-						break;
+					$NoOfPorts= $Device["varNoOfPorts"];
+					for ($i=1; $i <= $NoOfPorts; $i++) { 
+						$DeviceMacClean = $this->removeInvalidChars($Device["varDeviceMAC"], true);
+						if ($SenderObjectIdent == $DeviceMacClean .$i)
+						{
+							$DeviceMacAddress = $Device["varDeviceMAC"];
+							$this->SendDebug($this->Translate("PoE Control"), $this->Translate("Device to be managed: ").$Device["varDeviceName"]."Port index: ".$i, 0);
+							$portIndex = $i;
+							break;
+						}
 					}
+
 				}
 			}
 
@@ -176,7 +183,7 @@ class UniFiPoEControl extends IPSModule
 				$CommandToController = json_encode(array(
 					"cmd" => $Command,
 					"mac" => $DeviceMacAddress,
-					'port_idx' => intval(1),
+					'port_idx' => intval($portIndex),
 
 				), JSON_UNESCAPED_SLASHES);
 				//var_dump($CommandToController);
