@@ -157,7 +157,7 @@ class UniFiPoEControl extends IPSModule
 			//////////////////////////////////////////
 			//Change the Unifi API to be called here
 			$Site = $this->ReadPropertyString("Site");
-			$UnifiAPI = "api/s/".$Site."/cmd/stamgr";
+			$UnifiAPI = "api/s/".$Site."/cmd/devmgr";
 			//////////////////////////////////////////
 
 			//create XSRF Token
