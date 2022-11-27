@@ -206,6 +206,10 @@ class UniFiPoEControl extends IPSModule
 				curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
 				curl_setopt($ch, CURLOPT_SSLVERSION, 'CURL_SSLVERSION_TLSv1');
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+				$this->SendDebug($this->Translate("PoE Control"), "Request URL: ". "https://".$ServerAddress.":".$ServerPort.$MiddlePartURL.$UnifiAPI, 0);
+				$this->SendDebug($this->Translate("PoE Control"), "Content: ". $CommandToController, 0);
+
 				$RawData = curl_exec($ch);
 				$HTTP_Code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 				$this->SendDebug($this->Translate("PoE Control"), $this->Translate("Feedback from UniFi Controller: ").$RawData." / HTTP Message ".$HTTP_Code, 0);
