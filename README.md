@@ -61,6 +61,9 @@ Folgende Module beinhaltet das UniFi Toolbox Repository:
 - __UniFi Endpoint Monitor__ ([Dokumentation](UniFi%20Endpoint%20Monitor))  
 	Mit dem Endpoint Monitor können mit den UniFi Netzwerkverbunde Geräte überwacht werden. Hierbei wird zwischen Kabel und WLAN Verbindungen unterschieden, da im WLAN weit mehr Daten zur Verfügung stehen. 
 
+- __UniFi PoE Control__ ([Dokumentation](UniFi%20PoE%20Control))  
+	Mit dem PoE Control Modul können einzelne PoE Ports neu gestrtet werden, um z.B. einen Teset bei einer Webcam oder ähnlichem durchzuführen. 
+
 Für detaillierte Informationen zu den Modulen, wie z.B. zur Version bitte die Hilfeseiten der Module besuchen. 
 
 Dieses Modul ist für die nicht kommerzielle Nutzung kostenlos - bei kommerzieller Nutzung bitte den Author kontaktieren. 

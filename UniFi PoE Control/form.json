@@ -14,15 +14,15 @@
                 },
                 {
                     "type": "Label",
-                    "label": "To manage devices, please use their MAC address, no. of ports and a clear text name, which will be used to create variables in the object tree."
+                    "label": "To manage a switch and its ports, please use its MAC address of the switch, enter the number of ports, the modul will create boolean variables in the object tree."
                 },
                 {
                     "type": "Label",
-                    "label": "This variable can be used to power-cycle switch ports e.g. via the mobile app, webfront or other automation."
+                    "label": "These variables can be used to power-cycle switch ports e.g. via the mobile app, webfront or other automation."
                 },
                 {
                     "type": "Label",
-                    "label": "Updates will happen ass soon as the variable changes."
+                    "label": "The default value of the variable is False - as soon as it is set to True, the port will restart."
                 },
                 {
                     "type": "Label",
@@ -81,12 +81,12 @@
         {
             "type": "Label",
             "bold": "true",
-            "label": "Device names must not contain a space - e.g. please use GardenCam without a space."
+            "label": "Device names must not contain a space - e.g. please use LeftSwitch without a space."
         },
         {
             "type": "List",
             "name": "Devices",
-            "caption": "Devices",
+            "caption": "Switch",
             "rowCount": 10,
             "add": true,
             "delete": true,
@@ -96,7 +96,7 @@
             },
             "columns": [
                 {
-                    "label": "Devicename",
+                    "label": "Name of Switch",
                     "name": "varDeviceName",
                     "width": "200px",
                     "add": "Name",
@@ -114,9 +114,9 @@
                     }
                 },
                 {
-                    "label": "No. of ports",
+                    "label": "Number of ports",
                     "name": "varNoOfPorts",
-                    "width": "80px",
+                    "width": "130px",
                     "add": "1",
                     "edit": {
                         "type": "ValidationTextBox"
@@ -132,7 +132,7 @@
             "items": [
                 {
                     "type": "Button",
-                    "label": "Test Authentication and Cycle",
+                    "label": "Test Authentication and Power-Cycle",
                     "onClick": "UPC_AuthenticateAndProcessRequest($id, '');"
                 },
                 {
