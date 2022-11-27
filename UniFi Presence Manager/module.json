@@ -1,0 +1,12 @@
+{
+    "id": "{573B48D3-14D7-189B-7D89-19E82AF9F414}",
+    "name": "UniFi Presence Manager",
+    "type": 3,
+    "vendor": "UniFi",
+    "aliases": [],
+    "parentRequirements": [],
+    "childRequirements": [],
+    "implemented": [],
+    "prefix": "UPM",
+    "url": "https://github.com/elueckel/Unifi-Toolbox/tree/main/UniFi%20Presence%20Manager"
+}

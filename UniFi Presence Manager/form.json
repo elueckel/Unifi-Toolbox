@@ -1,0 +1,154 @@
+{
+    "elements": [
+        {
+            "type": "ExpansionPanel",
+            "caption": "Module Help",
+            "items": [
+                {
+                    "type": "Label",
+                    "label": "This Module allows to identify if a certain device is connected to the network to e.g. provide for presence management."
+                },
+                {
+                    "type": "Label",
+                    "label": "Please select the type of controller you are using, enter its IP Address, Port and a user allowed to log in."
+                },
+                {
+                    "type": "Label",
+                    "label": "To manage certain devices, please use their MAC address and a clear text name, which will be used to create a variable in the object tree."
+                },
+                {
+                    "type": "Label",
+                    "label": "The variable in the Object Tree can be used to see if a device is online or offline e.g. a mobile app, webfront or other automation."
+                },
+                {
+                    "type": "Label",
+                    "label": "Updates will happen on a schedule every xyz seconds."
+                },
+                {
+                    "type": "Label",
+                    "label": "For debugging, please use the Debug function of the module."
+                }
+            ]
+        },
+        {
+            "type": "Label",
+            "label": "UniFi Toolbox - Presence Manager Configuration"
+        },
+        {
+            "type": "Select",
+            "name": "ControllerType",
+            "caption": "Controller Type",
+            "options": [
+                {
+                    "caption": "DreamMachine / Pro / CloudKey V2",
+                    "value": 0
+                },
+                {
+                    "caption": "CloudKey",
+                    "value": 1
+                }
+            ]
+        },
+        {
+            "type": "ValidationTextBox",
+            "name": "Site",
+            "caption": "Site"
+        },
+        {
+            "type": "ValidationTextBox",
+            "name": "ServerAddress",
+            "caption": "Server Address",
+            "validate": "^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"
+        },
+        {
+            "type": "NumberSpinner",
+            "name": "ServerPort",
+            "caption": "Server Port",
+            "digits": 0,
+            "minimum": 1,
+            "maximum": 65535
+        },
+        {
+            "type": "ValidationTextBox",
+            "name": "UserName",
+            "caption": "User Name"
+        },
+        {
+            "type": "PasswordTextBox",
+            "name": "Password",
+            "caption": "Password"
+        },
+        {
+            "type": "NumberSpinner",
+            "name": "Timer",
+            "caption": "Update Frequency",
+            "suffix": "sec - 0 is off",
+            "digits": 0,
+            "minimum": 0
+        },
+        {
+            "type": "Label",
+            "label": "The General Presence Updated variable will always be updated and can be used to trigger general updates independent of the sender."
+        },
+        {
+            "type": "CheckBox",
+            "name": "GeneralPresenceUpdatedVariable",
+            "caption": "Variable General Presence Update"
+        },
+        {
+            "type": "List",
+            "name": "Devices",
+            "caption": "Devices",
+            "rowCount": 10,
+            "add": true,
+            "delete": true,
+            "sort": {
+                "column": "varDeviceName",
+                "direction": "ascending"
+            },
+            "columns": [
+                {
+                    "label": "Devicename",
+                    "name": "varDeviceName",
+                    "width": "200px",
+                    "add": "Name",
+                    "edit": {
+                        "type": "ValidationTextBox"
+                    }
+                },
+                {
+                    "label": "MAC",
+                    "name": "varDeviceMAC",
+                    "width": "120px",
+                    "add": "00:00:00:00:00",
+                    "edit": {
+                        "type": "ValidationTextBox"
+                    }
+                }
+            ],
+            "values": []
+        }
+    ],
+    "actions": [
+        {
+            "type": "RowLayout",
+            "items": [
+                {
+                    "type": "Button",
+                    "label": "Test Authentication",
+                    "onClick": "UPM_AuthenticateAndGetData($id, '');"
+                },
+                {
+                    "type": "Button",
+                    "label": "Check Presence",
+                    "onClick": "UPM_CheckPresence($id);"
+                },
+                {
+                    "type": "Button",
+                    "label": "Check site name",
+                    "onClick": "UPM_checkSiteName($id, '');"
+                }
+            ]
+        }
+    ]
+}

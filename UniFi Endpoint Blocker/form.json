@@ -1,0 +1,137 @@
+{
+    "elements": [
+        {
+            "type": "ExpansionPanel",
+            "caption": "Module Help",
+            "items": [
+                {
+                    "type": "Label",
+                    "label": "This Module allows to block devices from accessing the network - e.g. block internet access of children post 20:00."
+                },
+                {
+                    "type": "Label",
+                    "label": "Please select the type of controller you are using, enter its IP address, port and a user allowed to log in."
+                },
+                {
+                    "type": "Label",
+                    "label": "To manage devices, please use their MAC address and a clear text name, which will be used to create a variable in the object tree."
+                },
+                {
+                    "type": "Label",
+                    "label": "This variable can than be turn on or off resulting in a block or unblock e.g. via the mobile app, webfront or other automation."
+                },
+                {
+                    "type": "Label",
+                    "label": "Updates will happen ass soon as the variable changes."
+                },
+                {
+                    "type": "Label",
+                    "label": "For debugging, please use the Debug function of the module."
+                }
+            ]
+        },
+        {
+            "type": "Label",
+            "label": "UniFi Toolbox - Endpoint Blocker Configuration"
+        },
+        {
+            "type": "Select",
+            "name": "ControllerType",
+            "caption": "Controller Type",
+            "options": [
+                {
+                    "caption": "DreamMachine / Pro / CloudKey V2",
+                    "value": 0
+                },
+                {
+                    "caption": "CloudKey",
+                    "value": 1
+                }
+            ]
+        },
+        {
+            "type": "ValidationTextBox",
+            "name": "Site",
+            "caption": "Site"
+        },
+        {
+            "type": "ValidationTextBox",
+            "name": "ServerAddress",
+            "caption": "Server Address",
+            "validate": "^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"
+        },
+        {
+            "type": "NumberSpinner",
+            "name": "ServerPort",
+            "caption": "Server Port",
+            "digits": 0,
+            "minimum": 1,
+            "maximum": 65535
+        },
+        {
+            "type": "ValidationTextBox",
+            "name": "UserName",
+            "caption": "User Name"
+        },
+        {
+            "type": "PasswordTextBox",
+            "name": "Password",
+            "caption": "Password"
+        },
+        {
+            "type": "Label",
+            "bold": "true",
+            "label": "Device names must not contain a space - e.g. please use GardenCam without a space."
+        },
+        {
+            "type": "List",
+            "name": "Devices",
+            "caption": "Devices",
+            "rowCount": 10,
+            "add": true,
+            "delete": true,
+            "sort": {
+                "column": "varDeviceName",
+                "direction": "ascending"
+            },
+            "columns": [
+                {
+                    "label": "Devicename",
+                    "name": "varDeviceName",
+                    "width": "200px",
+                    "add": "Name",
+                    "edit": {
+                        "type": "ValidationTextBox"
+                    }
+                },
+                {
+                    "label": "MAC",
+                    "name": "varDeviceMAC",
+                    "width": "120px",
+                    "add": "00:00:00:00:00",
+                    "edit": {
+                        "type": "ValidationTextBox"
+                    }
+                }
+            ],
+            "values": []
+        }
+    ],
+    "actions": [
+        {
+            "type": "RowLayout",
+            "items": [
+                {
+                    "type": "Button",
+                    "label": "Test Authentication and Blocking",
+                    "onClick": "UEB_AuthenticateAndProcessRequest($id, '');"
+                },
+                {
+                    "type": "Button",
+                    "label": "Check site name",
+                    "onClick": "UEB_checkSiteName($id, '');"
+                }
+            ]
+        }
+    ]
+}

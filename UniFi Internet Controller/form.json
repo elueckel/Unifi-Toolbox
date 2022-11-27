@@ -1,0 +1,211 @@
+{
+    "elements": [
+        {
+            "type": "ExpansionPanel",
+            "caption": "Module Help",
+            "items": [
+                {
+                    "type": "Label",
+                    "label": "This Module allows to gather information converning the internet connection like the current public IP address in conjunction with a Dream Machine."
+                },
+                {
+                    "type": "Label",
+                    "label": "Please select the type of controller you are using, enter its IP Address, Port and a user allowed to log in."
+                },
+                {
+                    "type": "Label",
+                    "label": "All data will be stored in variables in the object tree."
+                },
+                {
+                    "type": "Label",
+                    "label": "Updates will happen on a schedule every xyz seconds."
+                },
+                {
+                    "type": "Label",
+                    "label": "For debugging, please use the Debug function of the module."
+                }
+            ]
+        },
+        {
+            "type": "Label",
+            "label": "UniFi Toolbox - DreamMachine Internet Controller Configuration"
+        },
+        {
+            "type": "ValidationTextBox",
+            "name": "Site",
+            "caption": "Site"
+        },
+        {
+            "type": "ValidationTextBox",
+            "name": "ServerAddress",
+            "caption": "Server Address",
+            "validate": "^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"
+        },
+        {
+            "type": "NumberSpinner",
+            "name": "ServerPort",
+            "caption": "Server Port",
+            "digits": 0,
+            "minimum": 1,
+            "maximum": 65535
+        },
+        {
+            "type": "ValidationTextBox",
+            "name": "UserName",
+            "caption": "User Name"
+        },
+        {
+            "type": "PasswordTextBox",
+            "name": "Password",
+            "caption": "Password"
+        },
+        {
+            "type": "NumberSpinner",
+            "name": "Timer",
+            "caption": "Update Frequency",
+            "suffix": "sec - 0 is off",
+            "digits": 0,
+            "minimum": 0
+        },
+        {
+            "type": "Label",
+            "label": ""
+        },
+        {
+            "type": "RowLayout",
+            "items": [
+                {
+                    "type": "CheckBox",
+                    "name": "WAN1IP",
+                    "caption": "WAN1 External IP Address"
+                },{
+                    "type": "CheckBox",
+                    "name": "WAN1availability",
+                    "caption": "WAN1 availability"
+                },{
+                    "type": "CheckBox",
+                    "name": "WAN1latency_average",
+                    "caption": "WAN1 latency-average"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "WAN1time_period",
+                    "caption": "WAN1 time-period"
+                }
+            ]
+        },
+        {
+            "type": "Label",
+            "label": ""
+        },
+        {
+            "type": "RowLayout",
+            "items": [
+                {
+                    "type": "CheckBox",
+                    "name": "WAN2IP",
+                    "caption": "WAN2 External IP Address"
+                },{
+                    "type": "CheckBox",
+                    "name": "WAN2availability",
+                    "caption": "WAN2 availability"
+                },{
+                    "type": "CheckBox",
+                    "name": "WAN2latency_average",
+                    "caption": "WAN2 latency-average"
+                },
+                {
+                    "type": "CheckBox",
+                    "name": "WAN2time_period",
+                    "caption": "WAN2 time-period"
+                }
+            ]
+        },
+        {
+            "type": "Label",
+            "label": ""
+        },
+        {
+            "type": "RowLayout",
+            "items": [
+                {
+                    "type": "CheckBox",
+                    "name": "version",
+                    "caption": "Unifi Network Version"
+                },{
+                    "type": "CheckBox",
+                    "name": "previous_version",
+                    "caption": "Unifi Network Vorgängerversion"
+                },{
+                    "type": "CheckBox",
+                    "name": "update_available",
+                    "caption": "Update available"
+                },{
+                    "type": "CheckBox",
+                    "name": "update_downloaded",
+                    "caption": "Update downloaded"
+                },{
+                    "type": "CheckBox",
+                    "name": "uptime",
+                    "caption": "Uptime"
+                }
+            ]
+        },
+        {
+            "type": "Label",
+            "label": ""
+        },
+        { 
+            "type": "RowLayout",
+            "items": [
+                {
+                    "type": "CheckBox",
+                    "name": "wan_ip",
+                    "caption": "WAN IP active"
+                },{
+                    "type": "CheckBox",
+                    "name": "isp_name",
+                    "caption": "ISP Name"
+                },{
+                    "type": "CheckBox",
+                    "name": "isp_organization",
+                    "caption": "ISP Organization"
+                },{
+                    "type": "CheckBox",
+                    "name": "ubnt_device_type",
+                    "caption": "UBNT Device Type"
+                },{
+                    "type": "CheckBox",
+                    "name": "udm_version",
+                    "caption": "UDM Version"
+                },{
+                    "type": "CheckBox",
+                    "name": "gw_version",
+                    "caption": "UDM UnifiOS Version"
+                }
+            ]
+        }
+    ],
+    "actions": [
+        {
+            "type": "RowLayout",
+            "items": [
+                {
+                    "type": "Button",
+                    "label": "Test Authentication",
+                    "onClick": "UIC_AuthenticateAndGetData($id, '');"
+                },
+                {
+                    "type": "Button",
+                    "label": "Get Internet Data",
+                    "onClick": "UIC_GetInternetData($id);"
+                },
+                {
+                    "type": "Button",
+                    "label": "Check site name",
+                    "onClick": "UIC_checkSiteName($id, '');"
+                }
+            ]
+        }
+    ]
+}
