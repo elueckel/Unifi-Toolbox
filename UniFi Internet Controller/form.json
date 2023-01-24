@@ -227,7 +227,12 @@
                 {
                     "type": "Button",
                     "label": "Check site name",
-                    "onClick": "UIC_checkSiteName($id, '');"
+                    "onClick": "UIC_CheckSiteName($id);"
+                },
+                {
+                    "type": "Button",
+                    "label": "Get Port Forwarding",
+                    "onClick": "UIC_GetPortForwardRules($id, true);"
                 }
             ]
         }
