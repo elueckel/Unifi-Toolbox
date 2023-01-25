@@ -409,17 +409,10 @@ class UniFiDMInternetController extends IPSModule
 		return false;
 	}
 
-	// activate / deactivate PortForwarding rule (user defined rules only!)
+	// activate PortForwarding rule (user defined rules only!)
 	public function ActivatePortForwardRule(string $ruleId)
 	{
-/*		This may apply to other configurations, but initial testing shows that port forward rules can be enabled/disabled using PUT against the endpoint /api/s/{site}/rest/portforward/{rule-id} with a body such as:
-
-			{
-				"enabled": true
-			}
-		*/
-	
-		//$ControllerType = $this->ReadPropertyInteger("ControllerType");
+		$ControllerType = 0;
 		$ServerAddress = $this->ReadPropertyString("ServerAddress");
 		$ServerPort = $this->ReadPropertyInteger("ServerPort");
 		$Username = $this->ReadPropertyString("UserName");
@@ -446,7 +439,49 @@ class UniFiDMInternetController extends IPSModule
 			$Cookie = $this->getCookie($Username, $Password, $ServerAddress, $ServerPort/*, $ControllerType*/);
 			if (isset($Cookie) && false !== $Cookie)
 			{
-				$RawData = $this->getRawData($Cookie, $ServerAddress, $ServerPort, $UnifiAPI/*, $ControllerType*/);
+				//create XSRF Token
+				$X_CSRF_Token = $this->createXsrfToken($Cookie);
+
+				if (isset($Cookie))
+				{
+					$this->SendDebug($this->Translate("ActivatePortForwardRule()"), $this->Translate("Module is authenticated and will try to manage device"), 0);
+
+					// [field] => enabled, [pattern] => true|false
+					$CommandToController = json_encode(array(
+						"enabled" => true,
+					), JSON_UNESCAPED_SLASHES);
+					//var_dump($CommandToController);
+
+					if ($ControllerType == 0)
+					{
+						$MiddlePartURL = "/proxy/network/";
+					}
+					elseif ($ControllerType == 1)
+					{
+						$MiddlePartURL = "/";
+					}
+
+echo "\nhttps://".$ServerAddress.":".$ServerPort.$MiddlePartURL.$UnifiAPI."\n";
+
+					$ch = curl_init();
+					curl_setopt($ch, CURLOPT_POST, true);
+					curl_setopt($ch, CURLOPT_URL, "https://".$ServerAddress.":".$ServerPort.$MiddlePartURL.$UnifiAPI);
+					curl_setopt($ch, CURLOPT_HTTPHEADER, array('Cookie:'.$Cookie, $X_CSRF_Token));
+					curl_setopt($ch, CURLOPT_POSTFIELDS, $CommandToController);
+					curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+					curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+					curl_setopt($ch, CURLOPT_SSLVERSION, 'CURL_SSLVERSION_TLSv1');
+					curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+					$RawData = curl_exec($ch);
+					$HTTP_Code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+					$this->SendDebug($this->Translate("ActivatePortForwardRule()"), $this->Translate("Feedback from UniFi Controller: ").$RawData." / HTTP Message ".$HTTP_Code, 0);
+
+					$ControllerFeedbackComplete = json_decode($RawData, true);
+					$ControllerFeedbackOK = $ControllerFeedbackComplete["meta"]["rc"];
+					$this->SendDebug($this->Translate("ActivatePortForwardRule()"), $this->Translate("Was operation executed: ").$ControllerFeedbackOK, 0);
+					curl_close($ch);
+				}
+
 				if (defined('DEBUG') && DEBUG)
 				{
 					echo "\nRawData: ".$RawData."\n";
