@@ -1,0 +1,12 @@
+{
+    "id": "{18083971-8894-381C-F535-3DEB08A44DBD}",
+    "name": "UniFi Multi Endpoint Monitor",
+    "type": 3,
+    "vendor": "UniFi",
+    "aliases": [],
+    "parentRequirements": [],
+    "childRequirements": [],
+    "implemented": [],
+    "prefix": "UMEM",
+    "url": "https://github.com/elueckel/Unifi-Toolbox/tree/main/UniFi%20Multi%20Endpoint%20Monitor"
+}
