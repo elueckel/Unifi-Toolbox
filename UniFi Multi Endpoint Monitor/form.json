@@ -187,17 +187,17 @@
                 {
                     "type": "Button",
                     "label": "Test Authentication",
-                    "onClick": "UEM_AuthenticateAndGetData($id, '');"
+                    "onClick": "UMEM_AuthenticateAndGetData($id, '');"
                 },
                 {
                     "type": "Button",
                     "label": "Get Device Data",
-                    "onClick": "UEM_EndpointMonitor($id);"
+                    "onClick": "UMEM_EndpointMonitor($id);"
                 },
                 {
                     "type": "Button",
                     "label": "Check site name",
-                    "onClick": "UEM_checkSiteName($id, '');"
+                    "onClick": "UMEM_checkSiteName($id, '');"
                 }
             ]
         }

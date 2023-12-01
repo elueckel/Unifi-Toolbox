@@ -208,7 +208,7 @@ class UnifiMultiEndpointMonitor extends IPSModule
 					
 							$ConnectionMethod = $DeviceFromController["is_wired"];
 
-							if ($ConnectionMethod == true && $this->ReadPropertyInteger("ConnectionType") == 0)
+							if ($ConnectionMethod == true && $ConnectionType == 0)
 							{
 								$ConnectionConfigError = true;
 								//$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Config error - device monitored is a wired device. Please select wired in the module configuration."), 0);
