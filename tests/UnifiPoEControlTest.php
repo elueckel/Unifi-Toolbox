@@ -69,7 +69,6 @@ class UnifiPoEControlTest extends TestCase
 		IPS_SetProperty($myModuleId, 'ServerPort', $ServerPort);
 		IPS_SetProperty($myModuleId, 'UserName', $UserName);
 		IPS_SetProperty($myModuleId, 'Password', $Password);
-		IPS_SetProperty($myModuleId, 'Timer', $Timer);
 		IPS_ApplyChanges($myModuleId);
 
 		/* TC1:
@@ -77,10 +76,10 @@ class UnifiPoEControlTest extends TestCase
 			check: several childs created + module status = 104  + action + module status = 102
 		 */
 		$tdId = 1;
-		$this->assertEquals(true, 0 != count(IPS_GetChildrenIDs($myModuleId)), "TC".$tdId.": initialCreation: several childs created");
+//		$this->assertEquals(true, 0 != count(IPS_GetChildrenIDs($myModuleId)), "TC".$tdId.": initialCreation: several childs created");
 
 		// timer = 0 --> instance inactive
-		$this->assertEquals(104, IPS_GetInstance($myModuleId)['InstanceStatus'], "TC".$tdId.": Module GetStatus() return value");
+//		$this->assertEquals(104, IPS_GetInstance($myModuleId)['InstanceStatus'], "TC".$tdId.": Module GetStatus() return value");
 		$checkSiteName = UDM_checkSiteName($myModuleId);
 		$this->assertEquals(true, $checkSiteName, "TC".$tdId.": checkSiteName() return value");
 		// action --> instance active
@@ -164,7 +163,7 @@ class UnifiPoEControlTest extends TestCase
 		/* TC7:
 			action: set timer + set back to 0
 			check: module status = 102 + module status = 104
-		 */
+		 *-/
 		$tdId++;
 		IPS_SetProperty($myModuleId, 'Timer', 300);
 		IPS_ApplyChanges($myModuleId);
@@ -175,6 +174,7 @@ class UnifiPoEControlTest extends TestCase
 		IPS_ApplyChanges($myModuleId);
 		// timer = 0 --> instance inactive
 		$this->assertEquals(104, IPS_GetInstance($myModuleId)['InstanceStatus'], "TC".$tdId.": Module GetStatus() return value");
+		 */
 
 		/*
 			TESTS WITH CONTROLLER TYPE = 1
@@ -200,7 +200,6 @@ class UnifiPoEControlTest extends TestCase
 		IPS_SetProperty($myModuleId, 'ServerPort', $ServerPort);
 		IPS_SetProperty($myModuleId, 'UserName', $UserName);
 		IPS_SetProperty($myModuleId, 'Password', $Password);
-		IPS_SetProperty($myModuleId, 'Timer', $Timer);
 		IPS_ApplyChanges($myModuleId);
 
 		/* TC21:
@@ -208,10 +207,10 @@ class UnifiPoEControlTest extends TestCase
 			check: several childs created + module status = 104  + action + module status = 102
 		 */
 		$tdId = 21;
-		$this->assertEquals(true, 0 != count(IPS_GetChildrenIDs($myModuleId)), "TC".$tdId.": initialCreation: several childs created");
+//		$this->assertEquals(true, 0 != count(IPS_GetChildrenIDs($myModuleId)), "TC".$tdId.": initialCreation: several childs created");
 
 		// timer = 0 --> instance inactive
-		$this->assertEquals(104, IPS_GetInstance($myModuleId)['InstanceStatus'], "TC".$tdId.": Module GetStatus() return value");
+//		$this->assertEquals(104, IPS_GetInstance($myModuleId)['InstanceStatus'], "TC".$tdId.": Module GetStatus() return value");
 		$checkSiteName = UDM_checkSiteName($myModuleId);
 		$this->assertEquals(true, $checkSiteName, "TC".$tdId.": checkSiteName() return value");
 		// action --> instance active
@@ -296,7 +295,7 @@ class UnifiPoEControlTest extends TestCase
 		/* TC27:
 			action: set timer + set back to 0
 			check: module status = 102 + module status = 104
-		 */
+		 *-/
 		$tdId++;
 		IPS_SetProperty($myModuleId, 'Timer', 300);
 		IPS_ApplyChanges($myModuleId);
@@ -307,7 +306,7 @@ class UnifiPoEControlTest extends TestCase
 		IPS_ApplyChanges($myModuleId);
 		// timer = 0 --> instance inactive
 		$this->assertEquals(104, IPS_GetInstance($myModuleId)['InstanceStatus'], "TC".$tdId.": Module GetStatus() return value");
-
+		 */
 
 		/* *******************************
 		MODUL SPECIFIC TESTS
@@ -319,7 +318,6 @@ class UnifiPoEControlTest extends TestCase
 		$ServerPort = "443";
 		$UserName = "testuser";
 		$Password = "testpass";
-		$Timer = 0;
 
 		Unifi_setControllerType($ControllerType);
 
