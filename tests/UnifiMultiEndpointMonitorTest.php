@@ -13,7 +13,7 @@ include_once __DIR__.'/stubs/MessageStubs.php';
 include_once __DIR__.'/stubs/ModuleStubs.php';
 
 
-class UnifiEndpointMonitorTest extends TestCase
+class UnifiMultiEndpointMonitorTest extends TestCase
 {
 	private $moduleInstanceID = "{18083971-8894-381C-F535-3DEB08A44DBD}";
 	/*
