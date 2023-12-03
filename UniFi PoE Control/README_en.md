@@ -1,4 +1,4 @@
-# UniFi Endpoint Blocker
+# UniFi PoE Control
 Dieses Modul ermöglicht es einzelne PoE Ports von UniFi Switch neu zustarten.
 
 ## Inhaltsverzeichnis
