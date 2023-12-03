@@ -32,6 +32,7 @@
         },
         {
             "type": "Label",
+            "bold": "true",
             "label": "UniFi Toolbox - Multi Endpoint Monitor Configuration"
         },
         {
@@ -98,6 +99,7 @@
         },
         {
             "type": "Label",
+            "bold": "true",
             "label": "Please enter the MAC addresses of the devices to be monitored."
         },
         {

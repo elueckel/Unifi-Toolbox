@@ -93,3 +93,6 @@ Version 1.3 - 03-01-2022
 
 Version 1.31 - 01-10-2022
 * Fix - Wenn die Verbindungsqualität nicht gesendet wird, sollte der Wert ignoriert werden
+
+Version 1.5 - 03-12-2023
+* Neu - UI Aufgeräumt
