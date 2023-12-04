@@ -90,6 +90,14 @@
             ]
         },
         {
+            "type": "NumberSpinner",
+            "name": "Timer",
+            "caption": "Update Frequency",
+            "suffix": "sec - 0 is off",
+            "digits": 0,
+            "minimum": 0
+        },
+        {
             "type": "Label",
             "bold": "true",
             "label": "Device names must not contain a space - e.g. please use LeftSwitch without a space."
