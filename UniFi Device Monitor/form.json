@@ -90,6 +90,14 @@
             ]
         },
         {
+            "type": "NumberSpinner",
+            "name": "Timer",
+            "caption": "Update Frequency",
+            "suffix": "sec - 0 is off",
+            "digits": 0,
+            "minimum": 0
+        },
+        {
             "type": "Label",
             "bold": "true",
             "label": "Please enter the MAC Address of the device to be monitored."
