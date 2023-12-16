@@ -6,7 +6,7 @@
             "items": [
                 {
                     "type": "Label",
-                    "label": "This Module allows to monitor Unifi equipment connected to a UniFi Network and provide data in variables."
+                    "label": "This Module allows to monitor devices connected to a UniFi Network and provide data in variables."
                 },
                 {
                     "type": "Label",
@@ -33,7 +33,7 @@
         {
             "type": "Label",
             "bold": "true",
-            "label": "UniFi Toolbox - Endpoint Monitor Configuration"
+            "label": "UniFi Toolbox - Multi Endpoint Monitor Configuration"
         },
         {
             "type": "Select",
@@ -100,47 +100,86 @@
         {
             "type": "Label",
             "bold": "true",
-            "label": "Please enter the MAC Address of the device to be monitored."
+            "label": "Please enter the MAC addresses of the devices to be monitored."
         },
         {
-            "type": "ValidationTextBox",
-            "name": "DeviceMac",
-            "caption": "Device MAC Address",
-            "validate": "^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})|([0-9a-fA-F]{4}\\.[0-9a-fA-F]{4}\\.[0-9a-fA-F]{4})$"
+            "type": "List",
+            "name": "Devices",
+            "caption": "Devices",
+            "rowCount": 10,
+            "add": true,
+            "delete": true,
+            "sort": {
+                "column": "varDeviceName",
+                "direction": "ascending"
+            },
+            "columns": [
+                {
+                    "label": "Devicename",
+                    "name": "varDeviceName",
+                    "width": "200px",
+                    "add": "Name",
+                    "edit": {
+                        "type": "ValidationTextBox",
+                        "validate": "[a-zA-Z]{3,}"
+                    }
+                },
+                {
+                    "label": "MAC",
+                    "name": "varDeviceMAC",
+                    "width": "120px",
+                    "add": "00:00:00:00:00",
+                    "edit": {
+                        "type": "ValidationTextBox",
+                        "validate": "^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})|([0-9a-fA-F]{4}\\.[0-9a-fA-F]{4}\\.[0-9a-fA-F]{4})$"
+                    }
+                },
+                {
+                    "label": "Connection",
+                    "name": "varDeviceConnectionType",
+                    "width": "100px",
+                    "add": 0,
+                    "edit": {
+                        "type": "Select",
+                        "name": "ConnectionType",
+                        "caption": "Connection Type",
+                        "options": [
+                            {
+                                "caption": "Wireless",
+                                "value": 0
+                            },
+                            {
+                                "caption": "Wired",
+                                "value": 1
+                            }
+                        ]
+                    }
+                }
+            ],
+            "values": []
         },
         {
             "type": "Label",
             "label": "Please select how the device to be monitor is connected - this will switch on/off certain variables."
         },
         {
-            "type": "Select",
-            "name": "DeviceType",
-            "caption": "Device Type",
-            "options": [
-                {
-                    "caption": "UDM or USG",
-                    "value": 0
-                },
-                {
-                    "caption": "Genric Device",
-                    "value": 1
-                }
-            ]
-        },
-        {
             "type": "CheckBox",
-            "name": "DataPointBasic",
-            "caption": "Basic Data"
-        },
-        {
-            "type": "CheckBox",
-            "name": "DataPointHardware",
-            "caption": "Hardware Data"
-        },
-        {
-            "type": "CheckBox",
-            "name": "DataPointSpecific",
+            "name": "DataPointNetwork",
             "caption": "Network Data"
+        },
+        {
+            "type": "CheckBox",
+            "name": "DataPointConnection",
+            "caption": "Connection Data"
+        },
+        {
+            "type": "Label",
+            "label": "Transfer data is only available on wireless devices."
+        },
+        {
+            "type": "CheckBox",
+            "name": "DataPointTransfer",
+            "caption": "Transfer Data"
         }
     ],
     "actions": [
@@ -150,17 +189,17 @@
                 {
                     "type": "Button",
                     "label": "Test Authentication",
-                    "onClick": "UDM_AuthenticateAndGetData($id, '');"
+                    "onClick": "UMEM_AuthenticateAndGetData($id, '');"
                 },
                 {
                     "type": "Button",
                     "label": "Get Device Data",
-                    "onClick": "UDM_DeviceMonitor($id);"
+                    "onClick": "UMEM_EndpointMonitor($id);"
                 },
                 {
                     "type": "Button",
                     "label": "Check site name",
-                    "onClick": "UDM_checkSiteName($id, '');"
+                    "onClick": "UMEM_checkSiteName($id, '');"
                 }
             ]
         }

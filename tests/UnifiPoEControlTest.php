@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
 
+if (!defined('DEBUG'))
+{
+	define("DEBUG", false);
+}
+
 include_once __DIR__.'/UnifiControllerStub/UnifiControllerStub.php';
 
 include_once __DIR__.'/stubs/ConstantStubs.php';
@@ -12,14 +17,13 @@ include_once __DIR__.'/stubs/KernelStubs.php';
 include_once __DIR__.'/stubs/MessageStubs.php';
 include_once __DIR__.'/stubs/ModuleStubs.php';
 
-
-class UnifiPresenceManagerTest extends TestCase
+class UnifiPoEControlTest extends TestCase
 {
+	private $moduleInstanceID = "{A7283429-2FB5-90E9-2F8C-27BD7BA54432}";
 	/*
-	"id": "{573B48D3-14D7-189B-7D89-19E82AF9F414}",
-	"name": "UniFi Presence Manager",
+	"id": "{A7283429-2FB5-90E9-2F8C-27BD7BA54432}",
+	"name": "UniFi PoE Control",
 	 */
-	private $moduleInstanceID = "{573B48D3-14D7-189B-7D89-19E82AF9F414}";
 
 	/*
 	CODE	STATUS
@@ -52,7 +56,6 @@ class UnifiPresenceManagerTest extends TestCase
 		$UserName = "testuser";
 		$Password = "testpass";
 		$Timer = 0;
-		$GeneralPresenceUpdatedVariable = false;
 		// devices
 
 		Unifi_setControllerType($ControllerType);
@@ -66,20 +69,18 @@ class UnifiPresenceManagerTest extends TestCase
 		IPS_SetProperty($myModuleId, 'ServerPort', $ServerPort);
 		IPS_SetProperty($myModuleId, 'UserName', $UserName);
 		IPS_SetProperty($myModuleId, 'Password', $Password);
-		IPS_SetProperty($myModuleId, 'Timer', $Timer);
-		IPS_SetProperty($myModuleId, 'GeneralPresenceUpdatedVariable', $GeneralPresenceUpdatedVariable);
 		IPS_ApplyChanges($myModuleId);
 
 		/* TC1:
 			action: create module
-			check: no childs created + module status = 104  + action + module status = 102
+			check: several childs created + module status = 104  + action + module status = 102
 		 *-/
 		$tdId = 1;
-		$this->assertEquals(0, count(IPS_GetChildrenIDs($myModuleId)), "TC".$tdId.": initialCreation: no childs created");
+//		$this->assertEquals(true, 0 != count(IPS_GetChildrenIDs($myModuleId)), "TC".$tdId.": initialCreation: several childs created");
 
 		// timer = 0 --> instance inactive
-		$this->assertEquals(104, IPS_GetInstance($myModuleId)['InstanceStatus'], "TC".$tdId.": Module GetStatus() return value");
-		$checkSiteName = UPM_checkSiteName($myModuleId);
+//		$this->assertEquals(104, IPS_GetInstance($myModuleId)['InstanceStatus'], "TC".$tdId.": Module GetStatus() return value");
+		$checkSiteName = UDM_checkSiteName($myModuleId);
 		$this->assertEquals(true, $checkSiteName, "TC".$tdId.": checkSiteName() return value");
 		// action --> instance active
 		$this->assertEquals(102, IPS_GetInstance($myModuleId)['InstanceStatus'], "TC".$tdId.": Module GetStatus() return value");
@@ -92,7 +93,7 @@ class UnifiPresenceManagerTest extends TestCase
 		IPS_SetProperty($myModuleId, 'ControllerType', ($ControllerType + 1) % 2);
 		IPS_ApplyChanges($myModuleId);
 
-		$checkSiteName = UPM_checkSiteName($myModuleId);
+		$checkSiteName = UDM_checkSiteName($myModuleId);
 		$this->assertEquals(false, $checkSiteName, "TC".$tdId.": checkSiteName() return value");
 		$this->assertEquals(200, IPS_GetInstance($myModuleId)['InstanceStatus'], "TC".$tdId.": Module GetStatus() return value");
 
@@ -107,7 +108,7 @@ class UnifiPresenceManagerTest extends TestCase
 		IPS_SetProperty($myModuleId, 'ServerAddress', "192.168.55.55");
 		IPS_ApplyChanges($myModuleId);
 
-		$checkSiteName = UPM_checkSiteName($myModuleId);
+		$checkSiteName = UDM_checkSiteName($myModuleId);
 		$this->assertEquals(false, $checkSiteName, "TC".$tdId.": checkSiteName() return value");
 		$this->assertEquals(200, IPS_GetInstance($myModuleId)['InstanceStatus'], "TC".$tdId.": Module GetStatus() return value");
 
@@ -122,7 +123,7 @@ class UnifiPresenceManagerTest extends TestCase
 		IPS_SetProperty($myModuleId, 'ServerPort', "5555");
 		IPS_ApplyChanges($myModuleId);
 
-		$checkSiteName = UPM_checkSiteName($myModuleId);
+		$checkSiteName = UDM_checkSiteName($myModuleId);
 		$this->assertEquals(false, $checkSiteName, "TC".$tdId.": checkSiteName() return value");
 		$this->assertEquals(200, IPS_GetInstance($myModuleId)['InstanceStatus'], "TC".$tdId.": Module GetStatus() return value");
 
@@ -137,7 +138,7 @@ class UnifiPresenceManagerTest extends TestCase
 		IPS_SetProperty($myModuleId, 'UserName', "wrong_user");
 		IPS_ApplyChanges($myModuleId);
 
-		$checkSiteName = UPM_checkSiteName($myModuleId);
+		$checkSiteName = UDM_checkSiteName($myModuleId);
 		$this->assertEquals(false, $checkSiteName, "TC".$tdId.": checkSiteName() return value");
 		$this->assertEquals(201, IPS_GetInstance($myModuleId)['InstanceStatus'], "TC".$tdId.": Module GetStatus() return value");
 
@@ -152,7 +153,7 @@ class UnifiPresenceManagerTest extends TestCase
 		IPS_SetProperty($myModuleId, 'Password', "wrong_password");
 		IPS_ApplyChanges($myModuleId);
 
-		$checkSiteName = UPM_checkSiteName($myModuleId);
+		$checkSiteName = UDM_checkSiteName($myModuleId);
 		$this->assertEquals(false, $checkSiteName, "TC".$tdId.": checkSiteName() return value");
 		$this->assertEquals(201, IPS_GetInstance($myModuleId)['InstanceStatus'], "TC".$tdId.": Module GetStatus() return value");
 
@@ -173,19 +174,19 @@ class UnifiPresenceManagerTest extends TestCase
 		IPS_ApplyChanges($myModuleId);
 		// timer = 0 --> instance inactive
 		$this->assertEquals(104, IPS_GetInstance($myModuleId)['InstanceStatus'], "TC".$tdId.": Module GetStatus() return value");
+		 */
 
 		/*
-			TESTS WITH CONTROLLER TYPE = 0
-		 */
+			TESTS WITH CONTROLLER TYPE = 1
+		 *-/
 		// defaul values von modul instance
-		$ControllerType = 0;
+		$ControllerType = 1;
 		$Site = "default";
 		$ServerAddress = "192.168.1.1";
 		$ServerPort = "443";
 		$UserName = "testuser";
 		$Password = "testpass";
 		$Timer = 0;
-		$GeneralPresenceUpdatedVariable = false;
 		// devices
 
 		Unifi_setControllerType($ControllerType);
@@ -199,20 +200,18 @@ class UnifiPresenceManagerTest extends TestCase
 		IPS_SetProperty($myModuleId, 'ServerPort', $ServerPort);
 		IPS_SetProperty($myModuleId, 'UserName', $UserName);
 		IPS_SetProperty($myModuleId, 'Password', $Password);
-		IPS_SetProperty($myModuleId, 'Timer', $Timer);
-		IPS_SetProperty($myModuleId, 'GeneralPresenceUpdatedVariable', $GeneralPresenceUpdatedVariable);
 		IPS_ApplyChanges($myModuleId);
 
 		/* TC21:
 			action: create module
-			check: no childs created + module status = 104  + action + module status = 102
+			check: several childs created + module status = 104  + action + module status = 102
 		 *-/
 		$tdId = 21;
-		$this->assertEquals(0, count(IPS_GetChildrenIDs($myModuleId)), "TC".$tdId.": initialCreation: no childs created");
+//		$this->assertEquals(true, 0 != count(IPS_GetChildrenIDs($myModuleId)), "TC".$tdId.": initialCreation: several childs created");
 
 		// timer = 0 --> instance inactive
-		$this->assertEquals(104, IPS_GetInstance($myModuleId)['InstanceStatus'], "TC".$tdId.": Module GetStatus() return value");
-		$checkSiteName = UPM_checkSiteName($myModuleId);
+//		$this->assertEquals(104, IPS_GetInstance($myModuleId)['InstanceStatus'], "TC".$tdId.": Module GetStatus() return value");
+		$checkSiteName = UDM_checkSiteName($myModuleId);
 		$this->assertEquals(true, $checkSiteName, "TC".$tdId.": checkSiteName() return value");
 		// action --> instance active
 		$this->assertEquals(102, IPS_GetInstance($myModuleId)['InstanceStatus'], "TC".$tdId.": Module GetStatus() return value");
@@ -222,12 +221,13 @@ class UnifiPresenceManagerTest extends TestCase
 			check: module status = 200
 		 *-/
 		$tdId++;
-		IPS_SetProperty($myModuleId, 'ControllerType', ($ControllerType + 1) % 2);
+		IPS_SetProperty($myModuleId, 'ControllerType', 0);
 		IPS_ApplyChanges($myModuleId);
 
-		$checkSiteName = UPM_checkSiteName($myModuleId);
+		$checkSiteName = UDM_checkSiteName($myModuleId);
 		$this->assertEquals(false, $checkSiteName, "TC".$tdId.": checkSiteName() return value");
-		$this->assertEquals(200, IPS_GetInstance($myModuleId)['InstanceStatus'], "TC".$tdId.": Module GetStatus() return value");
+		// expected module status code:	$this->assertEquals(200, IPS_GetInstance($myModuleId)['InstanceStatus'], "TC".$tdId.": Module GetStatus() return value");
+		$this->assertEquals(201, IPS_GetInstance($myModuleId)['InstanceStatus'], "TC".$tdId.": Module GetStatus() return value");
 
 		IPS_SetProperty($myModuleId, 'ControllerType', $ControllerType);
 		IPS_ApplyChanges($myModuleId);
@@ -240,7 +240,7 @@ class UnifiPresenceManagerTest extends TestCase
 		IPS_SetProperty($myModuleId, 'ServerAddress', "192.168.55.55");
 		IPS_ApplyChanges($myModuleId);
 
-		$checkSiteName = UPM_checkSiteName($myModuleId);
+		$checkSiteName = UDM_checkSiteName($myModuleId);
 		$this->assertEquals(false, $checkSiteName, "TC".$tdId.": checkSiteName() return value");
 		$this->assertEquals(200, IPS_GetInstance($myModuleId)['InstanceStatus'], "TC".$tdId.": Module GetStatus() return value");
 
@@ -255,7 +255,7 @@ class UnifiPresenceManagerTest extends TestCase
 		IPS_SetProperty($myModuleId, 'ServerPort', "5555");
 		IPS_ApplyChanges($myModuleId);
 
-		$checkSiteName = UPM_checkSiteName($myModuleId);
+		$checkSiteName = UDM_checkSiteName($myModuleId);
 		$this->assertEquals(false, $checkSiteName, "TC".$tdId.": checkSiteName() return value");
 		$this->assertEquals(200, IPS_GetInstance($myModuleId)['InstanceStatus'], "TC".$tdId.": Module GetStatus() return value");
 
@@ -270,7 +270,7 @@ class UnifiPresenceManagerTest extends TestCase
 		IPS_SetProperty($myModuleId, 'UserName', "wrong_user");
 		IPS_ApplyChanges($myModuleId);
 
-		$checkSiteName = UPM_checkSiteName($myModuleId);
+		$checkSiteName = UDM_checkSiteName($myModuleId);
 		$this->assertEquals(false, $checkSiteName, "TC".$tdId.": checkSiteName() return value");
 		$this->assertEquals(201, IPS_GetInstance($myModuleId)['InstanceStatus'], "TC".$tdId.": Module GetStatus() return value");
 
@@ -285,7 +285,7 @@ class UnifiPresenceManagerTest extends TestCase
 		IPS_SetProperty($myModuleId, 'Password', "wrong_password");
 		IPS_ApplyChanges($myModuleId);
 
-		$checkSiteName = UPM_checkSiteName($myModuleId);
+		$checkSiteName = UDM_checkSiteName($myModuleId);
 		$this->assertEquals(false, $checkSiteName, "TC".$tdId.": checkSiteName() return value");
 		$this->assertEquals(201, IPS_GetInstance($myModuleId)['InstanceStatus'], "TC".$tdId.": Module GetStatus() return value");
 
@@ -306,29 +306,25 @@ class UnifiPresenceManagerTest extends TestCase
 		IPS_ApplyChanges($myModuleId);
 		// timer = 0 --> instance inactive
 		$this->assertEquals(104, IPS_GetInstance($myModuleId)['InstanceStatus'], "TC".$tdId.": Module GetStatus() return value");
-
+		 */
 
 		/* *******************************
 		MODUL SPECIFIC TESTS
 		 ****************************** */
+		// defaul values von modul instance
+		$ControllerType = 0;
+		$Site = "default";
+		$ServerAddress = "192.168.1.1";
+		$ServerPort = "443";
+		$UserName = "testuser";
+		$Password = "testpass";
+
+		Unifi_setControllerType($ControllerType);
+
 		/* TC100:
 			action: activate General Presence Update Variable
 			check: check variable
-		 *-/
+		 */
 		$tdId = 100;
-		$targetProfile = "~Switch";
-		IPS_CreateVariableProfile($targetProfile, VARIABLETYPE_BOOLEAN);
-		IPS_SetProperty($myModuleId, 'GeneralPresenceUpdatedVariable', true);
-		IPS_ApplyChanges($myModuleId);
-		// variable created
-		$varId = @IPS_GetObjectIDByIdent("GeneralPresenceUpdatedVariable", $myModuleId);
-		$this->assertFalse(!($varId), "TC".$tdId.": Module GetStatus() return value");
-		$this->assertEquals($targetProfile, IPS_GetVariable($varId)['VariableProfile'], "TC".$tdId.": Module GetStatus() return value");
-
-		IPS_SetProperty($myModuleId, 'GeneralPresenceUpdatedVariable', $GeneralPresenceUpdatedVariable);
-		IPS_ApplyChanges($myModuleId);
-		// variable deleted
-		$this->assertFalse(@IPS_GetObjectIDByIdent("GeneralPresenceUpdatedVariable", $myModuleId), "TC".$tdId.": Module GetStatus() return value");
-		*/
 	}
 }

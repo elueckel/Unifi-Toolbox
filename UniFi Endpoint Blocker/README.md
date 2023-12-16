@@ -124,3 +124,6 @@ Version 1.2 - 30-12-2021
 Version 1.3 - 03-01-2022
 * Neu - Unifi API Zugriff in eigene Funktion ausgelagert (bessere Wartbarkeit)
 * Neu Device Blocker heisst jetzt Endpoint Blocker
+
+Version 1.5 - 03-12-2023
+* Neu - UI Aufgeräumt

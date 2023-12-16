@@ -59,7 +59,10 @@ Folgende Module beinhaltet das UniFi Toolbox Repository:
 	Mit dem Device Monitor können Geräte von UniFi überwacht werden - es stehen bei Firewalls (UDM/USG) Daten zur Internetverbindung zur Verfügung, bei generischen Geräten Daten zum Status und Hardware.
 
 - __UniFi Endpoint Monitor__ ([Dokumentation](UniFi%20Endpoint%20Monitor))  
-	Mit dem Endpoint Monitor können mit den UniFi Netzwerkverbunde Geräte überwacht werden. Hierbei wird zwischen Kabel und WLAN Verbindungen unterschieden, da im WLAN weit mehr Daten zur Verfügung stehen. 
+	Mit dem Multi Endpoint Monitor können mit den UniFi Netzwerk verbunde mehrere Geräte überwacht werden. Hierbei wird zwischen Kabel und WLAN Verbindungen unterschieden, da im WLAN weit mehr Daten zur Verfügung stehen. 
+
+- __UniFi Multi Endpoint Monitor__ ([Dokumentation](UniFi%20Multi%20Endpoint%20Monitor))  
+	Mit dem Endpoint Monitor können mit den UniFi Netzwerk verbunde einzelne Geräte überwacht werden. Hierbei wird zwischen Kabel und WLAN Verbindungen unterschieden, da im WLAN weit mehr Daten zur Verfügung stehen. 
 
 - __UniFi PoE Control__ ([Dokumentation](UniFi%20PoE%20Control))  
 	Mit dem PoE Control Modul können einzelne PoE Ports neu gestrtet werden, um z.B. einen Teset bei einer Webcam oder ähnlichem durchzuführen. 

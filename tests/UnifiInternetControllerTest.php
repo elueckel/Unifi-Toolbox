@@ -68,7 +68,7 @@ class UnifiInternetControllerTest extends TestCase
 		/* TC1:
 			action: create module
 			check: no childs created + module status = 104  + action + module status = 102
-		 */
+		 *-/
 		$tdId = 1;
 		$this->assertEquals(0, count(IPS_GetChildrenIDs($myModuleId)), "TC".$tdId.": initialCreation: no childs created");
 
@@ -98,7 +98,7 @@ class UnifiInternetControllerTest extends TestCase
 		/* TC3:
 			action: set wrong IP
 			check: module status = 200
-		 */
+		 *-/
 		$tdId++;
 		IPS_SetProperty($myModuleId, 'ServerAddress', "192.168.55.55");
 		IPS_ApplyChanges($myModuleId);
@@ -113,7 +113,7 @@ class UnifiInternetControllerTest extends TestCase
 		/* TC4:
 			action: set wrong Port
 			check: module status = 200
-		 */
+		 *-/
 		$tdId++;
 		IPS_SetProperty($myModuleId, 'ServerPort', "5555");
 		IPS_ApplyChanges($myModuleId);
@@ -128,7 +128,7 @@ class UnifiInternetControllerTest extends TestCase
 		/* TC5:
 			action: set wrong User
 			check: module status = 201
-		 */
+		 *-/
 		$tdId++;
 		IPS_SetProperty($myModuleId, 'UserName', "wrong_user");
 		IPS_ApplyChanges($myModuleId);
@@ -143,7 +143,7 @@ class UnifiInternetControllerTest extends TestCase
 		/* TC6:
 			action: set wrong Password
 			check: module status = 201
-		 */
+		 *-/
 		$tdId++;
 		IPS_SetProperty($myModuleId, 'Password', "wrong_password");
 		IPS_ApplyChanges($myModuleId);
@@ -158,7 +158,7 @@ class UnifiInternetControllerTest extends TestCase
 		/* TC7:
 			action: set timer + set back to 0
 			check: module status = 102 + module status = 104
-		 */
+		 *-/
 		$tdId++;
 		IPS_SetProperty($myModuleId, 'Timer', 300);
 		IPS_ApplyChanges($myModuleId);

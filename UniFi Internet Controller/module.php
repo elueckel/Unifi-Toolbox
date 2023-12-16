@@ -14,7 +14,7 @@ if (!defined('MODUL_PREFIX'))
 class UniFiDMInternetController extends IPSModule
 {
 	use myFunctions;
-    use TestTime;
+	use TestTime;
 
 	public function Create()
 	{
@@ -303,7 +303,7 @@ class UniFiDMInternetController extends IPSModule
 
 				foreach ($healthArray as $health)
 				{
-					if (isset($health['subsystem']) && ('wan' == $health['subsystem'] ||'www' == $health['subsystem']))
+					if (isset($health['subsystem']) && ('wan' == $health['subsystem'] || 'www' == $health['subsystem']))
 					{
 						foreach ($variableArray as $variable)
 						{
@@ -343,7 +343,7 @@ class UniFiDMInternetController extends IPSModule
 	}
 
 	// public function, which is checking the site-name
-	public function checkSiteName()
+	public function CheckSiteName()
 	{
 		//$ControllerType = $this->ReadPropertyInteger("ControllerType");
 		$ServerAddress = $this->ReadPropertyString("ServerAddress");
@@ -353,5 +353,172 @@ class UniFiDMInternetController extends IPSModule
 		$Site = $this->ReadPropertyString("Site");
 
 		return $this->getSiteName($Site, $Username, $Password, $ServerAddress, $ServerPort/*, $ControllerType*/);
+	}
+
+	// read PortForwarding rules (user defined rules only!)
+	public function GetPortForwardRules(bool $printOutput = false)
+	{
+		//$ControllerType = $this->ReadPropertyInteger("ControllerType");
+		$ServerAddress = $this->ReadPropertyString("ServerAddress");
+		$ServerPort = $this->ReadPropertyInteger("ServerPort");
+		$Username = $this->ReadPropertyString("UserName");
+		$Password = $this->ReadPropertyString("Password");
+		$Site = $this->ReadPropertyString("Site");
+
+		$UnifiAPI = "api/s/".$Site."/rest/portforward";
+
+		$Cookie = $this->getCookie($Username, $Password, $ServerAddress, $ServerPort/*, $ControllerType*/);
+		if (isset($Cookie) && false !== $Cookie)
+		{
+			$RawData = $this->getRawData($Cookie, $ServerAddress, $ServerPort, $UnifiAPI/*, $ControllerType*/);
+			if (defined('DEBUG') && DEBUG)
+			{
+				echo "\nRawData: ".$RawData."\n";
+			}
+
+			// query JSON file for internet data
+			if (false !== $RawData)
+			{
+				if ($RawData !== "")
+				{
+					$JSONData = json_decode($RawData, true);
+
+					if (is_array($JSONData) && isset($JSONData['data']))
+					{
+						$jsonArray = $JSONData['data'];
+
+						if ($printOutput)
+						{
+							print_r($jsonArray);
+						}
+
+						return $jsonArray;
+					}
+				}
+				else
+				{
+					$this->SendDebug("GetPortForwardRules()", $this->Translate("There does not seem to be any configuration - no data is available from the UniFi"), 0);
+				}
+			}
+			else
+			{
+				// debug output already done in getRawData()
+			}
+		}
+
+		return false;
+	}
+
+	// activate PortForwarding rule (user defined rules only!)
+	public function ActivatePortForwardRule(string $ruleId)
+	{
+		$ControllerType = 0;
+		$ServerAddress = $this->ReadPropertyString("ServerAddress");
+		$ServerPort = $this->ReadPropertyInteger("ServerPort");
+		$Username = $this->ReadPropertyString("UserName");
+		$Password = $this->ReadPropertyString("Password");
+		$Site = $this->ReadPropertyString("Site");
+
+		$portrulesArray = UIC_GetPortForwardRules($this->InstanceID, false);
+
+		// check, if $ruleId is a valid ID
+		$validRule = false;
+		foreach($portrulesArray AS $rule)
+		{
+			if($rule['_id'] == $ruleId)
+			{
+				$validRule = true;
+				break;
+			}
+		}
+
+		if ($validRule)
+		{
+			$UnifiAPI = "api/s/".$Site."/rest/portforward/".$ruleId;
+
+			$Cookie = $this->getCookie($Username, $Password, $ServerAddress, $ServerPort/*, $ControllerType*/);
+			if (isset($Cookie) && false !== $Cookie)
+			{
+				//create XSRF Token
+				$X_CSRF_Token = $this->createXsrfToken($Cookie);
+
+				if (isset($Cookie))
+				{
+					$this->SendDebug($this->Translate("ActivatePortForwardRule()"), $this->Translate("Module is authenticated and will try to manage device"), 0);
+
+					// [field] => enabled, [pattern] => true|false
+					$CommandToController = json_encode(array(
+						"enabled" => true,
+					), JSON_UNESCAPED_SLASHES);
+					//var_dump($CommandToController);
+
+					if ($ControllerType == 0)
+					{
+						$MiddlePartURL = "/proxy/network/";
+					}
+					elseif ($ControllerType == 1)
+					{
+						$MiddlePartURL = "/";
+					}
+
+echo "\nhttps://".$ServerAddress.":".$ServerPort.$MiddlePartURL.$UnifiAPI."\n";
+
+					$ch = curl_init();
+					curl_setopt($ch, CURLOPT_POST, true);
+					curl_setopt($ch, CURLOPT_URL, "https://".$ServerAddress.":".$ServerPort.$MiddlePartURL.$UnifiAPI);
+					curl_setopt($ch, CURLOPT_HTTPHEADER, array('Cookie:'.$Cookie, $X_CSRF_Token));
+					curl_setopt($ch, CURLOPT_POSTFIELDS, $CommandToController);
+					curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+					curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+					curl_setopt($ch, CURLOPT_SSLVERSION, 'CURL_SSLVERSION_TLSv1');
+					curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+					$RawData = curl_exec($ch);
+					$HTTP_Code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+					$this->SendDebug($this->Translate("ActivatePortForwardRule()"), $this->Translate("Feedback from UniFi Controller: ").$RawData." / HTTP Message ".$HTTP_Code, 0);
+
+					$ControllerFeedbackComplete = json_decode($RawData, true);
+					$ControllerFeedbackOK = $ControllerFeedbackComplete["meta"]["rc"];
+					$this->SendDebug($this->Translate("ActivatePortForwardRule()"), $this->Translate("Was operation executed: ").$ControllerFeedbackOK, 0);
+					curl_close($ch);
+				}
+
+				if (defined('DEBUG') && DEBUG)
+				{
+					echo "\nRawData: ".$RawData."\n";
+				}
+
+				// query JSON file for internet data
+				if (false !== $RawData)
+				{
+					if ($RawData !== "")
+					{
+						$JSONData = json_decode($RawData, true);
+
+						if (is_array($JSONData) && isset($JSONData['data']))
+						{
+							$jsonArray = $JSONData['data'];
+							
+							print_r($jsonArray);
+
+							return true;
+						}
+					}
+					else
+					{
+						$this->SendDebug("ActivatePortForwardRule()", $this->Translate("There does not seem to be any configuration - no data is available from the UniFi"), 0);
+					}
+				}
+				else
+				{
+					// debug output already done in getRawData()
+				}
+			}
+		}
+		else
+		{
+			$this->SendDebug("ActivatePortForwardRule()", $this->Translate("The ruleID '").$ruleId.$this->Translate("' is no valid rule ID!"), 0);
+		}
+
+		return false;
 	}
 }

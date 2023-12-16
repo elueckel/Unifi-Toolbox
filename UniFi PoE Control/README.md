@@ -1,4 +1,4 @@
-# UniFi Endpoint Blocker
+# UniFi PoE Control
 Dieses Modul ermöglicht es einzelne PoE Ports von UniFi Switch neu zustarten.
 
 ## Inhaltsverzeichnis
@@ -74,3 +74,6 @@ Das Modul gibt diverse Informationen im Debug Bereich aus.
 
 Version 1.4 - 27.11-2022
 * Neues Module: PoE Control zum neustarten von PoE-Geräten über Power-Cycle des Switch-Ports
+
+Version 1.5 - 03-12-2023
+* Neu - UI Aufgeräumt

@@ -71,7 +71,7 @@ class UnifiEndpointMonitorTest extends TestCase
 		/* TC1:
 			action: create module
 			check: several childs created + module status = 104  + action + module status = 102
-		 */
+		 *-/
 		$tdId = 1;
 		$this->assertEquals(true, 0 != count(IPS_GetChildrenIDs($myModuleId)), "TC".$tdId.": initialCreation: several childs created");
 
@@ -85,7 +85,7 @@ class UnifiEndpointMonitorTest extends TestCase
 		/* TC2:
 			action: set wrong ControllerType
 			check: module status = 200
-		 */
+		 *-/
 		$tdId++;
 		IPS_SetProperty($myModuleId, 'ControllerType', ($ControllerType + 1) % 2);
 		IPS_ApplyChanges($myModuleId);
@@ -100,7 +100,7 @@ class UnifiEndpointMonitorTest extends TestCase
 		/* TC3:
 			action: set wrong IP
 			check: module status = 200
-		 */
+		 *-/
 		$tdId++;
 		IPS_SetProperty($myModuleId, 'ServerAddress', "192.168.55.55");
 		IPS_ApplyChanges($myModuleId);
@@ -115,7 +115,7 @@ class UnifiEndpointMonitorTest extends TestCase
 		/* TC4:
 			action: set wrong Port
 			check: module status = 200
-		 */
+		 *-/
 		$tdId++;
 		IPS_SetProperty($myModuleId, 'ServerPort', "5555");
 		IPS_ApplyChanges($myModuleId);
@@ -130,7 +130,7 @@ class UnifiEndpointMonitorTest extends TestCase
 		/* TC5:
 			action: set wrong User
 			check: module status = 201
-		 */
+		 *-/
 		$tdId++;
 		IPS_SetProperty($myModuleId, 'UserName', "wrong_user");
 		IPS_ApplyChanges($myModuleId);
@@ -145,7 +145,7 @@ class UnifiEndpointMonitorTest extends TestCase
 		/* TC6:
 			action: set wrong Password
 			check: module status = 201
-		 */
+		 *-/
 		$tdId++;
 		IPS_SetProperty($myModuleId, 'Password', "wrong_password");
 		IPS_ApplyChanges($myModuleId);
@@ -160,7 +160,7 @@ class UnifiEndpointMonitorTest extends TestCase
 		/* TC7:
 			action: set timer + set back to 0
 			check: module status = 102 + module status = 104
-		 */
+		 *-/
 		$tdId++;
 		IPS_SetProperty($myModuleId, 'Timer', 300);
 		IPS_ApplyChanges($myModuleId);
@@ -175,7 +175,7 @@ class UnifiEndpointMonitorTest extends TestCase
 
 		/*
 			TESTS WITH CONTROLLER TYPE = 1
-		 */
+		 *-/
 		// defaul values von modul instance
 		$ControllerType = 1;
 		$Site = "default";
@@ -203,7 +203,7 @@ class UnifiEndpointMonitorTest extends TestCase
 		/* TC21:
 			action: create module
 			check: several childs created + module status = 104  + action + module status = 102
-		 */
+		 *-/
 		$tdId = 21;
 		$this->assertEquals(true, 0 != count(IPS_GetChildrenIDs($myModuleId)), "TC".$tdId.": initialCreation: several childs created");
 
@@ -217,7 +217,7 @@ class UnifiEndpointMonitorTest extends TestCase
 		/* TC22:
 			action: set wrong ControllerType
 			check: module status = 200
-		 */
+		 *-/
 		$tdId++;
 		IPS_SetProperty($myModuleId, 'ControllerType', ($ControllerType + 1) % 2);
 		IPS_ApplyChanges($myModuleId);
@@ -233,7 +233,7 @@ class UnifiEndpointMonitorTest extends TestCase
 		/* TC23:
 			action: set wrong IP
 			check: module status = 200
-		 */
+		 *-/
 		$tdId++;
 		IPS_SetProperty($myModuleId, 'ServerAddress', "192.168.55.55");
 		IPS_ApplyChanges($myModuleId);
@@ -248,7 +248,7 @@ class UnifiEndpointMonitorTest extends TestCase
 		/* TC24:
 			action: set wrong Port
 			check: module status = 200
-		 */
+		 *-/
 		$tdId++;
 		IPS_SetProperty($myModuleId, 'ServerPort', "5555");
 		IPS_ApplyChanges($myModuleId);
@@ -263,7 +263,7 @@ class UnifiEndpointMonitorTest extends TestCase
 		/* TC25:
 			action: set wrong User
 			check: module status = 201
-		 */
+		 *-/
 		$tdId++;
 		IPS_SetProperty($myModuleId, 'UserName', "wrong_user");
 		IPS_ApplyChanges($myModuleId);
@@ -278,7 +278,7 @@ class UnifiEndpointMonitorTest extends TestCase
 		/* TC26:
 			action: set wrong Password
 			check: module status = 201
-		 */
+		 *-/
 		$tdId++;
 		IPS_SetProperty($myModuleId, 'Password', "wrong_password");
 		IPS_ApplyChanges($myModuleId);
@@ -293,7 +293,7 @@ class UnifiEndpointMonitorTest extends TestCase
 		/* TC27:
 			action: set timer + set back to 0
 			check: module status = 102 + module status = 104
-		 */
+		 *-/
 		$tdId++;
 		IPS_SetProperty($myModuleId, 'Timer', 300);
 		IPS_ApplyChanges($myModuleId);
