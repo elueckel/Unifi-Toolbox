@@ -1,79 +1,78 @@
 # UniFi PoE Control
-Dieses Modul ermöglicht es einzelne PoE Ports von UniFi Switch neu zustarten.
+This module allows to restart single PoE ports of UniFi Switch.
 
-## Inhaltsverzeichnis
+## Table of Contents
 
-1. [Funktionsumfang](#1-funktionsumfang)
-2. [Voraussetzungen](#2-voraussetzungen)
-3. [Software-Installation](#3-software-installation)
-4. [Einrichten der Instanzen in IP-Symcon](#4-einrichten-der-instanzen-in-ip-symcon)
-5. [PHP-Befehlsreferenz](#5-php-befehlsreferenz)
-6. [Versionsinformation](#6-versionsinformation)
+1. [Range of functions](#1-range of functions)
+2. [Requirements](#2-requirements)
+3. [Software Installation](#3-software-installation)
+4. [Setting up the instances in IP-Symcon](#4-setting-up-instances-in-ip-symcon)
+5.[PHP-command-reference](#5-php-command-reference)
+6. [Version information](#6-version-information)
 
+## 1. feature set
 
-## 1. Funktionsumfang
+* Support for UniFi CloudKey 1 (UC-CK)
+* Support for UniFi CloudKey 2 (UCK-G2) and DreamMachine (UDM)
+* Creation of devices to be monitored with name and MAC address 
+* Creates a variable per switch port which can be used for the power cycle of the PoE port (Boolean)
+* The module reacts to the change of a variable
 
-* Unterstützung für UniFi CloudKey 1 (UC-CK)
-* Unterstützung für UniFi CloudKey 2 (UCK-G2) und DreamMachine (UDM)
-* Anlegen von zu überwachenden Geräten mit Name und MAC Adresse 
-* Erstellt pro Switch-Port eine Variable welche für den Powercycle des PoE-Ports genutzt werden kann (Boolean)
-* Das Modul reagiert auf die Änderung einer Variable
+## 2. requirements
 
-## 2. Voraussetzungen
+- IP-Symcon version 5.5 or higher
+- Unifi user with owner (not with mail address!) or super admin rights (limited admin rights are not sufficient!)
 
-- IP-Symcon ab Version 5.5
-- Unifi Benutzer mit Owner (nicht mit Mailadresse!) oder Super-Admin Rechten (Limited-Admin Rechte sind nicht ausreichend!)
+## 3. software installation
 
-## 3. Software-Installation
+* Install the 'UniFi PoE Control' module via the Module Store.
+* Alternatively, add the following URL via the Module Control
 
-* Über den Module Store das 'UniFi PoE Control'-Modul installieren.
-* Alternativ über das Module Control folgende URL hinzufügen
+## 4. set up the instances in IP-Symcon
 
-## 4. Einrichten der Instanzen in IP-Symcon
+Under 'Add Instance' the 'UniFi PoE Control' module can be found using the quick filter.  
+Further information on adding instances in the [Documentation of the instances](https://www.symcon.de/service/dokumentation/konzepte/instanzen/#Instanz_hinzufügen)
 
-Unter 'Instanz hinzufügen' kann das 'UniFi PoE Control'-Modul mit Hilfe des Schnellfilters gefunden werden.  
-Weitere Informationen zum Hinzufügen von Instanzen in der [Dokumentation der Instanzen](https://www.symcon.de/service/dokumentation/konzepte/instanzen/#Instanz_hinzufügen)
+Configuration page__:
 
-__Konfigurationsseite__:
+**Type of controller**
 
-**Art des Controllers**
+As the APIs of CloudKey 1 and CloudKey2/DreamMachine differ, the controller can be selected here
 
-Da sich die APIs von CloudKey 1 und CloudKey2/DreamMachine unterscheiden, kann hier der Controller gewählt werden
+**Username & Password**
 
-**Benutzername & Kennwort**
-
-Account mit dem sich das Modul mit dem Controller verbindet
+Account with which the module connects to the controller
 
 **Site**
 
-Site-Name der im Controller hinterlegt ist (Standard: "default").
+Site name that is stored in the controller (default: "default").
 
-ACHTUNG: Nicht mit Site-Description verwechseln, welche bspw. in der Controller GUI geändert werden kann!
+ATTENTION: Do not confuse this with the site description, which can be changed in the controller GUI, for example!
 
-Der Site-Name kann überprüft werden mit einem Klick auf "check Site Name".
+The site name can be checked by clicking on "check Site Name".
 
-**IP-Adresse und Port**
+**IP address and port**
 
-Bei der DreamMachine ist der Port 443, bei einem Controller im Standard 8443. IP-Adresse des CloudKeys oder der DreamMachine.
+For the DreamMachine the port is 443, for a controller it is 8443 by default. IP address of the CloudKey or the DreamMachine.
 
-**Aktualisierungsfrequenz**
+**Update frequency**
 
-Da der Controller aktiv abfragt werden muss, kann man hier eine Frequenz hinterlegen wie oft dies geschehen soll. 
+As the controller must be actively polled, you can enter a frequency here for how often this should happen. 
 
-**Geräte**
+**Devices**
 
-Switches deren Ports ge-cycled werden sollen, werden einfach mit einem Namen und einer MAC Addresse in der Tabelle hinterlegt. Zusätzlich ist die Angabe der Anzahl der Ports erforderlich.
-Das Modul erstellt dann eine Boolean-Variable mit Switch-Profil pro Switch-Port, welche in weiter Prozesse eingebunden werden kann um ein Gerät neuzustarten (=true). Nach erfolgtem Power Cycle wird die Variable wieder auf false zurückgesetzt.
-Das Modul selbst löscht keine Variablen, sollte sich ein Name ändern, dann wird eine neue erstellt und die alte im Objektbaum belassen.
+Switches whose ports are to be cycled are simply entered in the table with a name and a MAC address. The number of ports must also be specified.
+The module then creates a Boolean variable with a switch profile for each switch port, which can be integrated into further processes to restart a device (=true). After a successful power cycle, the variable is reset to false.
+The module itself does not delete any variables; if a name changes, a new one is created and the old one is left in the object tree.
 
 **Debugging**
 
-Das Modul gibt diverse Informationen im Debug Bereich aus. 
+The module outputs various information in the debug area. 
 
-## 5. Versionsinformation
+## 5. version information
 
 Version 1.4 - 27.11-2022
-* Neues Module: PoE Control zum neustarten von PoE-Geräten über Power-Cycle des Switch-Ports
+* New module: PoE Control for restarting PoE devices via power cycle of the switch port
 
 Version 1.5 - 03-12-2023
-* Neu - UI Aufgeräumt
+* New - UI tidied up
