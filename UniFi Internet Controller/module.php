@@ -410,7 +410,7 @@ class UniFiDMInternetController extends IPSModule
 	}
 
 	// activate PortForwarding rule (user defined rules only!)
-	public function ActivatePortForwardRule(string $ruleId)
+	public function PortForwardRule(string $ruleId, bool $state)
 	{
 		$ControllerType = 0;
 		$ServerAddress = $this->ReadPropertyString("ServerAddress");
@@ -448,7 +448,7 @@ class UniFiDMInternetController extends IPSModule
 
 					// [field] => enabled, [pattern] => true|false
 					$CommandToController = json_encode(array(
-						"enabled" => true,
+						"enabled" => $state,
 					), JSON_UNESCAPED_SLASHES);
 					//var_dump($CommandToController);
 
@@ -464,9 +464,9 @@ class UniFiDMInternetController extends IPSModule
 echo "\nhttps://".$ServerAddress.":".$ServerPort.$MiddlePartURL.$UnifiAPI."\n";
 
 					$ch = curl_init();
-					curl_setopt($ch, CURLOPT_POST, true);
 					curl_setopt($ch, CURLOPT_URL, "https://".$ServerAddress.":".$ServerPort.$MiddlePartURL.$UnifiAPI);
 					curl_setopt($ch, CURLOPT_HTTPHEADER, array('Cookie:'.$Cookie, $X_CSRF_Token));
+					curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
 					curl_setopt($ch, CURLOPT_POSTFIELDS, $CommandToController);
 					curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 					curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
