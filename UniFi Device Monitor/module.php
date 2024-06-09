@@ -65,6 +65,7 @@ class UniFiDeviceMonitor extends IPSModule
 		$vpos = 200;
 		$this->MaintainVariable("CPULoad", $this->Translate("CPU Load"), vtFloat, "", $vpos++, $this->ReadPropertyBoolean("DataPointHardware") == 1);
 		$this->MaintainVariable("MemoryLoad", $this->Translate("Memory Load"), vtFloat, "", $vpos++, $this->ReadPropertyBoolean("DataPointHardware") == 1);
+		$this->MaintainVariable("ConnectedDevices", $this->Translate("Connected Devices"), vtInteger, "", $vpos++, $this->ReadPropertyBoolean("DataPointHardware") == 1);
 
 
 		//Device Specific Data Connection Data UDM/USG
@@ -182,6 +183,9 @@ class UniFiDeviceMonitor extends IPSModule
 					$MemoryLoad = $JSONData["data"][0]["system-stats"]["mem"];
 					SetValue($this->GetIDForIdent("MemoryLoad"), $MemoryLoad);
 					$this->SendDebug($this->Translate("Device Monitor"), $this->Translate("Memory Load ").$MemoryLoad, 0);
+					$ConnectedDevices = $JSONData["data"][0]["num_sta"];
+					SetValue($this->GetIDForIdent("ConnectedDevices"), ConnectedDevices);
+					$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connected Devices ").$ConnectedDevices, 0);
 				}
 				if ($this->ReadPropertyBoolean("DataPointSpecific") == 1 && $this->ReadPropertyInteger("DeviceType") == 0 && $DeviceConfigError == false)
 				{
