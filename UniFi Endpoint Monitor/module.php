@@ -76,8 +76,7 @@ class UnifiEndpointMonitor extends IPSModule
 		$this->MaintainVariable("RSSI", $this->Translate("RSSI"), vtInteger, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1 && $this->ReadPropertyInteger("ConnectionType") == 0);
 		$this->MaintainVariable("Noise", $this->Translate("Noise"), vtInteger, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1 && $this->ReadPropertyInteger("ConnectionType") == 0);
 		$this->MaintainVariable("SignalStrength", $this->Translate("Signal Strength"), vtInteger, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1 && $this->ReadPropertyInteger("ConnectionType") == 0);
-		$this->MaintainVariable("ConnectedDevices", $this->Translate("Connected Devices"), vtInteger, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1 && $this->ReadPropertyInteger("ConnectionType") == 0);
-
+		
 		//Transfer Data
 		$vpos = 300;
 		$this->MaintainVariable("TXBytes", $this->Translate("TX Megabytes"), vtInteger, "", $vpos++, $this->ReadPropertyBoolean("DataPointTransfer") == 1 && $this->ReadPropertyInteger("ConnectionType") == 0);
@@ -254,9 +253,6 @@ class UnifiEndpointMonitor extends IPSModule
 						$SignalStrength = $JSONData["data"][0]["signal"];
 						SetValue($this->GetIDForIdent("SignalStrength"), $SignalStrength);
 						$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connection Data SignalStrength ").$SignalStrength, 0);
-						$ConnectedDevices = $JSONData["data"][0]["num_sta"];
-						SetValue($this->GetIDForIdent("ConnectedDevices"), ConnectedDevices);
-						$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connected Devices ").$ConnectedDevices, 0);
 					}
 					if ($this->ReadPropertyBoolean("DataPointTransfer") == 1 && $this->ReadPropertyInteger("ConnectionType") == 0 && $ConnectionConfigError == false)
 					{
