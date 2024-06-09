@@ -36,6 +36,7 @@
             "Device Model": "Geräte Typ",
             "Device Name": "Geräte Name",
             "CPU Load": "CPU Auslastung",
+            "Connected Devices": "Verbundene Geräte",
             "Memory Load": "Speicher Auslastung",
             "WAN 1 TX Packets": "WAN 1 TX Pakete",
             "WAN 1 RX Packets": "WAN 1 RX Pakete",

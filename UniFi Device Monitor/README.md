@@ -96,3 +96,6 @@ Version 1.3 - 03-01-2022
 
 Version 1.5 - 03-12-2023
 * Neu - UI Aufgeräumt
+
+Version 1.51 - 09-06-2024
+* Neu - Anzahl der verbundenen Geräte wird angezeigt

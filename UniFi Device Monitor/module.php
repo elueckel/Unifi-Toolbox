@@ -183,8 +183,8 @@ class UniFiDeviceMonitor extends IPSModule
 					$MemoryLoad = $JSONData["data"][0]["system-stats"]["mem"];
 					SetValue($this->GetIDForIdent("MemoryLoad"), $MemoryLoad);
 					$this->SendDebug($this->Translate("Device Monitor"), $this->Translate("Memory Load ").$MemoryLoad, 0);
-					$ConnectedDevices = $JSONData["data"]["num_sta"];
-					SetValue($this->GetIDForIdent("ConnectedDevices"), ConnectedDevices);
+					$ConnectedDevices = $JSONData["data"][0]["num_sta"];
+					SetValue($this->GetIDForIdent("ConnectedDevices"), $ConnectedDevices);
 					$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connected Devices ").$ConnectedDevices, 0);
 				}
 				if ($this->ReadPropertyBoolean("DataPointSpecific") == 1 && $this->ReadPropertyInteger("DeviceType") == 0 && $DeviceConfigError == false)
