@@ -303,8 +303,7 @@ class UnifiMultiEndpointMonitor extends IPSModule
 						{
 							//$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("NOT found - Device: ").$DeviceName, 0);
 						}
-						$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Setze Wert").$Connected, 0);
-						SetValueBoolean($this->GetIDForIdent($DeviceMac."_Connected"), $Connected);
+						$this->SetValueBoolean($this->GetIDForIdent($DeviceMac."_Connected"), $Connected);
 					}
 				}
 			}
