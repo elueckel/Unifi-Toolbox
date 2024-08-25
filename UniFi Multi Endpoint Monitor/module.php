@@ -259,7 +259,7 @@ class UnifiMultiEndpointMonitor extends IPSModule
 								$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connection Data Uptime in hours ").round($Uptime / 3600, 0), 0);
 							}
 
-							if ($this->ReadPropertyBoolean("DataPointConnection") == 1 AND $ConnectionType == 0 AND $ConnectionConfigError == false);
+							if ($this->ReadPropertyBoolean("DataPointConnection") == 1 && $ConnectionType == 0 && $ConnectionConfigError == false);
 							{
 								$Accesspoint = $DeviceFromController["ap_mac"];
 								$this->SetValue($this->GetIDForIdent($DeviceMac."Accesspoint"), $Accesspoint);
@@ -283,7 +283,7 @@ class UnifiMultiEndpointMonitor extends IPSModule
 								$this->SetValue($this->GetIDForIdent($DeviceMac."SignalStrength"), $SignalStrength);
 								$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connection Data SignalStrength ").$SignalStrength, 0);
 							}
-							if ($this->ReadPropertyBoolean("DataPointTransfer") == 1 AND $ConnectionType == 0 AND $ConnectionConfigError == false)
+							if ($this->ReadPropertyBoolean("DataPointTransfer") == 1 && $ConnectionType == 0 && $ConnectionConfigError == false)
 							{
 								$TXBytes = $DeviceFromController["tx_bytes"];
 								$this->SetValue($this->GetIDForIdent($DeviceMac."TXBytes"), $TXBytes / 1000000);
