@@ -267,7 +267,7 @@ class UnifiMultiEndpointMonitor extends IPSModule
 								$this->SetValue($DeviceMac."Channel", $Channel);
 								$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connection Data Channel ").$Channel, 0);
 								$Radio = $DeviceFromController["radio"];
-								$this->SetValue($DeviceMac."Radio") $Radio);
+								$this->SetValue($DeviceMac."Radio", $Radio);
 								$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connection Data Radio ").$Radio, 0);
 								$ESSID = $DeviceFromController["essid"];
 								$this->SetValue($DeviceMac."ESSID", $ESSID);
