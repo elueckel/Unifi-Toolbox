@@ -194,7 +194,7 @@
                 {
                     "type": "Button",
                     "label": "Get Device Data",
-                    "onClick": "UMEM_EndpointMonitor($id);"
+                    "onClick": "UMEM_MultiEndpointMonitor($id);"
                 },
                 {
                     "type": "Button",

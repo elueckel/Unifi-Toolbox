@@ -89,3 +89,11 @@ Das Modul gibt diverse Informationen im Debug Bereich aus.
 
 Version 1.5 - 02-12-2023
 * Neu - Modul verfügbar
+
+Version 1.6 - 25-08-2024 (Credit M70 - Danke)
+* Fix - Connection wurde nicht gesetzt
+* Fix - Satisfaction wurde nicht aktualisiert
+* Fix - IP wurde nicht gesetzt
+* Fix - LastSeen wird auf Zeit von Symcon korrigiert
+* Fix - Modul zieht jetzt nicht mehr die Werte für WLAN Geräte bei LAN Komponenten
+* Change - SetValue durch $this->SetValue ersetzt
