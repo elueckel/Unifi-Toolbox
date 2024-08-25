@@ -258,7 +258,7 @@ class UnifiMultiEndpointMonitor extends IPSModule
 								$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connection Data Uptime in hours ").round($Uptime / 3600, 0), 0);
 							}
 
-							if ($this->ReadPropertyBoolean("DataPointConnection") == 1 AND $ConnectionType == 0 AND $ConnectionConfigError == false);
+							if ($this->ReadPropertyBoolean("DataPointConnection") == 1 AND $ConnectionType == 0 AND $ConnectionConfigError == false)
 							{
 								$Accesspoint = $DeviceFromController["ap_mac"];
 								$this->SetValue($this->GetIDForIdent($DeviceMac."Accesspoint"), $Accesspoint);
