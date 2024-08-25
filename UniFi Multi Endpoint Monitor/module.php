@@ -209,7 +209,6 @@ class UnifiMultiEndpointMonitor extends IPSModule
 							$Connected = true;				
 							$ConnectionMethod = $DeviceFromController["is_wired"];
 							$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Setze Wert"), 0);
-						$this->SetValue($this->GetIDForIdent($DeviceMac."_Connected"), $Connected);
 
 							if ($ConnectionMethod == true && $ConnectionType == 0)
 							{
