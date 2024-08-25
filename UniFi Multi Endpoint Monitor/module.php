@@ -39,7 +39,7 @@ class UnifiMultiEndpointMonitor extends IPSModule
 		$this->RegisterPropertyBoolean("DataPointConnection", 0);
 		$this->RegisterPropertyBoolean("DataPointTransfer", 0);
 
-		$this->RegisterTimer("UniFi Multi Endpoint Monitor", 0, MODUL_PREFIX."_MultiEndpointMonitor(\$_IPS['TARGET']);");
+		$this->RegisterTimer("UniFi Multi Endpoint Monitor", 0, MODUL_PREFIX."_EndpointMonitor(\$_IPS['TARGET']);");
 	}
 
 	public function Destroy()
@@ -152,7 +152,7 @@ class UnifiMultiEndpointMonitor extends IPSModule
 		}
 	}
 
-	public function MultiEndpointMonitor()
+	public function EndpointMonitor()
 	{
 		$ControllerType = $this->ReadPropertyInteger("ControllerType");
 		$ServerAddress = $this->ReadPropertyString("ServerAddress");
