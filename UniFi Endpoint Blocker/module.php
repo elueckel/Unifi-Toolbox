@@ -64,7 +64,7 @@ class UniFiEndpointBlocker extends IPSModule
 					$this->RegisterVariableBoolean($DeviceMacClean, $DeviceName, "~Switch");
 					$DeviceMacCleanID = @IPS_GetObjectIDByIdent($DeviceMacClean, $this->InstanceID);
 
-					SetValue($DeviceMacCleanID, true);
+					$this->SetValue($DeviceMacCleanID, true);
 					IPS_Sleep(1000);
 					$this->EnableAction($DeviceMacClean);
 					$this->RegisterMessage($DeviceMacCleanID, VM_UPDATE);

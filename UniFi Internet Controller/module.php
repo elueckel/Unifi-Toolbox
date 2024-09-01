@@ -198,7 +198,7 @@ class UniFiDMInternetController extends IPSModule
 								if ($value != GetValue($this->GetIDForIdent($variable['ident'])))
 								{
 									$this->SendDebug($this->Translate($variable['localeName']), $this->Translate("updated to ").$value, 0);
-									SetValue($this->GetIDForIdent($variable['ident']), $value);
+									$this->SetValue($variable['ident'], $value);
 								}
 								else
 								{
@@ -243,7 +243,7 @@ class UniFiDMInternetController extends IPSModule
 								if ($value != GetValue($this->GetIDForIdent($variable['ident'])))
 								{
 									$this->SendDebug($this->Translate($variable['localeName']), $this->Translate("updated to ").$value, 0);
-									SetValue($this->GetIDForIdent($variable['ident']), $value);
+									$this->SetValue($variable['ident'], $value);
 								}
 								else
 								{
@@ -322,7 +322,7 @@ class UniFiDMInternetController extends IPSModule
 										if ($value != GetValue($this->GetIDForIdent($variable['ident'])))
 										{
 											$this->SendDebug($this->Translate($variable['localeName']), $this->Translate("updated to ").$value, 0);
-											SetValue($this->GetIDForIdent($variable['ident']), $value);
+											$this->SetValue($variable['ident'], $value);
 										}
 										else
 										{

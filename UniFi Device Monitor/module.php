@@ -154,62 +154,62 @@ class UniFiDeviceMonitor extends IPSModule
 				if ($this->ReadPropertyBoolean("DataPointBasic") == 1)
 				{
 					$DeviceModel = $JSONData["data"][0]["model"];
-					SetValue($this->GetIDForIdent("DeviceModel"), $DeviceModel);
+					$this->SetValue("DeviceModel", $DeviceModel);
 					$this->SendDebug($this->Translate("Device Monitor"), $this->Translate("Device Model ").$DeviceModel, 0);
 					$SoftwareVersion = $JSONData["data"][0]["version"];
-					SetValue($this->GetIDForIdent("SoftwareVersion"), $SoftwareVersion);
+					$this->SetValue("SoftwareVersion", $SoftwareVersion);
 					$this->SendDebug($this->Translate("Device Monitor"), $this->Translate("Software Version ").$SoftwareVersion, 0);
 					//$Satisfaction = $JSONData["data"][0]["satisfaction"];
 					//SetValue($this->GetIDForIdent("Satisfaction"),$Satisfaction);
 					//$this->SendDebug($this->Translate("Device Monitor"),$this->Translate("Device Satisfaction ").$Satisfaction,0);
 					$SLastSeen = $JSONData["data"][0]["last_seen"];
-					SetValue($this->GetIDForIdent("LastSeen"), gmdate("Y-m-d H:i:s", $SLastSeen));
+					$this->SetValue("LastSeen", gmdate("Y-m-d H:i:s", $SLastSeen));
 					$this->SendDebug($this->Translate("Device Monitor"), $this->Translate("Connection Data Last Seen ").gmdate("Y-m-d H:i:s", $SLastSeen), 0);
 					$Uptime = $JSONData["data"][0]["uptime"];
-					SetValue($this->GetIDForIdent("Uptime"), round($Uptime / 3600, 0));
+					$this->SetValue("Uptime", round($Uptime / 3600, 0));
 					$this->SendDebug($this->Translate("Device Monitor"), $this->Translate("Connection Data Uptime in hours ").round($Uptime / 3600, 0), 0);
 					if (isset($JSONData["data"][0]["name"]))
 					{
 						$Name = $JSONData["data"][0]["name"];
-						SetValue($this->GetIDForIdent("Name"), $Name);
+						$this->SetValue("Name", $Name);
 						$this->SendDebug($this->Translate("Device Monitor"), $this->Translate("Devicename ").$Name, 0);
 					}
 				}
 				if ($this->ReadPropertyBoolean("DataPointHardware") == 1)
 				{
 					$CPULoad = $JSONData["data"][0]["system-stats"]["cpu"];
-					SetValue($this->GetIDForIdent("CPULoad"), $CPULoad);
+					$this->SetValue("CPULoad", $CPULoad);
 					$this->SendDebug($this->Translate("Device Monitor"), $this->Translate("CPU Load ").$CPULoad, 0);
 					$MemoryLoad = $JSONData["data"][0]["system-stats"]["mem"];
-					SetValue($this->GetIDForIdent("MemoryLoad"), $MemoryLoad);
+					$this->SetValue("MemoryLoad", $MemoryLoad);
 					$this->SendDebug($this->Translate("Device Monitor"), $this->Translate("Memory Load ").$MemoryLoad, 0);
 					$ConnectedDevices = $JSONData["data"][0]["num_sta"];
-					SetValue($this->GetIDForIdent("ConnectedDevices"), $ConnectedDevices);
+					$this->SetValue("ConnectedDevices", $ConnectedDevices);
 					$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connected Devices ").$ConnectedDevices, 0);
 				}
 				if ($this->ReadPropertyBoolean("DataPointSpecific") == 1 && $this->ReadPropertyInteger("DeviceType") == 0 && $DeviceConfigError == false)
 				{
 					$WAN1IP = $JSONData["data"][0]["wan1"]["ip"];
-					SetValue($this->GetIDForIdent("WAN1IP"), $WAN1IP);
+					$this->SetValue("WAN1IP", $WAN1IP);
 					$this->SendDebug($this->Translate("Device Monitor"), $this->Translate("Connection Data WAN 1 IP ").$WAN1IP, 0);
 
 					$WAN1TXBytes = $JSONData["data"][0]["wan1"]["tx_bytes"];
-					SetValue($this->GetIDForIdent("WAN1TXBytes"), $WAN1TXBytes / 1000000);
+					$this->SetValue("WAN1TXBytes", $WAN1TXBytes / 1000000);
 					$this->SendDebug($this->Translate("Device Monitor"), $this->Translate("Transfer Data WAN 1 TX Bytes ").$WAN1TXBytes, 0);
 					$WAN1RXBytes = $JSONData["data"][0]["wan1"]["rx_bytes"];
-					SetValue($this->GetIDForIdent("WAN1RXBytes"), $WAN1RXBytes / 1000000);
+					$this->SetValue("WAN1RXBytes", $WAN1RXBytes / 1000000);
 					$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Transfer Data WAN 1 RX Bytes ").$WAN1RXBytes, 0);
 					$WAN1TXPackets = $JSONData["data"][0]["wan1"]["tx_packets"];
-					SetValue($this->GetIDForIdent("WAN1TXPackets"), $WAN1TXPackets);
+					$this->SetValue("WAN1TXPackets", $WAN1TXPackets);
 					$this->SendDebug($this->Translate("Device Monitor"), $this->Translate("Transfer Data WAN 1 TX Packets ").$WAN1TXPackets, 0);
 					$WAN1RXPackets = $JSONData["data"][0]["wan1"]["tx_packets"];
-					SetValue($this->GetIDForIdent("WAN1RXPackets"), $WAN1RXPackets);
+					$this->SetValue("WAN1RXPackets", $WAN1RXPackets);
 					$this->SendDebug($this->Translate("Device Monitor"), $this->Translate("Transfer Data WAN 1 RXPackets ").$WAN1RXPackets, 0);
 					$WAN1TXErrors = $JSONData["data"][0]["wan1"]["tx_errors"];
-					SetValue($this->GetIDForIdent("WAN1TXErrors"), $WAN1TXErrors);
+					$this->SetValue("WAN1TXErrors", $WAN1TXErrors);
 					$this->SendDebug($this->Translate("Device Monitor"), $this->Translate("Transfer Data WAN 1 TX Errors ").$WAN1TXErrors, 0);
 					$WAN1RXErrors = $JSONData["data"][0]["wan1"]["rx_errors"];
-					SetValue($this->GetIDForIdent("WAN1RXErrors"), $WAN1RXErrors);
+					$this->SetValue("WAN1RXErrors", $WAN1RXErrors);
 					$this->SendDebug($this->Translate("Device Monitor"), $this->Translate("Transfer Data WAN 1 RX Errors ").$WAN1RXErrors, 0);
 				}
 			}

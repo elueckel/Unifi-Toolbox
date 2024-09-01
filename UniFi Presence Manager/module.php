@@ -144,10 +144,10 @@ class UniFiPresenceManager extends IPSModule
 						{
 							if ($OldPresenceValue == 0)
 							{ //check if new value is different and only than trigger a replacement
-								SetValue($this->GetIDForIdent($DeviceMac), 1);
+								$this->SetValue($DeviceMac, 1);
 								if ($this->ReadPropertyBoolean("GeneralPresenceUpdatedVariable") == 1)
 								{
-									SetValue($this->GetIDForIdent("GeneralPresenceUpdatedVariable"), 1);
+									$this->SetValue("GeneralPresenceUpdatedVariable", 1);
 								}
 								$this->SendDebug($this->Translate("Presence Manager"), $this->Translate("Device ACTIVE with MAC: ".$DeviceMac), 0);
 							}
@@ -159,10 +159,10 @@ class UniFiPresenceManager extends IPSModule
 							{
 								if ($OldPresenceValue == 1)
 								{
-									SetValue($this->GetIDForIdent($DeviceMac), 0);
+									$this->SetValue($DeviceMac, 0);
 									if ($this->ReadPropertyBoolean("GeneralPresenceUpdatedVariable") == 1)
 									{
-										SetValue($this->GetIDForIdent("GeneralPresenceUpdatedVariable"), 1);
+										$this->SetValue("GeneralPresenceUpdatedVariable", 1);
 									}
 									$this->SendDebug($this->Translate("Presence Manager"), $this->Translate("Device NOT active with MAC: ".$DeviceMac), 0);
 								}

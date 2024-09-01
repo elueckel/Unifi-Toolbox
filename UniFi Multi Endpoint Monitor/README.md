@@ -90,7 +90,8 @@ Das Modul gibt diverse Informationen im Debug Bereich aus.
 Version 1.5 - 02-12-2023
 * Neu - Modul verfügbar
 
-Version 1.6 - 25-08-2024 (Credit M70 - Danke)
+Version 1.6 - 01-09-2024 (Credit M70 - Danke)
+* Neu - WLAN Geräte melden wo sie zuletzt angemeldet waren
 * Fix - Connection wurde nicht gesetzt
 * Fix - Satisfaction wurde nicht aktualisiert
 * Fix - IP wurde nicht gesetzt

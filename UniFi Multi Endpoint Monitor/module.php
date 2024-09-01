@@ -93,6 +93,7 @@ class UnifiMultiEndpointMonitor extends IPSModule
 				$this->MaintainVariable($DeviceMac."RSSI", $DeviceName.$this->Translate(" RSSI"), vtInteger, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1 && $ConnectionType == 0);
 				$this->MaintainVariable($DeviceMac."Noise", $DeviceName.$this->Translate(" Noise"), vtInteger, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1 && $ConnectionType == 0);
 				$this->MaintainVariable($DeviceMac."SignalStrength", $DeviceName.$this->Translate(" Signal Strength"), vtInteger, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1 && $ConnectionType == 0);
+				$this->MaintainVariable($DeviceMac."LastUplinkName", $DeviceName.$this->Translate(" Last Uplink Name"), vtString, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1 && $ConnectionType == 0);
 
 				//Transfer Data
 				$vpos = 600;
@@ -294,6 +295,11 @@ class UnifiMultiEndpointMonitor extends IPSModule
 									$SignalStrength = $DeviceFromController["signal"];
 									$this->SetValue($DeviceMac."SignalStrength", $SignalStrength);
 									$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connection Data SignalStrength ").$SignalStrength, 0);
+								}
+								if(isset($DeviceFromController["last_uplink_name"])) {
+									$LastUplinkName = $DeviceFromController["last_uplink_name"];
+									$this->SetValue($DeviceMac."LastUplinkName", $LastUplinkName);
+									$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Last Uplink Name ").$LastUplinkName, 0);
 								}
 							}
 							if ($this->ReadPropertyBoolean("DataPointTransfer") == 1 AND $ConnectionType == 0 AND $ConnectionConfigError == false)
