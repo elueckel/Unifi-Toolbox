@@ -260,27 +260,41 @@ class UnifiMultiEndpointMonitor extends IPSModule
 
 							if ($this->ReadPropertyBoolean("DataPointConnection") == 1 AND $ConnectionType == 0 AND $ConnectionConfigError == false)
 							{
-								$Accesspoint = $DeviceFromController["ap_mac"];
-								$this->SetValue($DeviceMac."Accesspoint", $Accesspoint);
-								$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connection Data Accesspoint ").$Accesspoint, 0);
-								$Channel = $DeviceFromController["channel"];
-								$this->SetValue($DeviceMac."Channel", $Channel);
-								$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connection Data Channel ").$Channel, 0);
-								$Radio = $DeviceFromController["radio"];
-								$this->SetValue($DeviceMac."Radio", $Radio);
-								$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connection Data Radio ").$Radio, 0);
-								$ESSID = $DeviceFromController["essid"];
-								$this->SetValue($DeviceMac."ESSID", $ESSID);
-								$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connection Data ESSID ").$ESSID, 0);
-								$RSSI = $DeviceFromController["rssi"];
-								$this->SetValue($DeviceMac."RSSI", $RSSI);
-								$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connection Data RSSI ").$RSSI, 0);
-								$Noise = $DeviceFromController["noise"];
-								$this->SetValue($DeviceMac."Noise", $Noise);
-								$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connection Data Noise ").$Noise, 0);
-								$SignalStrength = $DeviceFromController["signal"];
-								$this->SetValue($DeviceMac."SignalStrength", $SignalStrength);
-								$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connection Data SignalStrength ").$SignalStrength, 0);
+								if(isset($DeviceFromController["ap_mac"])) {
+									$Accesspoint = $DeviceFromController["ap_mac"];
+									$this->SetValue($DeviceMac."Accesspoint", $Accesspoint);
+									$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connection Data Accesspoint ").$Accesspoint, 0);
+								}
+								if(isset($DeviceFromController["channel"])) {
+									$Channel = $DeviceFromController["channel"];
+									$this->SetValue($DeviceMac."Channel", $Channel);
+									$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connection Data Channel ").$Channel, 0);
+								}
+								if(isset($DeviceFromController["radio"])) {
+									$Radio = $DeviceFromController["radio"];
+									$this->SetValue($DeviceMac."Radio", $Radio);
+									$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connection Data Radio ").$Radio, 0);
+								}
+								if(isset($DeviceFromController["essid"])) {
+									$ESSID = $DeviceFromController["essid"];
+									$this->SetValue($DeviceMac."ESSID", $ESSID);
+									$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connection Data ESSID ").$ESSID, 0);
+								}
+								if(isset($DeviceFromController["rssi"])) {
+									$RSSI = $DeviceFromController["rssi"];
+									$this->SetValue($DeviceMac."RSSI", $RSSI);
+									$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connection Data RSSI ").$RSSI, 0);
+								}
+								if(isset($DeviceFromController["noise"])) {
+									$Noise = $DeviceFromController["noise"];
+									$this->SetValue($DeviceMac."Noise", $Noise);
+									$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connection Data Noise ").$Noise, 0);
+								}
+								if(isset($DeviceFromController["signal"])) {
+									$SignalStrength = $DeviceFromController["signal"];
+									$this->SetValue($DeviceMac."SignalStrength", $SignalStrength);
+									$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connection Data SignalStrength ").$SignalStrength, 0);
+								}
 							}
 							if ($this->ReadPropertyBoolean("DataPointTransfer") == 1 AND $ConnectionType == 0 AND $ConnectionConfigError == false)
 							{
