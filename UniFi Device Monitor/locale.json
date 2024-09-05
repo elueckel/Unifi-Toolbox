@@ -25,6 +25,8 @@
             "Wired": "Kabel",
             "Basic Data": "Basisdaten",
             "Hardware Data": "Hardwaredaten",
+            "Temperature Data": "Temperatur Daten",
+            "Power Data": "PoE Energie",
             "Device Type": "Geräte Typ",
             "Config error - device monitored is a wired device. Please select wired in the module configuration.": "Konfigurationsfehler - das überwachte Gerät ist verkabelt. Bitte dies in der Modulkonfiguration einstellen.",
             "Network Data": "Netzwerkdaten",
