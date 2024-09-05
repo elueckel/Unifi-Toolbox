@@ -139,6 +139,11 @@
         },
         {
             "type": "CheckBox",
+            "name": "DataPointTemperature",
+            "caption": "Temperature Data"
+        },
+        {
+            "type": "CheckBox",
             "name": "DataPointSpecific",
             "caption": "Network Data"
         }
