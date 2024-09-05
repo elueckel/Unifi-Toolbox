@@ -34,6 +34,8 @@ class UniFiDeviceMonitor extends IPSModule
 
 		$this->RegisterPropertyBoolean("DataPointBasic", 1);
 		$this->RegisterPropertyBoolean("DataPointHardware", 0);
+		$this->RegisterPropertyBoolean("DataPointTemperature", 0);
+		$this->RegisterPropertyBoolean("DataPointPower", 0);
 		$this->RegisterPropertyBoolean("DataPointSpecific", 0);
 
 
@@ -66,6 +68,12 @@ class UniFiDeviceMonitor extends IPSModule
 		$this->MaintainVariable("CPULoad", $this->Translate("CPU Load"), vtFloat, "", $vpos++, $this->ReadPropertyBoolean("DataPointHardware") == 1);
 		$this->MaintainVariable("MemoryLoad", $this->Translate("Memory Load"), vtFloat, "", $vpos++, $this->ReadPropertyBoolean("DataPointHardware") == 1);
 		$this->MaintainVariable("ConnectedDevices", $this->Translate("Connected Devices"), vtInteger, "", $vpos++, $this->ReadPropertyBoolean("DataPointHardware") == 1);
+
+		//Temperature Data
+		$vpos = 230;
+		$this->MaintainVariable("TotalUsedPower", $this->Translate("Total Used Power (POE)"), vtFloat, "", $vpos++, $this->ReadPropertyBoolean("DataPointPower") == 1);
+		$this->MaintainVariable("FanLevel", $this->Translate("Fan Level"), vtInteger, "", $vpos++, $this->ReadPropertyBoolean("DataPointTemperature") == 1);
+		$this->MaintainVariable("DeviceTemperature", $this->Translate("Device Temperature"), vtInteger, "", $vpos++, $this->ReadPropertyBoolean("DataPointTemperature") == 1);
 
 
 		//Device Specific Data Connection Data UDM/USG
@@ -186,6 +194,30 @@ class UniFiDeviceMonitor extends IPSModule
 					$ConnectedDevices = $JSONData["data"][0]["num_sta"];
 					$this->SetValue("ConnectedDevices", $ConnectedDevices);
 					$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connected Devices ").$ConnectedDevices, 0);
+				}
+				if ($this->ReadPropertyBoolean("DataPointHardware") == 1)
+				{
+					if (isset($JSONData["data"][0]["fan_level"]))
+					{
+						$FanLevel = $JSONData["data"][0]["fan_level"];
+						$this->SetValue("FanLevel", $FanLevel);
+						$this->SendDebug($this->Translate("Device Monitor"), $this->Translate("Fan Level ").$FanLevel, 0);
+					}
+					if (isset($JSONData["data"][0]["general_temperature"]))
+					{
+						$DeviceTemp = $JSONData["data"][0]["general_temperature"];
+						$this->SetValue("DeviceTemperature", $DeviceTemp);
+						$this->SendDebug($this->Translate("Device Monitor"), $this->Translate("Device Temperature ").$DeviceTemp, 0);
+					}
+				}
+				if ($this->ReadPropertyBoolean("DataPointPower") == 1)
+				{
+					if (isset($JSONData["data"][0]["total_used_power"]))
+					{
+						$POETotalPower = $JSONData["data"][0]["total_used_power"];
+						$this->SetValue("TotalUsedPower", $POETotalPower);
+						$this->SendDebug($this->Translate("Device Monitor"), $this->Translate("Total used Power ").$POETotalPower, 0);
+					}
 				}
 				if ($this->ReadPropertyBoolean("DataPointSpecific") == 1 && $this->ReadPropertyInteger("DeviceType") == 0 && $DeviceConfigError == false)
 				{
