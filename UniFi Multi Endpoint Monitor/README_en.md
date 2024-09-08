@@ -72,3 +72,15 @@ The module outputs various information in the debug area.
 ## 5. version information
 Version 1.5 - 02-12-2023
 * New - Module available
+
+Version 1.6 - 02-12-2023
+* Neu - Modul verfügbar
+
+Version 1.6 - 25-08-2024 (Credit M70 - Danke)
+* New - WLAN Devices report where they have been logged in last
+* Fix - Connection was not set
+* Fix - Satisfaction was not set
+* Fix - IP was not set
+* Fix - LastSeen is set to Symcon Server time
+* Fix - Module is no longer pulling WLAN data from LAN devices
+* Change - SetValue replaced by $this->SetValue ersetzt

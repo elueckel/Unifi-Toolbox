@@ -76,7 +76,7 @@ class UnifiEndpointMonitor extends IPSModule
 		$this->MaintainVariable("RSSI", $this->Translate("RSSI"), vtInteger, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1 && $this->ReadPropertyInteger("ConnectionType") == 0);
 		$this->MaintainVariable("Noise", $this->Translate("Noise"), vtInteger, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1 && $this->ReadPropertyInteger("ConnectionType") == 0);
 		$this->MaintainVariable("SignalStrength", $this->Translate("Signal Strength"), vtInteger, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1 && $this->ReadPropertyInteger("ConnectionType") == 0);
-
+		
 		//Transfer Data
 		$vpos = 300;
 		$this->MaintainVariable("TXBytes", $this->Translate("TX Megabytes"), vtInteger, "", $vpos++, $this->ReadPropertyBoolean("DataPointTransfer") == 1 && $this->ReadPropertyInteger("ConnectionType") == 0);
@@ -175,7 +175,7 @@ class UnifiEndpointMonitor extends IPSModule
 						//after a device gets reconnected, wait until the controller has rebuilt the data set
 						$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Device was disconnected and is now connected again. Module waits for Controller to collect data."), 0);
 						IPS_Sleep(10000);
-						SetValue($this->GetIDForIdent("Connected"), true);
+						$this->SetValue("Connected", true);
 						$RawData = $this->getRawData($Cookie, $ServerAddress, $ServerPort, $UnifiAPI, $ControllerType);
 						$JSONData = json_decode($RawData, true);
 					}
@@ -195,7 +195,7 @@ class UnifiEndpointMonitor extends IPSModule
 					if ($this->ReadPropertyBoolean("DataPointNetwork") == 1)
 					{
 						$IPAddress = $JSONData["data"][0]["ip"];
-						SetValue($this->GetIDForIdent("IPAddress"), $IPAddress);
+						$this->SetValue("IPAddress", $IPAddress);
 						$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Network Data IP ").$IPAddress, 0);
 
 						if ("" != $JSONData["data"][0]["hostname"])
@@ -210,7 +210,7 @@ class UnifiEndpointMonitor extends IPSModule
 						{
 							$Hostname = "";
 						}
-						SetValue($this->GetIDForIdent("Hostname"), $Hostname);
+						$this->SetValue("Hostname", $Hostname);
 						$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Network Data Hostname ").$Hostname, 0);
 						//$Name = $JSONData["data"][0]["name"];
 						//SetValue($this->GetIDForIdent("Name"),$Name);
@@ -220,60 +220,60 @@ class UnifiEndpointMonitor extends IPSModule
 					{
 						if (isset($JSONData["data"][0]["satisfaction"])) {
 							$Satisfaction = isset($JSONData["data"][0]["satisfaction"]);
-							SetValue($this->GetIDForIdent("Satisfaction"), $Satisfaction);
+							$this->SetValue("Satisfaction", $Satisfaction);
 						}
 						$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connection Data Satisfaction ").$Satisfaction, 0);
 						$SLastSeen = $JSONData["data"][0]["last_seen"];
-						SetValue($this->GetIDForIdent("LastSeen"), gmdate("Y-m-d H:i:s", $SLastSeen));
+						$this->SetValue("LastSeen", gmdate("Y-m-d H:i:s", $SLastSeen));
 						$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connection Data Last Seen ").gmdate("Y-m-d H:i:s", $SLastSeen), 0);
 						$Uptime = $JSONData["data"][0]["uptime"];
-						SetValue($this->GetIDForIdent("Uptime"), round($Uptime / 3600, 0));
+						$this->SetValue("Uptime", round($Uptime / 3600, 0));
 						$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connection Data Uptime in hours ").round($Uptime / 3600, 0), 0);
 					}
 					if ($this->ReadPropertyBoolean("DataPointConnection") == 1 && $this->ReadPropertyInteger("ConnectionType") == 0 && $ConnectionConfigError == false)
 					{
 						$Accesspoint = $JSONData["data"][0]["ap_mac"];
-						SetValue($this->GetIDForIdent("Accesspoint"), $Accesspoint);
+						$this->SetValue("Accesspoint", $Accesspoint);
 						$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connection Data Accesspoint ").$Accesspoint, 0);
 						$Channel = $JSONData["data"][0]["channel"];
-						SetValue($this->GetIDForIdent("Channel"), $Channel);
+						$this->SetValue("Channel", $Channel);
 						$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connection Data Channel ").$Channel, 0);
 						$Radio = $JSONData["data"][0]["radio"];
-						SetValue($this->GetIDForIdent("Radio"), $Radio);
+						$this->SetValue("Radio", $Radio);
 						$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connection Data Radio ").$Radio, 0);
 						$ESSID = $JSONData["data"][0]["essid"];
-						SetValue($this->GetIDForIdent("ESSID"), $ESSID);
+						$this->SetValue("ESSID", $ESSID);
 						$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connection Data ESSID ").$ESSID, 0);
 						$RSSI = $JSONData["data"][0]["rssi"];
-						SetValue($this->GetIDForIdent("RSSI"), $RSSI);
+						$this->SetValue("RSSI", $RSSI);
 						$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connection Data RSSI ").$RSSI, 0);
 						$Noise = $JSONData["data"][0]["noise"];
-						SetValue($this->GetIDForIdent("Noise"), $Noise);
+						$this->SetValue("Noise", $Noise);
 						$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connection Data Noise ").$Noise, 0);
 						$SignalStrength = $JSONData["data"][0]["signal"];
-						SetValue($this->GetIDForIdent("SignalStrength"), $SignalStrength);
+						$this->SetValue("SignalStrength", $SignalStrength);
 						$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connection Data SignalStrength ").$SignalStrength, 0);
 					}
 					if ($this->ReadPropertyBoolean("DataPointTransfer") == 1 && $this->ReadPropertyInteger("ConnectionType") == 0 && $ConnectionConfigError == false)
 					{
 						$TXBytes = $JSONData["data"][0]["tx_bytes"];
-						SetValue($this->GetIDForIdent("TXBytes"), $TXBytes / 1000000);
+						$this->SetValue("TXBytes", $TXBytes / 1000000);
 						$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Transfer Data TXBytes ").$TXBytes / 1000000, 0);
 						$RXBytes = $JSONData["data"][0]["rx_bytes"];
-						SetValue($this->GetIDForIdent("RXBytes"), $RXBytes / 1000000);
+						$this->SetValue("RXBytes", $RXBytes / 1000000);
 						$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Transfer Data RXBytes ").$RXBytes / 1000000, 0);
 						$TXPackets = $JSONData["data"][0]["tx_packets"];
-						SetValue($this->GetIDForIdent("TXPackets"), $TXPackets);
+						$this->SetValue("TXPackets", $TXPackets);
 						$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Transfer Data TXPackets ").$TXPackets, 0);
 						$RXPackets = $JSONData["data"][0]["rx_packets"];
-						SetValue($this->GetIDForIdent("RXPackets"), $RXPackets);
+						$this->SetValue("RXPackets", $RXPackets);
 						$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Transfer Data RXPackets ").$RXPackets, 0);
 					}
 				}
 				elseif ($DeviceAvailable == "error")
 				{
 					$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Device to be monitored is not available / Disconnected"), 0);
-					SetValue($this->GetIDForIdent("Connected"), false);
+					$this->SetValue("Connected", false);
 				}
 			}
 			else

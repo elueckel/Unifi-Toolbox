@@ -63,7 +63,7 @@ class UniFiPoEControl extends IPSModule
 						$this->RegisterVariableBoolean($DeviceMacClean . $i, $DeviceName . " Port: " . $i, "~Switch");
 						$DeviceMacCleanID = @IPS_GetObjectIDByIdent($DeviceMacClean .$i, $this->InstanceID);
 	
-						SetValue($DeviceMacCleanID, false);
+						$this->SetValue($DeviceMacCleanID, false);
 						IPS_Sleep(1000);
 						$this->EnableAction($DeviceMacClean . $i);
 						$this->RegisterMessage($DeviceMacCleanID, VM_UPDATE);
@@ -218,7 +218,7 @@ class UniFiPoEControl extends IPSModule
 				if ($ControllerFeedbackOK == "ok")
 				{
 					// reset variable
-					SetValue($SenderID, false);
+					$this->SetValue($SenderID, false);
 					//WFC_SendPopup(12345, "Test", "Eine nette <br> Meldung");
 				}
 				elseif ($ControllerFeedbackOK == "error")

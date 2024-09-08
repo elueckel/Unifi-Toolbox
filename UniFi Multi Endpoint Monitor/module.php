@@ -93,6 +93,7 @@ class UnifiMultiEndpointMonitor extends IPSModule
 				$this->MaintainVariable($DeviceMac."RSSI", $DeviceName.$this->Translate(" RSSI"), vtInteger, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1 && $ConnectionType == 0);
 				$this->MaintainVariable($DeviceMac."Noise", $DeviceName.$this->Translate(" Noise"), vtInteger, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1 && $ConnectionType == 0);
 				$this->MaintainVariable($DeviceMac."SignalStrength", $DeviceName.$this->Translate(" Signal Strength"), vtInteger, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1 && $ConnectionType == 0);
+				$this->MaintainVariable($DeviceMac."LastUplinkName", $DeviceName.$this->Translate(" Last Uplink Name"), vtString, "", $vpos++, $this->ReadPropertyBoolean("DataPointConnection") == 1 && $ConnectionType == 0);
 
 				//Transfer Data
 				$vpos = 600;
@@ -196,6 +197,7 @@ class UnifiMultiEndpointMonitor extends IPSModule
 					$DeviceMac = $this->removeInvalidChars($Device["varDeviceMAC"], true);
 					$DeviceName = $Device["varDeviceName"];
 					$ConnectionType = $Device["varDeviceConnectionType"];
+					$Connected = false;
 
 					//Itterate through all device and check if one of them matches the list in the config form.
 					foreach ($ActiveDevices["data"] as $Index => $DeviceFromController)
@@ -205,8 +207,9 @@ class UnifiMultiEndpointMonitor extends IPSModule
 						if ($DeviceMac == $DeviceFromControllerClean)
 						{
 							$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Device with Name was found: ").$DeviceName, 0);
-					
+							$Connected = true;				
 							$ConnectionMethod = $DeviceFromController["is_wired"];
+							$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Setze Wert"), 0);
 
 							if ($ConnectionMethod == true && $ConnectionType == 0)
 							{
@@ -219,77 +222,99 @@ class UnifiMultiEndpointMonitor extends IPSModule
 							}
 
 							if ($this->ReadPropertyBoolean("DataPointNetwork") == 1)
-							{
-								$IPAddress = $DeviceFromController["ip"];
-								SetValue($this->GetIDForIdent($DeviceMac."IPAddress"), $IPAddress);
-								$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Network Data IP ").$IPAddress, 0);
-
+							{	
+								if (isset($DeviceFromController["ip"])) {
+									$IPAddress = $DeviceFromController["ip"];
+									$this->SetValue($DeviceMac."IPAddress", $IPAddress);
+									$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Network Data IP ").$IPAddress, 0);
+								}
 								if ("" != $DeviceFromController["hostname"])
 								{
 									$Hostname = $DeviceFromController["hostname"];
-								}
-								elseif ("" != $DeviceFromController["name"])
-								{
-									$Hostname = $DeviceFromController["name"];
 								}
 								else
 								{
 									$Hostname = "";
 								}
-								SetValue($this->GetIDForIdent($DeviceMac."Hostname"), $Hostname);
+								$this->SetValue($DeviceMac."Hostname", $Hostname);
 								$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Network Data Hostname ").$Hostname, 0);
+								$Connected = true;	
 							}
+
 							if ($this->ReadPropertyBoolean("DataPointConnection") == 1)
 							{
 								if (isset($DeviceFromController["satisfaction"])) {
-									$Satisfaction = isset($DeviceMac["satisfaction"]);
-									SetValue($this->GetIDForIdent($DeviceMac."Satisfaction"), $Satisfaction);
+									$Satisfaction = $DeviceFromController["satisfaction"];
+									//$Satisfaction = isset($DeviceMac["satisfaction"]);
+									$this->SetValue($DeviceMac."Satisfaction", $Satisfaction);
+									$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connection Data Satisfaction ").$Satisfaction, 0);
 								}
-								$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connection Data Satisfaction ").$Satisfaction, 0);
+								//$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connection Data Satisfaction ").$Satisfaction, 0);
 								$SLastSeen = $DeviceFromController["last_seen"];
-								SetValue($this->GetIDForIdent($DeviceMac."LastSeen"), gmdate("Y-m-d H:i:s", $SLastSeen));
+								$SLastSeen = $SLastSeen + date("Z");
+								$this->SetValue($DeviceMac."LastSeen", gmdate("Y-m-d H:i:s", $SLastSeen));
 								$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connection Data Last Seen ").gmdate("Y-m-d H:i:s", $SLastSeen), 0);
 								$Uptime = $DeviceFromController["uptime"];
-								SetValue($this->GetIDForIdent($DeviceMac."Uptime"), round($Uptime / 3600, 0));
+								$this->SetValue($DeviceMac."Uptime", round($Uptime / 3600, 0));
 								$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connection Data Uptime in hours ").round($Uptime / 3600, 0), 0);
 							}
-							if ($this->ReadPropertyBoolean("DataPointConnection") == 1 && $ConnectionType == 0 && $ConnectionConfigError == false)
+
+							if ($this->ReadPropertyBoolean("DataPointConnection") == 1 AND $ConnectionType == 0 AND $ConnectionConfigError == false)
 							{
-								$Accesspoint = $DeviceFromController["ap_mac"];
-								SetValue($this->GetIDForIdent($DeviceMac."Accesspoint"), $Accesspoint);
-								$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connection Data Accesspoint ").$Accesspoint, 0);
-								$Channel = $DeviceFromController["channel"];
-								SetValue($this->GetIDForIdent($DeviceMac."Channel"), $Channel);
-								$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connection Data Channel ").$Channel, 0);
-								$Radio = $DeviceFromController["radio"];
-								SetValue($this->GetIDForIdent($DeviceMac."Radio"), $Radio);
-								$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connection Data Radio ").$Radio, 0);
-								$ESSID = $DeviceFromController["essid"];
-								SetValue($this->GetIDForIdent($DeviceMac."ESSID"), $ESSID);
-								$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connection Data ESSID ").$ESSID, 0);
-								$RSSI = $DeviceFromController["rssi"];
-								SetValue($this->GetIDForIdent($DeviceMac."RSSI"), $RSSI);
-								$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connection Data RSSI ").$RSSI, 0);
-								$Noise = $DeviceFromController["noise"];
-								SetValue($this->GetIDForIdent($DeviceMac."Noise"), $Noise);
-								$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connection Data Noise ").$Noise, 0);
-								$SignalStrength = $DeviceFromController["signal"];
-								SetValue($this->GetIDForIdent($DeviceMac."SignalStrength"), $SignalStrength);
-								$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connection Data SignalStrength ").$SignalStrength, 0);
+								if(isset($DeviceFromController["ap_mac"])) {
+									$Accesspoint = $DeviceFromController["ap_mac"];
+									$this->SetValue($DeviceMac."Accesspoint", $Accesspoint);
+									$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connection Data Accesspoint ").$Accesspoint, 0);
+								}
+								if(isset($DeviceFromController["channel"])) {
+									$Channel = $DeviceFromController["channel"];
+									$this->SetValue($DeviceMac."Channel", $Channel);
+									$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connection Data Channel ").$Channel, 0);
+								}
+								if(isset($DeviceFromController["radio"])) {
+									$Radio = $DeviceFromController["radio"];
+									$this->SetValue($DeviceMac."Radio", $Radio);
+									$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connection Data Radio ").$Radio, 0);
+								}
+								if(isset($DeviceFromController["essid"])) {
+									$ESSID = $DeviceFromController["essid"];
+									$this->SetValue($DeviceMac."ESSID", $ESSID);
+									$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connection Data ESSID ").$ESSID, 0);
+								}
+								if(isset($DeviceFromController["rssi"])) {
+									$RSSI = $DeviceFromController["rssi"];
+									$this->SetValue($DeviceMac."RSSI", $RSSI);
+									$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connection Data RSSI ").$RSSI, 0);
+								}
+								if(isset($DeviceFromController["noise"])) {
+									$Noise = $DeviceFromController["noise"];
+									$this->SetValue($DeviceMac."Noise", $Noise);
+									$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connection Data Noise ").$Noise, 0);
+								}
+								if(isset($DeviceFromController["signal"])) {
+									$SignalStrength = $DeviceFromController["signal"];
+									$this->SetValue($DeviceMac."SignalStrength", $SignalStrength);
+									$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Connection Data SignalStrength ").$SignalStrength, 0);
+								}
+								if(isset($DeviceFromController["last_uplink_name"])) {
+									$LastUplinkName = $DeviceFromController["last_uplink_name"];
+									$this->SetValue($DeviceMac."LastUplinkName", $LastUplinkName);
+									$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Last Uplink Name ").$LastUplinkName, 0);
+								}
 							}
-							if ($this->ReadPropertyBoolean("DataPointTransfer") == 1 && $ConnectionType == 0 && $ConnectionConfigError == false)
+							if ($this->ReadPropertyBoolean("DataPointTransfer") == 1 AND $ConnectionType == 0 AND $ConnectionConfigError == false)
 							{
 								$TXBytes = $DeviceFromController["tx_bytes"];
-								SetValue($this->GetIDForIdent($DeviceMac."TXBytes"), $TXBytes / 1000000);
+								$this->SetValue($DeviceMac."TXBytes", $TXBytes / 1000000);
 								$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Transfer Data TXBytes ").$TXBytes / 1000000, 0);
 								$RXBytes = $DeviceFromController["rx_bytes"];
-								SetValue($this->GetIDForIdent($DeviceMac."RXBytes"), $RXBytes / 1000000);
+								$this->SetValue($DeviceMac."RXBytes", $RXBytes / 1000000);
 								$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Transfer Data RXBytes ").$RXBytes / 1000000, 0);
 								$TXPackets = $DeviceFromController["tx_packets"];
-								SetValue($this->GetIDForIdent($DeviceMac."TXPackets"), $TXPackets);
+								$this->SetValue($DeviceMac."TXPackets", $TXPackets);
 								$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Transfer Data TXPackets ").$TXPackets, 0);
 								$RXPackets = $DeviceFromController["rx_packets"];
-								SetValue($this->GetIDForIdent($DeviceMac."RXPackets"), $RXPackets);
+								$this->SetValue($DeviceMac."RXPackets", $RXPackets);
 								$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("Transfer Data RXPackets ").$RXPackets, 0);
 							}
 
@@ -298,6 +323,7 @@ class UnifiMultiEndpointMonitor extends IPSModule
 						{
 							//$this->SendDebug($this->Translate("Endpoint Monitor"), $this->Translate("NOT found - Device: ").$DeviceName, 0);
 						}
+						$this->SetValue($DeviceMac."_Connected", $Connected);
 					}
 				}
 			}

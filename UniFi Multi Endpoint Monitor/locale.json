@@ -42,6 +42,7 @@
             "Radio": "Funktechnologie",
             "Noise": "Störung",
             "Signal Strength": "Signal Stärke",
+            "Last Uplink Name": "Letzte Verbindung (Access Point)",
             "TX Packets": "TX Pakete",
             "RX Packets": "RX Pakete",
             "Check site name": "Name der Site prüfen",

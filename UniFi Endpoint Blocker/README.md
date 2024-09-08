@@ -127,3 +127,6 @@ Version 1.3 - 03-01-2022
 
 Version 1.5 - 03-12-2023
 * Neu - UI Aufgeräumt
+
+Version 1.6 - 25-08-2024 
+* Keine Änderungen
